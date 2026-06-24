@@ -1,0 +1,9 @@
+model,avg_input_tokens,avg_output_tokens,cost_per_question
+gpt-5.5-xhigh,722,7826,0.2384
+gpt-5.4-xhigh,745,12723,0.1927
+claude-opus-4-8-xhigh-effort,1332,13946,0.3553
+claude-opus-4-7-xhigh-effort,1326,10677,0.2735
+gpt-5.2-2025-12-11-high,751,7597,0.1077
+gemini-3.5-flash-high,796,14961,0.1358
+qwen3.7-max,785,12193,0.0934
+kimi-k2.6-thinking,706,21184,0.0854
