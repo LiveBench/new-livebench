@@ -149,6 +149,19 @@ a{color:var(--accent);text-decoration:none;}
 .lb-footer{padding:34px 0 60px;color:var(--faint);font-size:13px;}
 .lb-footer .lb-wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 
+/* /details (Blog) page — share the modern light theme + nav */
+.Blog{text-align:left;}
+.Blog .publication-links{display:none;}        /* nav now lives in the shared Navbar */
+.Blog .hero{background:transparent;}
+.Blog .hero-body{padding-top:30px;padding-bottom:6px;}
+.Blog .hero .title.is-1{font-size:clamp(28px,4.5vw,42px);letter-spacing:-.02em;}
+.Blog .section{padding:22px 0;}
+.Blog .container{max-width:900px;}
+.Blog .content a{color:var(--accent);}
+.Blog .title,.Blog .subtitle{color:var(--ink);}
+.Blog img{max-width:100%;height:auto;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);}
+.Blog .bibtex,.Blog pre{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);}
+
 @media (max-width:900px){.lb-ins-grid{grid-template-columns:1fr}.lb-kpis{grid-template-columns:repeat(2,1fr)}.lb-radar-wrap{grid-template-columns:1fr}}
 @media (max-width:560px){.lb-kpis{grid-template-columns:1fr 1fr}.lb-bar .name{flex-basis:108px}.lb-links a:not(:first-child){display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

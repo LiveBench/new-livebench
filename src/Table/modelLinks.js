@@ -1,4 +1,5 @@
 export const modelLinks = {
+    "glm-5.2": { url: "https://z.ai", organization: "Z.AI", displayName: "GLM-5.2", openweight: true, reasoner: true },
     "arcee-trinity-large-preview": {url: "https://openrouter.ai/arcee-ai/trinity-large-preview:free", organization: "Arcee", displayName: "Trinity Large Preview", openweight: true, reasoner: true},
     "chatgpt-4o-latest": { url: "https://openai.com/index/hello-gpt-4o/", organization: "OpenAI", displayName: "ChatGPT-4o" },
     "chatgpt-4o-latest-0903": { url: "https://openai.com/index/hello-gpt-4o/", organization: "OpenAI", displayName: "ChatGPT-4o", version: "2024-09-03" },

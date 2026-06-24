@@ -1,6 +1,7 @@
 import React from 'react';
 import './Blog.css';
 import 'bulma/css/bulma.css'
+import Navbar from './components/Navbar';
 import { bibtexEntry } from './constants';
 import livebench_results from './images/livebench_results.png';
 import livebench_vs_chatbot_arena from './images/livebench_vs_chatbot_arena.png';
@@ -14,6 +15,7 @@ function Blog() {
             <Helmet>
                 <title>LiveBench Blog</title>
             </Helmet>
+            <Navbar variant="details" />
             <section className="hero">
                 <div className="hero-body">
                     <div className="container is-max-desktop">

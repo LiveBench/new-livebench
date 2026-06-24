@@ -3,7 +3,7 @@
 export const RELEASES = [
   "2024-06-24", "2024-07-26", "2024-08-31", "2024-11-25",
   "2025-04-02", "2025-04-25", "2025-05-30",
-  "2025-11-25", "2025-12-23", "2026-01-08",
+  "2025-11-25", "2025-12-23", "2026-01-08", "2026-06-25",
 ];
 
 // Provider → dot/chip colour (muted but distinct on white). Fallback for anything unlisted.
