@@ -20,8 +20,13 @@ export function catAvg(row, categories, cat) {
   return v === "-" || v == null ? null : Number(v);
 }
 
-export const perMillionOut = (cost) =>
-  cost && cost.avg_output_tokens ? (cost.cost_per_question / cost.avg_output_tokens) * 1e6 : null;
+// Official $/1M output list price from the provider config (preferred).
+// Falls back to the derived implied rate only if no official price is published.
+export const perMillionOut = (cost) => {
+  if (!cost) return null;
+  if (cost.output_price_per_million != null) return Number(cost.output_price_per_million);
+  return cost.avg_output_tokens ? (cost.cost_per_question / cost.avg_output_tokens) * 1e6 : null;
+};
 
 export const pointsPerDollar = (overall, cost) =>
   cost && cost.cost_per_question ? overall / cost.cost_per_question : null;

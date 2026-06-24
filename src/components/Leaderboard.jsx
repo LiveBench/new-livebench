@@ -72,7 +72,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
               <th onClick={() => clickSort("overall")}>Overall {arrow("overall")}</th>
               {cats.map((c) => <th key={c} title={c} onClick={() => clickSort(c)}>{catShort(c)} {arrow(c)}</th>)}
               {hasCost && <th className="grp" onClick={() => clickSort("cpq")}>$/Q {arrow("cpq")}</th>}
-              {hasCost && <th onClick={() => clickSort("perm")}>$/1M {arrow("perm")}</th>}
+              {hasCost && <th title="Official provider list price per 1M output tokens" onClick={() => clickSort("perm")}>$/1M out {arrow("perm")}</th>}
               {hasCost && <th>Value</th>}
             </tr>
           </thead>
