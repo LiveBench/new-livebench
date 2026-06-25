@@ -25,7 +25,7 @@ export function catAvg(row, categories, cat) {
 // column) and the question count (nq_<subtask>). $/question at any scope is
 // (Σ total cost) / (Σ nq) over the subtasks in that scope — so overall = total
 // run cost ÷ total questions, and a category = its total ÷ its question count.
-// (This is NOT the mean of the per-category $/task values; expensive but small
+// (This is NOT the mean of the per-category $/Q values; expensive but small
 // suites like Agentic Coding are weighted by their question count, not 1/7.)
 
 // Subtask columns covered by a scope: overall = all, a category = its subtasks, else the subtask.
@@ -46,7 +46,7 @@ export function costForScope(costRow, categories, scope) {
   return n > 0 ? cost / n : null;
 }
 
-// Per-category and overall $/task are just costForScope at those scopes.
+// Per-category and overall $/Q are just costForScope at those scopes.
 export const catCost = (costRow, categories, cat) => costForScope(costRow, categories, cat);
 export const overallCost = (costRow, categories) => costForScope(costRow, categories, "overall");
 

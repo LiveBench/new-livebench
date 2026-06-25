@@ -36,9 +36,9 @@ export default function CostBars({ models }) {
         <div className="lb-tip" style={{ position: "fixed", left: tip.x + 14, top: tip.y - 8, transform: "none" }}>
           <div className="tn">{tip.m.name}</div>
           <div className="tg">
-            <span>$/task</span><span>${tip.m.costOverall.toFixed(3)}</span>
+            <span>$/Q</span><span>${tip.m.costOverall.toFixed(3)}</span>
             <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
-            <span>out tokens</span><span>{(Number(tip.m.cost.avg_output_tokens) || 0).toLocaleString()}</span>
+            <span>avg_output_tokens</span><span>{(Number(tip.m.cost.avg_output_tokens) || 0).toLocaleString()}</span>
           </div>
         </div>
       )}

@@ -19,7 +19,7 @@ test("overallOf returns null when no scores", () => {
   expect(overallOf({ model: "x" }, { Reasoning: ["a"] })).toBeNull();
 });
 
-// $/task is question-weighted: (Σ total cost) / (Σ nq) over the scope's subtasks.
+// $/Q is question-weighted: (Σ total cost) / (Σ nq) over the scope's subtasks.
 test("costForScope = total cost / question count, weighted by questions", () => {
   const categories = { Reasoning: ["a", "b"], Coding: ["c"] };
   // totals + counts: a=$2/10q=$0.2, b=$8/10q=$0.8, c=$5/5q=$1.0

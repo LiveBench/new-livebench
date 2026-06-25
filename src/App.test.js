@@ -30,6 +30,6 @@ test("renders the leaderboard with real model names and cost columns", async () 
   await flush();
   expect(container.textContent).toContain("ChatGPT-4o");
   expect(container.textContent).toContain("DeepSeek V3");
-  expect(container.textContent).toContain("$/task"); // cost column present because cost loaded
+  expect(container.textContent).toContain("$/Q"); // cost column present because cost loaded
   expect(container.textContent).toContain("Leaderboard");
 });

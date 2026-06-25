@@ -56,7 +56,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const scoreCols = focusedCat ? [focusedCat, ...categories[focusedCat]] : ["overall", ...cats];
 
-  // The cost columns ($/task, $/quality, Value) follow the selected score scope:
+  // The cost columns ($/Q, $/quality, Value) follow the selected score scope:
   // a focused category or a sorted subtask, else overall. So selecting "Coding"
   // (or sorting by the python column) makes cost reflect exactly that scope.
   const costScope = (sortKey === "cpq" || sortKey === "perq" || sortKey === "model")
@@ -153,15 +153,15 @@ export default function Leaderboard({ models, categories, hasCost }) {
               {scoreCols.map((k) => (
                 <th key={k} title={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
               ))}
-              {hasCost && <th className="grp" title={`Measured cost per question — ${costScope === "overall" ? "overall (mean of category costs)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/task·${scopeLabel}` : "$/task"} {arrow("cpq")}</th>}
-              {hasCost && <th title="Cost per LiveBench point — scoped $/task ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
+              {hasCost && <th className="grp" title={`Measured cost per question — ${costScope === "overall" ? "overall (mean of category costs)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"} {arrow("cpq")}</th>}
+              {hasCost && <th title="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
               {hasCost && <th title={`Value frontier at the ${scopeLabel || "overall"} scope`}>Value</th>}
             </tr>
           </thead>
           <tbody>
             {rows.map((m) => {
               const open = expanded.has(m.model);
-              const cScope = scopeCost(m);                                   // $/task at current scope
+              const cScope = scopeCost(m);                                   // $/Q at current scope
               const qScope = costPerQuality(cScope, numVal(m, costScope));   // $/quality at current scope
               return (
                 <React.Fragment key={m.model}>
@@ -223,7 +223,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         {focusedCat
           ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
           : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
-        {hasCost ? ` · $/task & $/quality reflect the ${scopeLabel || "overall"} scope · pill = value frontier` : ""}
+        {hasCost ? ` · $/Q & $/quality reflect the ${scopeLabel || "overall"} scope · pill = value frontier` : ""}
       </p>
     </>
   );
