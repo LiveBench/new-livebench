@@ -63,7 +63,7 @@ export default function CategoryRadar({ models, categories }) {
       <div>
         <div className="lb-radar-chips">
           {sel.map((name) => (
-            <button key={name} className="lb-rchip" aria-pressed="true" title="Remove" onClick={() => remove(name)}>
+            <button key={name} className="lb-rchip" aria-pressed="true" data-tip="Remove" onClick={() => remove(name)}>
               <span className="sw" style={{ background: colorFor(name) }} />{short(name)} <span style={{ color: "var(--faint)", fontWeight: 700 }}>×</span>
             </button>
           ))}

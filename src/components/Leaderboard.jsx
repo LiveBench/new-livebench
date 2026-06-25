@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { orgColor, catShort, catFull, subtaskLabel } from "../lib/constants";
 import { costForScope, costPerQuality, frontierBy, collapseVariants } from "../lib/compute";
 
-const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
+// Render $X with the "$" in a .cur span (size-only nudge — see index.css).
+const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
 
 // Numeric value of a score column key: "overall", a category name (average), or a subtask column (raw score).
 const numVal = (m, k) => {
@@ -132,7 +133,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         </div>
         <button className="lb-chip" aria-pressed={onlyReason} onClick={() => setOnlyReason((v) => !v)}>Reasoning</button>
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
-        <button className="lb-chip" aria-pressed={showVariants} title="Off = best variant per model · On = every effort variant"
+        <button className="lb-chip" aria-pressed={showVariants} data-tip="Off = best variant per model · On = every effort variant"
           onClick={() => setShowVariants((v) => !v)}>Model variants</button>
       </div>
 
@@ -140,7 +141,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         <span className="lb-cats-label">Category</span>
         <button className="lb-chip" aria-pressed={!focusedCat} onClick={() => focusCat(null)}>All</button>
         {cats.map((c) => (
-          <button key={c} className="lb-chip" title={catFull(c)} aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{c}</button>
+          <button key={c} className="lb-chip" data-tip={catFull(c)} aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{c}</button>
         ))}
       </div>
 
@@ -151,11 +152,11 @@ export default function Leaderboard({ models, categories, hasCost }) {
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
               <th className="l" onClick={() => clickSort("model")}>Model {arrow("model")}</th>
               {scoreCols.map((k) => (
-                <th key={k} className={focusedCat ? "sub" : undefined} title={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
+                <th key={k} className={focusedCat ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
               ))}
-              {hasCost && <th className="grp" title={`Measured cost per question — ${costScope === "overall" ? "overall (mean of category costs)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"} {arrow("cpq")}</th>}
-              {hasCost && <th title="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
-              {hasCost && <th title={`Value frontier at the ${scopeLabel || "overall"} scope`}>Value</th>}
+              {hasCost && <th className="grp" data-tip={`Measured cost per question — ${costScope === "overall" ? "overall (mean of category costs)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"} {arrow("cpq")}</th>}
+              {hasCost && <th data-tip="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
+              {hasCost && <th data-tip={`Value frontier at the ${scopeLabel || "overall"} scope`}>Value</th>}
             </tr>
           </thead>
           <tbody>
@@ -172,7 +173,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         <span className="lb-mdot" style={{ background: orgColor(m.org) }} />
                         <span className="nm">{m.name}</span>
                         {showVariants && m.info?.version && <span className="ef">{m.info.version}</span>}
-                        {m.reasoner && <span className="rz" title="reasoning model">⚡</span>}
+                        {m.reasoner && <span className="rz" data-tip="reasoning model">⚡</span>}
                         {m.open && <span className="opn">open</span>}
                       </div>
                     </td>
@@ -184,8 +185,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         </td>
                       );
                     })}
-                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}>{cScope != null ? `$${cScope.toFixed(3)}` : "—"}</td>}
-                    {hasCost && <td className={qScope != null ? "" : "na"}>{qScope != null ? fmtQuality(qScope) : "—"}</td>}
+                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}><Money v={cScope} dp={3} /></td>}
+                    {hasCost && <td className={qScope != null ? "" : "na"}><Money v={qScope} dp={4} /></td>}
                     {hasCost && <td>{frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
                   </tr>
                   {open && (

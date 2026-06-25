@@ -6,6 +6,7 @@ import useLeaderboardData from "./lib/useLeaderboardData";
 import { overallOf, catAvg, overallCost } from "./lib/compute";
 import { getModelInfo } from "./Table/modelLinks";
 import Navbar from "./components/Navbar";
+import Tooltip from "./components/Tooltip";
 import ReleaseTimeline from "./components/ReleaseTimeline";
 import MetricsStrip from "./components/MetricsStrip";
 import Leaderboard from "./components/Leaderboard";
@@ -45,6 +46,7 @@ export default function App() {
 
   return (
     <div>
+      <Tooltip />
       <Navbar variant="home" />
 
       <header className="lb-hero">

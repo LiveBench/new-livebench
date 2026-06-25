@@ -21,7 +21,7 @@ export default function ReleaseTimeline({ releases, value, onChange }) {
             type="button"
             className={"lb-dot" + (i < idx ? " done" : "") + (i === idx ? " active" : "")}
             style={{ left: `${pct(i)}%` }}
-            title={d}
+            data-tip={d}
             aria-label={`Release ${d}`}
             aria-current={i === idx ? "true" : undefined}
             onClick={() => onChange(d)}
