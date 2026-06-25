@@ -1,19 +1,24 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { orgColor, catShort } from "../lib/constants";
 import { costPerQuality, collapseVariants } from "../lib/compute";
 
 const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
 
-// Relative shading: the top 5 in each score column get an accent tint,
-// darkest (rank 1) → lightest (rank 5). Everything else is unshaded.
+// Numeric value of a score column key: "overall", a category name (average), or a subtask column (raw score).
+const numVal = (m, k) => {
+  if (k === "overall") return m.overall;
+  if (m.cats[k] !== undefined) return m.cats[k];      // category average
+  const v = m.row[k];                                  // subtask raw score
+  return v == null || v === "" ? null : Number(v);
+};
+
+// Relative shading: the top 5 in each score column get an accent tint, darkest (rank 1) → lightest (rank 5).
 const SHADES = ["rgba(47,84,235,0.24)", "rgba(47,84,235,0.17)", "rgba(47,84,235,0.115)", "rgba(47,84,235,0.07)", "rgba(47,84,235,0.035)"];
-function computeShades(rows, cats) {
+function computeShades(rows, cols) {
   const map = {};
-  for (const c of ["overall", ...cats]) {
-    const vals = rows
-      .map((m) => ({ model: m.model, v: c === "overall" ? m.overall : m.cats[c] }))
-      .filter((x) => x.v != null)
-      .sort((a, b) => b.v - a.v);
+  for (const c of cols) {
+    const vals = rows.map((m) => ({ model: m.model, v: numVal(m, c) }))
+      .filter((x) => x.v != null).sort((a, b) => b.v - a.v);
     const cm = {};
     vals.slice(0, 5).forEach((x, i) => { cm[x.model] = SHADES[i]; });
     map[c] = cm;
@@ -21,22 +26,50 @@ function computeShades(rows, cats) {
   return map;
 }
 
+// ---- URL state lives in the hash query (e.g. #/?cat=Agentic+Coding&sort=python&dir=desc) ----
+const readHash = () => {
+  const h = window.location.hash || "";
+  const qi = h.indexOf("?");
+  return new URLSearchParams(qi >= 0 ? h.slice(qi + 1) : "");
+};
+const writeHash = (params) => {
+  const h = window.location.hash || "#/";
+  const base = h.indexOf("?") >= 0 ? h.slice(0, h.indexOf("?")) : h || "#/";
+  const qs = params.toString();
+  window.history.replaceState(null, "", qs ? `${base}?${qs}` : base);
+};
+
 export default function Leaderboard({ models, categories, hasCost, frontier }) {
   const cats = Object.keys(categories);
-  const [sortKey, setSortKey] = useState("overall");
-  const [sortDir, setSortDir] = useState(-1);
+
+  // initialize view state from the URL so links are shareable
+  const init = readHash();
+  const initCat = init.get("cat") && categories[init.get("cat")] ? init.get("cat") : null;
+  const [focusedCat, setFocusedCat] = useState(initCat);
+  const [sortKey, setSortKey] = useState(init.get("sort") || initCat || "overall");
+  const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
   const [showVariants, setShowVariants] = useState(false);
   const [onlyReason, setOnlyReason] = useState(false);
   const [onlyOpen, setOnlyOpen] = useState(false);
   const [q, setQ] = useState("");
 
+  const scoreCols = focusedCat ? [focusedCat, ...categories[focusedCat]] : ["overall", ...cats];
+
+  // reflect focus + sort in the URL (shareable, no history spam)
+  useEffect(() => {
+    const p = new URLSearchParams();
+    if (focusedCat) p.set("cat", focusedCat);
+    const isDefault = sortKey === (focusedCat || "overall") && sortDir === -1;
+    if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
+    writeHash(p);
+  }, [focusedCat, sortKey, sortDir]);
+
   const sortVal = (m, k) => {
-    if (k === "overall") return m.overall;
     if (k === "cpq") return m.cost ? m.cost.cost_per_question : null;
     if (k === "perq") return costPerQuality(m.overall, m.cost);
     if (k === "model") return m.name.toLowerCase();
-    return m.cats[k];
+    return numVal(m, k);
   };
 
   const rows = useMemo(() => {
@@ -57,19 +90,21 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [models, onlyReason, onlyOpen, q, showVariants, sortKey, sortDir]);
 
-  const shades = computeShades(rows, cats);
+  const shades = computeShades(rows, scoreCols);
 
+  const focusCat = (c) => { setFocusedCat(c); setSortKey(c || "overall"); setSortDir(-1); };
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
-    // cost columns ($/task, $/quality) and the model name sort ascending first;
-    // score columns sort descending first (best on top). Missing values always sink.
+    // cost columns + model name sort ascending first; score columns sort descending first.
     else { setSortKey(k); setSortDir((k === "model" || k === "cpq" || k === "perq") ? 1 : -1); }
   };
   const arrow = (k) => (k === sortKey ? <span className="arr">{sortDir < 0 ? "▼" : "▲"}</span> : null);
   const toggleRow = (model) =>
     setExpanded((s) => { const n = new Set(s); n.has(model) ? n.delete(model) : n.add(model); return n; });
 
-  const colCount = 3 + cats.length + (hasCost ? 3 : 0);
+  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? k : k in categories ? catShort(k) : k.replace(/_/g, " "));
+  const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? k : k.replace(/_/g, " "));
+  const colCount = 2 + scoreCols.length + (hasCost ? 3 : 0);
 
   return (
     <>
@@ -84,14 +119,23 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
           onClick={() => setShowVariants((v) => !v)}>Model variants</button>
       </div>
 
+      <div className="lb-cats">
+        <span className="lb-cats-label">Category</span>
+        <button className="lb-chip" aria-pressed={!focusedCat} onClick={() => focusCat(null)}>All</button>
+        {cats.map((c) => (
+          <button key={c} className="lb-chip" aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{c}</button>
+        ))}
+      </div>
+
       <div className="lb-tbl-scroll">
         <table className="lb-tbl">
           <thead>
             <tr>
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
               <th className="l" onClick={() => clickSort("model")}>Model {arrow("model")}</th>
-              <th onClick={() => clickSort("overall")}>Overall {arrow("overall")}</th>
-              {cats.map((c) => <th key={c} title={c} onClick={() => clickSort(c)}>{catShort(c)} {arrow(c)}</th>)}
+              {scoreCols.map((k) => (
+                <th key={k} title={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
+              ))}
               {hasCost && <th className="grp" title="Measured cost to run the model on one task" onClick={() => clickSort("cpq")}>$/task {arrow("cpq")}</th>}
               {hasCost && <th title="Cost per LiveBench point — $/task ÷ overall (lower = better value)" onClick={() => clickSort("perq")}>$/quality {arrow("perq")}</th>}
               {hasCost && <th>Value</th>}
@@ -113,12 +157,14 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
                         {m.open && <span className="opn">open</span>}
                       </div>
                     </td>
-                    <td className="lb-ovr" style={{ background: shades.overall[m.model] }}>{m.overall.toFixed(1)}</td>
-                    {cats.map((c) => (
-                      <td key={c} className="lb-cat" style={{ background: shades[c][m.model] }}>
-                        {m.cats[c] == null ? "—" : m.cats[c].toFixed(1)}
-                      </td>
-                    ))}
+                    {scoreCols.map((k, i) => {
+                      const v = numVal(m, k);
+                      return (
+                        <td key={k} className={i === 0 ? "lb-ovr" : "lb-cat"} style={{ background: shades[k] && shades[k][m.model] }}>
+                          {v == null ? "—" : v.toFixed(1)}
+                        </td>
+                      );
+                    })}
                     {hasCost && <td className={"lb-cost-col" + (m.cost ? "" : " na")}>{m.cost ? `$${m.cost.cost_per_question.toFixed(3)}` : "—"}</td>}
                     {hasCost && <td className={m.cost ? "" : "na"}>{m.cost ? fmtQuality(costPerQuality(m.overall, m.cost)) : "—"}</td>}
                     {hasCost && <td>{m.cost && !m.cost.est && frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
@@ -128,7 +174,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
                       <td colSpan={colCount}>
                         <div className="lb-detail-in">
                           <div className="lb-det-grid">
-                            {cats.map((c) => (
+                            {(focusedCat ? [focusedCat] : cats).map((c) => (
                               <div className="lb-det-cat" key={c}>
                                 <div className="h">{c}</div>
                                 {categories[c].map((t) => {
@@ -155,8 +201,10 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
         </table>
       </div>
       <p className="lb-foot-note">
-        {"// shading = top 5 in each column · click a row for subtask scores"}
-        {hasCost ? " · green pill = cost/quality value frontier · “—” = no published cost" : ""}
+        {focusedCat
+          ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
+          : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
+        {hasCost ? " · green pill = value frontier · “—” = no published cost" : ""}
       </p>
     </>
   );
