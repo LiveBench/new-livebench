@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { orgColor } from "../../lib/constants";
-import { perMillionOut, valueFrontier } from "../../lib/compute";
+import { perMillionOut, frontierBy, costForScope } from "../../lib/compute";
 
 const fmtPerM = (v) => (v == null ? "—" : v < 10 ? `$${v.toFixed(1)}` : `$${Math.round(v)}`);
 
-export default function CostBars({ models }) {
+export default function CostBars({ models, categories, scope = "overall" }) {
   const [tip, setTip] = useState(null);
+  const costOf = (m) => costForScope(m.cost, categories, scope);
+  const scoreOf = (m) => (scope === "overall" ? m.overall : m.cats?.[scope]);
+
   const pts = models
-    .filter((m) => m.costOverall > 0)
+    .filter((m) => costOf(m) > 0)
     .slice()
-    .sort((a, b) => a.costOverall - b.costOverall);
+    .sort((a, b) => costOf(a) - costOf(b));
   if (!pts.length) return null;
-  const front = valueFrontier(pts);
-  const max = Math.max(...pts.map((p) => p.costOverall));
+  const front = frontierBy(pts, costOf, scoreOf);
+  const max = Math.max(...pts.map(costOf));
 
   const show = (m) => (e) => setTip({ x: e.clientX, y: e.clientY, m });
 
@@ -24,9 +27,9 @@ export default function CostBars({ models }) {
           <div className="lb-bar" key={m.model}
             onMouseEnter={show(m)} onMouseMove={show(m)}>
             <span className="name"><span className="lb-mdot" style={{ background: col }} />{m.name}</span>
-            <div className="track"><div className="fill" style={{ width: `${(m.costOverall / max) * 100}%`, background: col }} /></div>
+            <div className="track"><div className="fill" style={{ width: `${(costOf(m) / max) * 100}%`, background: col }} /></div>
             <span className="val">
-              <span className="cur">$</span>{m.costOverall.toFixed(3)}
+              <span className="cur">$</span>{costOf(m).toFixed(3)}
               {front.has(m.model) && <span style={{ color: "var(--live)" }}> ●</span>}
             </span>
           </div>
@@ -36,7 +39,7 @@ export default function CostBars({ models }) {
         <div className="lb-tip" style={{ position: "fixed", left: tip.x + 14, top: tip.y - 8, transform: "none" }}>
           <div className="tn">{tip.m.name}</div>
           <div className="tg">
-            <span>$/Q</span><span>${tip.m.costOverall.toFixed(3)}</span>
+            <span>$/Q</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
             <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
             <span>avg output tokens</span><span>{(Number(tip.m.cost.avg_output_tokens) || 0).toLocaleString()}</span>
           </div>
