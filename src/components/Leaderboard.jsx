@@ -2,8 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { orgColor, catShort, catFull, subtaskLabel } from "../lib/constants";
 import { costForScope, costPerQuality, frontierBy, collapseVariants } from "../lib/compute";
 
-// $X with a slightly larger currency glyph — the bare "$" reads as too small at the cell font size.
-const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
+const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
 
 // Numeric value of a score column key: "overall", a category name (average), or a subtask column (raw score).
 const numVal = (m, k) => {
@@ -185,8 +184,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         </td>
                       );
                     })}
-                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}><Money v={cScope} dp={3} /></td>}
-                    {hasCost && <td className={qScope != null ? "" : "na"}><Money v={qScope} dp={4} /></td>}
+                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}>{cScope != null ? `$${cScope.toFixed(3)}` : "—"}</td>}
+                    {hasCost && <td className={qScope != null ? "" : "na"}>{qScope != null ? fmtQuality(qScope) : "—"}</td>}
                     {hasCost && <td>{frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
                   </tr>
                   {open && (

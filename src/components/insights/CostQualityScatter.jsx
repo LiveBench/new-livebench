@@ -80,7 +80,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
             <div className="tn">{tip.m.name}</div>
             <div className="tg">
               <span>{scopeName}</span><span>{scoreOf(tip.m).toFixed(1)}</span>
-              <span>$/Q</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
+              <span>$/Q</span><span>${costOf(tip.m).toFixed(3)}</span>
               <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
               <span>avg output tokens</span><span>{Number(tip.m.cost.avg_output_tokens).toLocaleString()}</span>
             </div>
