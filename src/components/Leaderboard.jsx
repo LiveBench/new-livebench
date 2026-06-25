@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { orgColor, catShort } from "../lib/constants";
-import { perMillionOut, collapseVariants } from "../lib/compute";
+import { costPerQuality, collapseVariants } from "../lib/compute";
 
-const fmtPerM = (v) => (v == null ? "—" : v < 10 ? `$${v.toFixed(1)}` : `$${Math.round(v)}`);
+const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
 
 // Relative shading: the top 5 in each score column get an accent tint,
 // darkest (rank 1) → lightest (rank 5). Everything else is unshaded.
@@ -34,7 +34,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
   const sortVal = (m, k) => {
     if (k === "overall") return m.overall;
     if (k === "cpq") return m.cost ? m.cost.cost_per_question : null;
-    if (k === "perm") return perMillionOut(m.cost);
+    if (k === "perq") return costPerQuality(m.overall, m.cost);
     if (k === "model") return m.name.toLowerCase();
     return m.cats[k];
   };
@@ -91,7 +91,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
               <th onClick={() => clickSort("overall")}>Overall {arrow("overall")}</th>
               {cats.map((c) => <th key={c} title={c} onClick={() => clickSort(c)}>{catShort(c)} {arrow(c)}</th>)}
               {hasCost && <th className="grp" title="Measured cost to run the model on one task" onClick={() => clickSort("cpq")}>$/task {arrow("cpq")}</th>}
-              {hasCost && <th title="Official provider list price per 1M output tokens" onClick={() => clickSort("perm")}>$/1M out {arrow("perm")}</th>}
+              {hasCost && <th title="Cost per LiveBench point — $/task ÷ overall (lower = better value)" onClick={() => clickSort("perq")}>$/quality {arrow("perq")}</th>}
               {hasCost && <th>Value</th>}
             </tr>
           </thead>
@@ -118,7 +118,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
                       </td>
                     ))}
                     {hasCost && <td className={"lb-cost-col" + (m.cost ? "" : " na")}>{m.cost ? `$${m.cost.cost_per_question.toFixed(3)}` : "—"}</td>}
-                    {hasCost && <td className={m.cost ? "" : "na"}>{fmtPerM(perMillionOut(m.cost))}</td>}
+                    {hasCost && <td className={m.cost ? "" : "na"}>{m.cost ? fmtQuality(costPerQuality(m.overall, m.cost)) : "—"}</td>}
                     {hasCost && <td>{m.cost && !m.cost.est && frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
                   </tr>
                   {open && (

@@ -31,6 +31,10 @@ export const perMillionOut = (cost) => {
 export const pointsPerDollar = (overall, cost) =>
   cost && cost.cost_per_question ? overall / cost.cost_per_question : null;
 
+// $/quality — cost per LiveBench point (cost_per_question / overall). Lower = better value.
+export const costPerQuality = (overall, cost) =>
+  cost && cost.cost_per_question != null && overall ? cost.cost_per_question / overall : null;
+
 // Pareto "value frontier": walking cheapest→priciest, a model is on the frontier
 // if it beats every cheaper model's score. Drives the table's "Best value" badge
 // and the scatter's frontier line. Estimated costs (cost.est) are excluded.

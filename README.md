@@ -18,7 +18,8 @@ All data lives in `public/`, **one set of files per release** (named by date, `Y
 `model, avg_input_tokens, avg_output_tokens, cost_per_question, input_price_per_million, output_price_per_million`
 
 - `cost_per_question` → the **`$/task`** column: measured $ to run the model on one task.
-- `output_price_per_million` → the **`$/1M out`** column: the provider's **official list price**, read directly (`perMillionOut()` in `compute.js`) — not derived from tokens.
+- **`$/quality`** column — derived as `cost_per_question / overall` (cost per LiveBench point); lower is better value.
+- `input_price_per_million` / `output_price_per_million` — provider's official list price, stored for reference (not shown as a column).
 - If a release has **no** `cost_<date>.csv`, all cost columns and cost charts hide for it (cost is opt-in per release).
 
 **Model metadata** (display name, org, reasoner/open-weight flags, effort-variant grouping) comes from `src/Table/modelLinks.js`, keyed by the `model` string. A model not listed there is hidden.
