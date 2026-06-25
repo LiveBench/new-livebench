@@ -154,7 +154,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
               {scoreCols.map((k) => (
                 <th key={k} className={focusedCat ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
               ))}
-              {hasCost && <th className="grp" data-tip={`Measured cost per question — ${costScope === "overall" ? "overall (mean of category costs)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"} {arrow("cpq")}</th>}
+              {hasCost && <th className="grp" data-tip={`Measured cost per question — ${costScope === "overall" ? "overall (total cost ÷ all questions)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"} {arrow("cpq")}</th>}
               {hasCost && <th data-tip="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
               {hasCost && <th data-tip={`Value frontier at the ${scopeLabel || "overall"} scope`}>Value</th>}
             </tr>

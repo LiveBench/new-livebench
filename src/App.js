@@ -35,7 +35,7 @@ export default function App() {
           org: info.organization || "Other",
           reasoner: !!info.reasoner, open: !!info.openweight,
           overall, cats: c, cost,
-          costOverall: overallCost(cost, cats), // mean of category costs (for scatter/KPIs)
+          costOverall: overallCost(cost, cats), // overall $/Q: total cost ÷ all questions (for scatter/KPIs)
         };
       })
       .filter(Boolean);
