@@ -69,7 +69,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
             const cx = X(costOf(m)), cy = Y(scoreOf(m));
             return (
               <circle key={m.model} cx={cx} cy={cy} r={5.5}
-                fill={m.reasoner ? "#fff" : col} stroke={col} strokeWidth="2"
+                fill={col} stroke={col} strokeWidth="2"
                 opacity={dim ? 0.16 : 1} style={{ cursor: "pointer" }}
                 onMouseEnter={enter(m)} onMouseLeave={() => setTip(null)} />
             );
@@ -90,7 +90,6 @@ export default function CostQualityScatter({ models, categories, scope = "overal
       </div>
       <div className="lb-legend">
         {orgs.map((o) => <span className="li" key={o}><span className="sw" style={{ background: orgColor(o) }} />{o}</span>)}
-        <span className="li"><span className="sw" style={{ border: "1.5px solid #888", background: "#fff" }} />reasoning</span>
       </div>
     </>
   );

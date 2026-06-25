@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import "./App.css";
-import { bibtexEntry } from "./constants";
 import { RELEASES } from "./lib/constants";
 import useLeaderboardData from "./lib/useLeaderboardData";
 import { overallOf, catAvg, overallCost } from "./lib/compute";
@@ -91,13 +90,6 @@ export default function App() {
       {!loading && !error && models.length > 0 && (
         <Insights key={date} models={models} categories={categories} hasCost={hasCost} />
       )}
-
-      <section className="lb-section" id="BibTeX">
-        <div className="lb-wrap">
-          <div className="lb-sec-head"><span className="lb-sec-no">03</span><h2>BibTeX</h2></div>
-          <pre className="lb-bibtex"><code>{bibtexEntry}</code></pre>
-        </div>
-      </section>
 
       <footer className="lb-footer">
         <div className="lb-wrap">
