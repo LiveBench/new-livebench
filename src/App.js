@@ -7,7 +7,6 @@ import { getModelInfo } from "./Table/modelLinks";
 import Navbar from "./components/Navbar";
 import Tooltip from "./components/Tooltip";
 import ReleaseTimeline from "./components/ReleaseTimeline";
-import MetricsStrip from "./components/MetricsStrip";
 import Leaderboard from "./components/Leaderboard";
 import Insights from "./components/insights/Insights";
 
@@ -73,8 +72,7 @@ export default function App() {
           {error && <div className="lb-state err">Couldn't load this release ({error}).</div>}
           {!loading && !error && (
             <>
-              <MetricsStrip models={models} categories={categories} hasCost={hasCost} dateStr={date} />
-              <div className="lb-sec-head" style={{ marginTop: 34 }}>
+              <div className="lb-sec-head">
                 <span className="lb-sec-no">01</span><h2>Leaderboard</h2>
               </div>
               <p className="lb-sec-sub">
