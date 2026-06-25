@@ -173,7 +173,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         <span className="lb-mdot" style={{ background: orgColor(m.org) }} />
                         <span className="nm">{m.name}</span>
                         {showVariants && m.info?.version && <span className="ef">{m.info.version}</span>}
-                        {m.reasoner && <span className="rz" data-tip="reasoning model">⚡</span>}
                         {m.open && <span className="opn">open</span>}
                       </div>
                     </td>
