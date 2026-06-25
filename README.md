@@ -39,7 +39,7 @@ npm start              # dev server at http://localhost:3000
 npm test               # unit (compute) + render tests
 npm run check-data     # model-key integrity across all releases
 npm run build          # production build
-npm run deploy         # build + push to the gh-pages branch (serves at livebench.github.io/new-livebench/)
+npm run deploy         # build + push to the gh-pages branch (serves at https://livebench.ai/new-livebench/)
 ```
 
 Deploys to GitHub Pages from the `gh-pages` branch. `homepage` in `package.json` is `"."` (relative paths) for serving at the custom domain root; change the `--cname` in the `deploy` script to target a different domain.
