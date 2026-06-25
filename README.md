@@ -17,7 +17,7 @@ All data lives in `public/`, **one set of files per release** (named by date, `Y
 **Cost** — `cost_<date>.csv` columns:
 `model, avg_input_tokens, avg_output_tokens, cost_per_question, input_price_per_million, output_price_per_million`
 
-- `cost_per_question` → the **`$/Q`** column: measured $ to run the model over that release's tasks.
+- `cost_per_question` → the **`$/task`** column: measured $ to run the model on one task.
 - `output_price_per_million` → the **`$/1M out`** column: the provider's **official list price**, read directly (`perMillionOut()` in `compute.js`) — not derived from tokens.
 - If a release has **no** `cost_<date>.csv`, all cost columns and cost charts hide for it (cost is opt-in per release).
 

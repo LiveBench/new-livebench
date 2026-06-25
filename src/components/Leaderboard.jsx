@@ -1,8 +1,25 @@
 import React, { useState, useMemo } from "react";
 import { orgColor, catShort } from "../lib/constants";
-import { heat, perMillionOut, collapseVariants } from "../lib/compute";
+import { perMillionOut, collapseVariants } from "../lib/compute";
 
 const fmtPerM = (v) => (v == null ? "—" : v < 10 ? `$${v.toFixed(1)}` : `$${Math.round(v)}`);
+
+// Relative shading: the top 5 in each score column get an accent tint,
+// darkest (rank 1) → lightest (rank 5). Everything else is unshaded.
+const SHADES = ["rgba(47,84,235,0.24)", "rgba(47,84,235,0.17)", "rgba(47,84,235,0.115)", "rgba(47,84,235,0.07)", "rgba(47,84,235,0.035)"];
+function computeShades(rows, cats) {
+  const map = {};
+  for (const c of ["overall", ...cats]) {
+    const vals = rows
+      .map((m) => ({ model: m.model, v: c === "overall" ? m.overall : m.cats[c] }))
+      .filter((x) => x.v != null)
+      .sort((a, b) => b.v - a.v);
+    const cm = {};
+    vals.slice(0, 5).forEach((x, i) => { cm[x.model] = SHADES[i]; });
+    map[c] = cm;
+  }
+  return map;
+}
 
 export default function Leaderboard({ models, categories, hasCost, frontier }) {
   const cats = Object.keys(categories);
@@ -40,6 +57,8 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [models, onlyReason, onlyOpen, q, showVariants, sortKey, sortDir]);
 
+  const shades = computeShades(rows, cats);
+
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
     else { setSortKey(k); setSortDir(k === "model" ? 1 : -1); }
@@ -71,7 +90,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
               <th className="l" onClick={() => clickSort("model")}>Model {arrow("model")}</th>
               <th onClick={() => clickSort("overall")}>Overall {arrow("overall")}</th>
               {cats.map((c) => <th key={c} title={c} onClick={() => clickSort(c)}>{catShort(c)} {arrow(c)}</th>)}
-              {hasCost && <th className="grp" onClick={() => clickSort("cpq")}>$/Q {arrow("cpq")}</th>}
+              {hasCost && <th className="grp" title="Measured cost to run the model on one task" onClick={() => clickSort("cpq")}>$/task {arrow("cpq")}</th>}
               {hasCost && <th title="Official provider list price per 1M output tokens" onClick={() => clickSort("perm")}>$/1M out {arrow("perm")}</th>}
               {hasCost && <th>Value</th>}
             </tr>
@@ -92,9 +111,9 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
                         {m.open && <span className="opn">open</span>}
                       </div>
                     </td>
-                    <td className="lb-ovr">{m.overall.toFixed(1)}</td>
+                    <td className="lb-ovr" style={{ background: shades.overall[m.model] }}>{m.overall.toFixed(1)}</td>
                     {cats.map((c) => (
-                      <td key={c} className="lb-cat" style={{ background: heat(m.cats[c]) }}>
+                      <td key={c} className="lb-cat" style={{ background: shades[c][m.model] }}>
                         {m.cats[c] == null ? "—" : m.cats[c].toFixed(1)}
                       </td>
                     ))}
@@ -134,7 +153,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
         </table>
       </div>
       <p className="lb-foot-note">
-        {"// cell shading = score strength · click a row for subtask scores"}
+        {"// shading = top 5 in each column · click a row for subtask scores"}
         {hasCost ? " · green pill = cost/quality value frontier · “—” = no published cost" : ""}
       </p>
     </>

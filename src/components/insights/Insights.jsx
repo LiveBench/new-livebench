@@ -19,7 +19,7 @@ export default function Insights({ models, categories, hasCost }) {
             <div className="lb-card"><CostQualityScatter models={models} /></div>
             <div className="lb-card">
               <h3>Cost, ranked</h3>
-              <p className="ch-sub">Cost per question, cheapest first. Hover for $/1M output and verbosity.</p>
+              <p className="ch-sub">Cost per task, cheapest first. Hover for $/1M output and verbosity.</p>
               <CostBars models={models} />
             </div>
           </div>
