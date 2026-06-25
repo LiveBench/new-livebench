@@ -20,35 +20,35 @@ export function catAvg(row, categories, cat) {
   return v === "-" || v == null ? null : Number(v);
 }
 
-// ---- Cost: mirrors scores (per-subtask cost → category → overall) ----
-// The cost row has the same subtask columns as the score row, so the same
-// Averaging.js functions aggregate it. cost_<date>.csv stores one $/question
-// per (model, subtask) plus trailing model-level columns (avg_*_tokens, prices).
+// ---- Cost: $/question, aggregated QUESTION-WEIGHTED (not category-weighted) ----
+// cost_<date>.csv stores, per (model, subtask): the TOTAL cost (the subtask
+// column) and the question count (nq_<subtask>). $/question at any scope is
+// (Σ total cost) / (Σ nq) over the subtasks in that scope — so overall = total
+// run cost ÷ total questions, and a category = its total ÷ its question count.
+// (This is NOT the mean of the per-category $/task values; expensive but small
+// suites like Agentic Coding are weighted by their question count, not 1/7.)
 
-// Category cost = mean of its subtask $/question (like catAvg for scores).
-export function catCost(costRow, categories, cat) {
-  if (!costRow) return null;
-  const v = calculateAverage(costRow, categories[cat]);
-  return v === "-" || v == null ? null : Number(v);
+// Subtask columns covered by a scope: overall = all, a category = its subtasks, else the subtask.
+function scopeSubtasks(categories, scope) {
+  if (scope === "overall") return Object.values(categories || {}).flat();
+  if (categories && scope in categories) return categories[scope];
+  return [scope];
 }
 
-// Overall cost = mean of category costs — same weighting as the overall score.
-export function overallCost(costRow, categories) {
-  if (!costRow) return null;
-  const cs = Object.keys(categories || {})
-    .map((c) => catCost(costRow, categories, c))
-    .filter((v) => v != null);
-  return cs.length ? cs.reduce((a, b) => a + b, 0) / cs.length : null;
-}
-
-// Cost at any scope: "overall" | a category name | a subtask column.
 export function costForScope(costRow, categories, scope) {
   if (!costRow) return null;
-  if (scope === "overall") return overallCost(costRow, categories);
-  if (categories && scope in categories) return catCost(costRow, categories, scope);
-  const v = costRow[scope]; // raw subtask cost
-  return v == null || v === "" || isNaN(Number(v)) ? null : Number(v);
+  let cost = 0, n = 0;
+  for (const t of scopeSubtasks(categories, scope)) {
+    const c = Number(costRow[t]);
+    const q = Number(costRow["nq_" + t]);
+    if (!isNaN(c) && !isNaN(q) && q > 0) { cost += c; n += q; }
+  }
+  return n > 0 ? cost / n : null;
 }
+
+// Per-category and overall $/task are just costForScope at those scopes.
+export const catCost = (costRow, categories, cat) => costForScope(costRow, categories, cat);
+export const overallCost = (costRow, categories) => costForScope(costRow, categories, "overall");
 
 // $/quality at a scope = scoped cost ÷ scoped score (cost per LiveBench point). Lower = better.
 export const costPerQuality = (costVal, scoreVal) =>

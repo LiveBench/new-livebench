@@ -19,24 +19,26 @@ test("overallOf returns null when no scores", () => {
   expect(overallOf({ model: "x" }, { Reasoning: ["a"] })).toBeNull();
 });
 
-// Cost mirrors scores: per-subtask cost → category (mean of subtasks) → overall (mean of categories).
-test("catCost / overallCost / costForScope mirror score averaging", () => {
+// $/task is question-weighted: (Σ total cost) / (Σ nq) over the scope's subtasks.
+test("costForScope = total cost / question count, weighted by questions", () => {
   const categories = { Reasoning: ["a", "b"], Coding: ["c"] };
-  const costRow = { model: "m1", a: 0.1, b: 0.3, c: 0.5 }; // Reasoning 0.2, Coding 0.5
-  expect(catCost(costRow, categories, "Reasoning")).toBeCloseTo(0.2);
-  expect(catCost(costRow, categories, "Coding")).toBeCloseTo(0.5);
-  expect(overallCost(costRow, categories)).toBeCloseTo(0.35); // mean(0.2, 0.5)
-  expect(costForScope(costRow, categories, "overall")).toBeCloseTo(0.35);
-  expect(costForScope(costRow, categories, "Reasoning")).toBeCloseTo(0.2);
-  expect(costForScope(costRow, categories, "a")).toBeCloseTo(0.1); // raw subtask
+  // totals + counts: a=$2/10q=$0.2, b=$8/10q=$0.8, c=$5/5q=$1.0
+  const costRow = { model: "m1", a: 2.0, b: 8.0, c: 5.0, nq_a: 10, nq_b: 10, nq_c: 5 };
+  expect(costForScope(costRow, categories, "a")).toBeCloseTo(0.2);     // subtask
+  expect(catCost(costRow, categories, "Reasoning")).toBeCloseTo(0.5);  // (2+8)/(10+10)
+  expect(catCost(costRow, categories, "Coding")).toBeCloseTo(1.0);
+  // overall = 15/25 = 0.6 — NOT mean(0.5, 1.0) = 0.75 (that would be category-weighted)
+  expect(overallCost(costRow, categories)).toBeCloseTo(0.6);
+  expect(costForScope(costRow, categories, "overall")).toBeCloseTo(0.6);
   expect(costForScope(costRow, categories, "missing")).toBeNull();
   expect(costForScope(null, categories, "overall")).toBeNull();
 });
 
-test("overallCost skips categories with no priceable subtasks", () => {
+test("scope cost skips subtasks with no questions", () => {
   const categories = { Reasoning: ["a"], Coding: ["c"] };
-  const costRow = { model: "m1", a: 0.2, c: "" }; // Coding has no cost
-  expect(overallCost(costRow, categories)).toBeCloseTo(0.2); // only Reasoning counts
+  const costRow = { model: "m1", a: 4.0, nq_a: 10, c: "", nq_c: 0 }; // Coding has no questions
+  expect(overallCost(costRow, categories)).toBeCloseTo(0.4); // only a: 4/10
+  expect(catCost(costRow, categories, "Coding")).toBeNull();
 });
 
 test("costPerQuality / pointsPerDollar operate on scoped values", () => {

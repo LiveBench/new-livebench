@@ -14,14 +14,13 @@ All data lives in `public/`, **one set of files per release** (named by date, `Y
 
 **Scores are stored raw, per subtask.** Overall and per-category averages are **computed in the browser** (`src/lib/compute.js`, reusing `src/Table/Averaging.js`) — they are never stored in the CSV.
 
-**Cost is stored raw, per subtask — exactly like scores.** `cost_<date>.csv` has the same subtask columns as `table_<date>.csv` (one **$/question per (model, subtask)**), so the browser derives per-category and overall cost with the *same* `Averaging.js` it uses for scores. Columns:
-`model, <subtask_1>, …, <subtask_N>, avg_input_tokens, avg_output_tokens, input_price_per_million, output_price_per_million`
+**Cost — stored per subtask, aggregated question-weighted.** `cost_<date>.csv` stores, for each (model, subtask), the **total cost** (the subtask column, same names as `table_<date>.csv`) and the **question count** (`nq_<subtask>`). Columns:
+`model, <subtask total cost ...>, nq_<subtask> ..., avg_input_tokens, avg_output_tokens, input_price_per_million, output_price_per_million`
 
-- Each `<subtask>` cell = the model's mean cost per question on that subtask.
-- **`$/task`** is **scope-aware**: it shows the cost at the selected scope — a subtask cell, a category (mean of its subtask costs), or overall (mean of category costs) — tracking whichever score column/category you select or sort by.
-- **`$/quality`** = scoped `$/task ÷ scoped score` (cost per LiveBench point); lower is better value. Also scope-aware. The **Value** pill marks the per-scope Pareto frontier (cheapest model at each new score ceiling).
-- `avg_input_tokens` / `avg_output_tokens` / `input_price_per_million` / `output_price_per_million` — model-level, for tooltips/reference (not score columns).
-- Per-question cost = the runner's recorded `cost_usd` when it's a real (>0) cache-aware value, else billed tokens × the official per-million rates (`(uncached·input + cached·cached_input + output·output)/1e6`). Generate/refresh a release's file with `scripts/gen_cost_row.py --like-table public/table_<date>.csv` (in the `livebench-private` repo).
+- **`$/task`** (cost per question) is **scope-aware** and **question-weighted**: `(Σ total cost) / (Σ nq)` over the subtasks in the selected scope. So overall = total run cost ÷ total questions; a focused category = its total ÷ its question count; a subtask = its total ÷ its count. It is **not** the mean of the per-category `$/task` values — a small-but-pricey suite like Agentic Coding is weighted by its question count, not 1/7.
+- **`$/quality`** = scoped `$/task ÷ scoped score` (cost per LiveBench point); lower is better value. The **Value** pill marks the per-scope Pareto frontier (cheapest model at each new score ceiling).
+- `avg_*_tokens` / `*_price_per_million` — model-level, for tooltips/reference (not score columns).
+- Per-question cost = the runner's recorded `cost_usd` when it's a real (>0) cache-aware value, else billed tokens × the official per-million rates (`(uncached·input + cached·cached_input + output·output)/1e6`). One answer per (task, question) is kept (latest run), matching the scorer. Generate/refresh with `scripts/gen_cost_row.py --like-table public/table_<date>.csv` (in the `livebench-private` repo).
 - If a release has **no** `cost_<date>.csv`, all cost columns and cost charts hide for it (cost is opt-in per release).
 
 **Model metadata** (display name, org, reasoner/open-weight flags, effort-variant grouping) comes from `src/Table/modelLinks.js`, keyed by the `model` string. A model not listed there is hidden.
