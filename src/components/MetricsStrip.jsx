@@ -12,7 +12,7 @@ export default function MetricsStrip({ models, categories, hasCost, dateStr }) {
   let bv = null, bvr = -Infinity;
   if (hasCost) {
     for (const m of models) {
-      const r = pointsPerDollar(m.overall, m.cost);
+      const r = pointsPerDollar(m.overall, m.costOverall);
       if (r != null && r > bvr) { bvr = r; bv = m; }
     }
   }
@@ -23,7 +23,7 @@ export default function MetricsStrip({ models, categories, hasCost, dateStr }) {
     { l: "Top overall", v: top.overall.toFixed(1), s: top.name },
   ];
   if (hasCost && bv) {
-    cards.push({ l: "Best value", v: `$${bv.cost.cost_per_question.toFixed(3)}`, s: `${bv.name} · score/$`, hl: true });
+    cards.push({ l: "Best value", v: `$${bv.costOverall.toFixed(3)}`, s: `${bv.name} · score/$`, hl: true });
   }
   cards.push({ l: "Release", v: dateStr, s: hasCost ? "cost available" : "capability only" });
 

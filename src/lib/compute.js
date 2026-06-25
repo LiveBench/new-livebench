@@ -20,36 +20,65 @@ export function catAvg(row, categories, cat) {
   return v === "-" || v == null ? null : Number(v);
 }
 
-// Official $/1M output list price from the provider config (preferred).
-// Falls back to the derived implied rate only if no official price is published.
-export const perMillionOut = (cost) => {
-  if (!cost) return null;
-  if (cost.output_price_per_million != null) return Number(cost.output_price_per_million);
-  return cost.avg_output_tokens ? (cost.cost_per_question / cost.avg_output_tokens) * 1e6 : null;
-};
+// ---- Cost: mirrors scores (per-subtask cost → category → overall) ----
+// The cost row has the same subtask columns as the score row, so the same
+// Averaging.js functions aggregate it. cost_<date>.csv stores one $/question
+// per (model, subtask) plus trailing model-level columns (avg_*_tokens, prices).
 
-export const pointsPerDollar = (overall, cost) =>
-  cost && cost.cost_per_question ? overall / cost.cost_per_question : null;
+// Category cost = mean of its subtask $/question (like catAvg for scores).
+export function catCost(costRow, categories, cat) {
+  if (!costRow) return null;
+  const v = calculateAverage(costRow, categories[cat]);
+  return v === "-" || v == null ? null : Number(v);
+}
 
-// $/quality — cost per LiveBench point (cost_per_question / overall). Lower = better value.
-export const costPerQuality = (overall, cost) =>
-  cost && cost.cost_per_question != null && overall ? cost.cost_per_question / overall : null;
+// Overall cost = mean of category costs — same weighting as the overall score.
+export function overallCost(costRow, categories) {
+  if (!costRow) return null;
+  const cs = Object.keys(categories || {})
+    .map((c) => catCost(costRow, categories, c))
+    .filter((v) => v != null);
+  return cs.length ? cs.reduce((a, b) => a + b, 0) / cs.length : null;
+}
 
-// Pareto "value frontier": walking cheapest→priciest, a model is on the frontier
-// if it beats every cheaper model's score. Drives the table's "Best value" badge
-// and the scatter's frontier line. Estimated costs (cost.est) are excluded.
-export function valueFrontier(models) {
+// Cost at any scope: "overall" | a category name | a subtask column.
+export function costForScope(costRow, categories, scope) {
+  if (!costRow) return null;
+  if (scope === "overall") return overallCost(costRow, categories);
+  if (categories && scope in categories) return catCost(costRow, categories, scope);
+  const v = costRow[scope]; // raw subtask cost
+  return v == null || v === "" || isNaN(Number(v)) ? null : Number(v);
+}
+
+// $/quality at a scope = scoped cost ÷ scoped score (cost per LiveBench point). Lower = better.
+export const costPerQuality = (costVal, scoreVal) =>
+  costVal != null && scoreVal ? costVal / scoreVal : null;
+
+// Score per dollar (for the "best value" KPI).
+export const pointsPerDollar = (scoreVal, costVal) => (costVal ? scoreVal / costVal : null);
+
+// Official $/1M output list price from the provider config (tooltips only).
+export const perMillionOut = (costRow) =>
+  costRow && costRow.output_price_per_million != null ? Number(costRow.output_price_per_million) : null;
+
+// Generic Pareto frontier for the given cost/score accessors: cheapest model
+// achieving each new score ceiling. Used scope-aware in the table, overall elsewhere.
+export function frontierBy(models, getCost, getScore) {
   const withCost = models
-    .filter((m) => m.cost && m.cost.cost_per_question != null && !m.cost.est)
+    .filter((m) => { const c = getCost(m); return c != null && c > 0; })
     .slice()
-    .sort((a, b) => a.cost.cost_per_question - b.cost.cost_per_question);
+    .sort((a, b) => getCost(a) - getCost(b));
   const front = new Set();
   let mx = -Infinity;
   for (const m of withCost) {
-    if (m.overall > mx) { front.add(m.model); mx = m.overall; }
+    const s = getScore(m);
+    if (s != null && s > mx) { front.add(m.model); mx = s; }
   }
   return front;
 }
+
+// Overall value frontier (scatter / KPI) — uses each model's precomputed costOverall.
+export const valueFrontier = (models) => frontierBy(models, (m) => m.costOverall, (m) => m.overall);
 
 // Cell background tint scaled by score strength (40→100 maps to 0→0.20 alpha).
 export const heat = (v) => {

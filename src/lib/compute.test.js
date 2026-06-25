@@ -1,4 +1,7 @@
-import { overallOf, perMillionOut, valueFrontier, collapseVariants } from "./compute";
+import {
+  overallOf, catCost, overallCost, costForScope,
+  costPerQuality, pointsPerDollar, perMillionOut, valueFrontier, collapseVariants,
+} from "./compute";
 
 // Mock model metadata so collapseVariants has a deterministic family key.
 jest.mock("../Table/modelLinks", () => ({
@@ -16,17 +19,47 @@ test("overallOf returns null when no scores", () => {
   expect(overallOf({ model: "x" }, { Reasoning: ["a"] })).toBeNull();
 });
 
-test("perMillionOut converts $/question + output tokens to $/1M", () => {
-  expect(Math.round(perMillionOut({ cost_per_question: 0.2384, avg_output_tokens: 7826 }))).toBe(30);
+// Cost mirrors scores: per-subtask cost → category (mean of subtasks) → overall (mean of categories).
+test("catCost / overallCost / costForScope mirror score averaging", () => {
+  const categories = { Reasoning: ["a", "b"], Coding: ["c"] };
+  const costRow = { model: "m1", a: 0.1, b: 0.3, c: 0.5 }; // Reasoning 0.2, Coding 0.5
+  expect(catCost(costRow, categories, "Reasoning")).toBeCloseTo(0.2);
+  expect(catCost(costRow, categories, "Coding")).toBeCloseTo(0.5);
+  expect(overallCost(costRow, categories)).toBeCloseTo(0.35); // mean(0.2, 0.5)
+  expect(costForScope(costRow, categories, "overall")).toBeCloseTo(0.35);
+  expect(costForScope(costRow, categories, "Reasoning")).toBeCloseTo(0.2);
+  expect(costForScope(costRow, categories, "a")).toBeCloseTo(0.1); // raw subtask
+  expect(costForScope(costRow, categories, "missing")).toBeNull();
+  expect(costForScope(null, categories, "overall")).toBeNull();
+});
+
+test("overallCost skips categories with no priceable subtasks", () => {
+  const categories = { Reasoning: ["a"], Coding: ["c"] };
+  const costRow = { model: "m1", a: 0.2, c: "" }; // Coding has no cost
+  expect(overallCost(costRow, categories)).toBeCloseTo(0.2); // only Reasoning counts
+});
+
+test("costPerQuality / pointsPerDollar operate on scoped values", () => {
+  expect(costPerQuality(0.5, 50)).toBeCloseTo(0.01); // $0.5 / 50 pts
+  expect(costPerQuality(null, 50)).toBeNull();
+  expect(costPerQuality(0.5, 0)).toBeNull();
+  expect(pointsPerDollar(50, 0.5)).toBeCloseTo(100);
+  expect(pointsPerDollar(50, 0)).toBeNull();
+});
+
+test("perMillionOut = official output list price (no derivation)", () => {
+  expect(perMillionOut({ output_price_per_million: 30 })).toBe(30);
+  expect(perMillionOut({ output_price_per_million: "10" })).toBe(10);
+  expect(perMillionOut({})).toBeNull();
   expect(perMillionOut(null)).toBeNull();
 });
 
-test("valueFrontier = cheapest model at each new score ceiling, estimates excluded", () => {
+test("valueFrontier = cheapest model at each new score ceiling (uses costOverall)", () => {
   const models = [
-    { model: "A", overall: 70, cost: { cost_per_question: 0.01 } },
-    { model: "B", overall: 75, cost: { cost_per_question: 0.02 } },
-    { model: "C", overall: 72, cost: { cost_per_question: 0.03 } }, // dominated by B
-    { model: "D", overall: 99, cost: { cost_per_question: 0.005, est: true } }, // estimate -> ignored
+    { model: "A", overall: 70, costOverall: 0.01 },
+    { model: "B", overall: 75, costOverall: 0.02 },
+    { model: "C", overall: 72, costOverall: 0.03 }, // dominated by B
+    { model: "D", overall: 99, costOverall: null },  // no cost -> excluded
   ];
   const f = valueFrontier(models);
   expect([...f].sort()).toEqual(["A", "B"]);

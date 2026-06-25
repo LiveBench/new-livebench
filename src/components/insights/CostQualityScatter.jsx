@@ -9,11 +9,11 @@ export default function CostQualityScatter({ models }) {
   const [tip, setTip] = useState(null);
   const [frontierOnly, setFrontierOnly] = useState(false);
 
-  const pts = models.filter((m) => m.cost && m.cost.cost_per_question > 0 && !m.cost.est);
+  const pts = models.filter((m) => m.costOverall > 0);
   if (pts.length < 2) return null;
   const front = valueFrontier(pts);
 
-  const costs = pts.map((p) => p.cost.cost_per_question);
+  const costs = pts.map((p) => p.costOverall);
   const overs = pts.map((p) => p.overall);
   const xMin = Math.min(...costs) * 0.85, xMax = Math.max(...costs) * 1.15;
   const yMin = Math.floor(Math.min(...overs) - 2), yMax = Math.ceil(Math.max(...overs) + 2);
@@ -25,13 +25,13 @@ export default function CostQualityScatter({ models }) {
   const yStep = Math.max(1, Math.round((yMax - yMin) / 5));
   const yTicks = []; for (let y = yMin; y <= yMax; y += yStep) yTicks.push(y);
 
-  const frontPts = pts.filter((p) => front.has(p.model)).sort((a, b) => a.cost.cost_per_question - b.cost.cost_per_question);
-  const frontPath = frontPts.map((p, i) => `${i ? "L" : "M"}${X(p.cost.cost_per_question)} ${Y(p.overall)}`).join(" ");
+  const frontPts = pts.filter((p) => front.has(p.model)).sort((a, b) => a.costOverall - b.costOverall);
+  const frontPath = frontPts.map((p, i) => `${i ? "L" : "M"}${X(p.costOverall)} ${Y(p.overall)}`).join(" ");
 
   const orgs = [...new Set(pts.map((p) => p.org))];
 
   const enter = (m) => () => setTip({
-    xPct: (X(m.cost.cost_per_question) / W) * 100,
+    xPct: (X(m.costOverall) / W) * 100,
     yPct: (Y(m.overall) / H) * 100,
     m,
   });
@@ -65,7 +65,7 @@ export default function CostQualityScatter({ models }) {
           {pts.map((m) => {
             const col = orgColor(m.org);
             const dim = frontierOnly && !front.has(m.model);
-            const cx = X(m.cost.cost_per_question), cy = Y(m.overall);
+            const cx = X(m.costOverall), cy = Y(m.overall);
             return (
               <circle key={m.model} cx={cx} cy={cy} r={5.5}
                 fill={m.reasoner ? "#fff" : col} stroke={col} strokeWidth="2"
@@ -79,7 +79,7 @@ export default function CostQualityScatter({ models }) {
             <div className="tn">{tip.m.name}</div>
             <div className="tg">
               <span>overall</span><span>{tip.m.overall.toFixed(1)}</span>
-              <span>$/task</span><span>${tip.m.cost.cost_per_question.toFixed(3)}</span>
+              <span>$/task</span><span>${tip.m.costOverall.toFixed(3)}</span>
               <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
               <span>out tokens</span><span>{Number(tip.m.cost.avg_output_tokens).toLocaleString()}</span>
             </div>

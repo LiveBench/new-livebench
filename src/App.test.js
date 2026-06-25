@@ -6,7 +6,8 @@ import App from "./App";
 // Two models that exist in modelLinks.js so they survive the metadata filter.
 const TABLE = "model,a,b,c\nchatgpt-4o-latest,80,60,90\ndeepseek-v3,70,50,80\n";
 const CATS = { Reasoning: ["a", "b"], Coding: ["c"] };
-const COST = "model,avg_input_tokens,avg_output_tokens,cost_per_question\nchatgpt-4o-latest,700,1000,0.02\n";
+// Wide cost CSV: one $/question per subtask (a,b,c) + trailing model-level columns.
+const COST = "model,a,b,c,avg_input_tokens,avg_output_tokens,input_price_per_million,output_price_per_million\nchatgpt-4o-latest,0.01,0.03,0.05,700,1000,2.5,10\n";
 
 let container;
 beforeEach(() => {

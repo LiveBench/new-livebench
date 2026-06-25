@@ -3,7 +3,7 @@ import "./App.css";
 import { bibtexEntry } from "./constants";
 import { RELEASES } from "./lib/constants";
 import useLeaderboardData from "./lib/useLeaderboardData";
-import { overallOf, catAvg, valueFrontier } from "./lib/compute";
+import { overallOf, catAvg, overallCost } from "./lib/compute";
 import { getModelInfo } from "./Table/modelLinks";
 import Navbar from "./components/Navbar";
 import ReleaseTimeline from "./components/ReleaseTimeline";
@@ -35,12 +35,11 @@ export default function App() {
           org: info.organization || "Other",
           reasoner: !!info.reasoner, open: !!info.openweight,
           overall, cats: c, cost,
+          costOverall: overallCost(cost, cats), // mean of category costs (for scatter/KPIs)
         };
       })
       .filter(Boolean);
   }, [rawData, categories, costMap, hasCost]);
-
-  const frontier = useMemo(() => valueFrontier(models), [models]);
   const taskCount = Object.values(categories).reduce((s, a) => s + (a ? a.length : 0), 0);
   const catCount = Object.keys(categories).length;
 
@@ -81,7 +80,7 @@ export default function App() {
                 Overall + every category, sortable. Click a row for its subtask scores.
                 {hasCost ? " Cost sits right beside the scores." : ""}
               </p>
-              <Leaderboard key={date} models={models} categories={categories} hasCost={hasCost} frontier={frontier} />
+              <Leaderboard key={date} models={models} categories={categories} hasCost={hasCost} />
             </>
           )}
         </div>

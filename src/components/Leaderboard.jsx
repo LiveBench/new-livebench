@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { orgColor, catShort, catFull } from "../lib/constants";
-import { costPerQuality, collapseVariants } from "../lib/compute";
+import { costForScope, costPerQuality, frontierBy, collapseVariants } from "../lib/compute";
 
 const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
 
@@ -39,7 +39,7 @@ const writeHash = (params) => {
   window.history.replaceState(null, "", qs ? `${base}?${qs}` : base);
 };
 
-export default function Leaderboard({ models, categories, hasCost, frontier }) {
+export default function Leaderboard({ models, categories, hasCost }) {
   const cats = Object.keys(categories);
 
   // initialize view state from the URL so links are shareable
@@ -56,6 +56,17 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
 
   const scoreCols = focusedCat ? [focusedCat, ...categories[focusedCat]] : ["overall", ...cats];
 
+  // The cost columns ($/task, $/quality, Value) follow the selected score scope:
+  // a focused category or a sorted subtask, else overall. So selecting "Coding"
+  // (or sorting by the python column) makes cost reflect exactly that scope.
+  const costScope = (sortKey === "cpq" || sortKey === "perq" || sortKey === "model")
+    ? (focusedCat || "overall")
+    : sortKey;
+  const scopeCost = (m) => costForScope(m.cost, categories, costScope);
+  const scopeLabel = costScope === "overall"
+    ? null
+    : (costScope in categories ? catShort(costScope) : costScope.replace(/_/g, " "));
+
   // reflect focus + sort in the URL (shareable, no history spam)
   useEffect(() => {
     const p = new URLSearchParams();
@@ -66,8 +77,8 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
   }, [focusedCat, sortKey, sortDir]);
 
   const sortVal = (m, k) => {
-    if (k === "cpq") return m.cost ? m.cost.cost_per_question : null;
-    if (k === "perq") return costPerQuality(m.overall, m.cost);
+    if (k === "cpq") return scopeCost(m);
+    if (k === "perq") return costPerQuality(scopeCost(m), numVal(m, costScope));
     if (k === "model") return m.name.toLowerCase();
     return numVal(m, k);
   };
@@ -91,6 +102,12 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
   }, [models, onlyReason, onlyOpen, q, showVariants, sortKey, sortDir]);
 
   const shades = computeShades(rows, scoreCols);
+
+  // value frontier at the current cost scope: cheapest model topping each score ceiling.
+  const frontier = useMemo(
+    () => frontierBy(models, (m) => costForScope(m.cost, categories, costScope), (m) => numVal(m, costScope)),
+    [models, costScope, categories]
+  );
 
   const focusCat = (c) => { setFocusedCat(c); setSortKey(c || "overall"); setSortDir(-1); };
   const clickSort = (k) => {
@@ -136,14 +153,16 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
               {scoreCols.map((k) => (
                 <th key={k} title={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
               ))}
-              {hasCost && <th className="grp" title="Measured cost to run the model on one task" onClick={() => clickSort("cpq")}>$/task {arrow("cpq")}</th>}
-              {hasCost && <th title="Cost per LiveBench point — $/task ÷ overall (lower = better value)" onClick={() => clickSort("perq")}>$/quality {arrow("perq")}</th>}
-              {hasCost && <th>Value</th>}
+              {hasCost && <th className="grp" title={`Measured cost per question — ${costScope === "overall" ? "overall (mean of category costs)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/task·${scopeLabel}` : "$/task"} {arrow("cpq")}</th>}
+              {hasCost && <th title="Cost per LiveBench point — scoped $/task ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
+              {hasCost && <th title={`Value frontier at the ${scopeLabel || "overall"} scope`}>Value</th>}
             </tr>
           </thead>
           <tbody>
             {rows.map((m) => {
               const open = expanded.has(m.model);
+              const cScope = scopeCost(m);                                   // $/task at current scope
+              const qScope = costPerQuality(cScope, numVal(m, costScope));   // $/quality at current scope
               return (
                 <React.Fragment key={m.model}>
                   <tr className={"row" + (open ? " open" : "")} onClick={() => toggleRow(m.model)}>
@@ -165,9 +184,9 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
                         </td>
                       );
                     })}
-                    {hasCost && <td className={"lb-cost-col" + (m.cost ? "" : " na")}>{m.cost ? `$${m.cost.cost_per_question.toFixed(3)}` : "—"}</td>}
-                    {hasCost && <td className={m.cost ? "" : "na"}>{m.cost ? fmtQuality(costPerQuality(m.overall, m.cost)) : "—"}</td>}
-                    {hasCost && <td>{m.cost && !m.cost.est && frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
+                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}>{cScope != null ? `$${cScope.toFixed(3)}` : "—"}</td>}
+                    {hasCost && <td className={qScope != null ? "" : "na"}>{qScope != null ? fmtQuality(qScope) : "—"}</td>}
+                    {hasCost && <td>{frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
                   </tr>
                   {open && (
                     <tr className="lb-detail">
@@ -204,7 +223,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
         {focusedCat
           ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
           : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
-        {hasCost ? " · green pill = value frontier · “—” = no published cost" : ""}
+        {hasCost ? ` · $/task & $/quality reflect the ${scopeLabel || "overall"} scope · pill = value frontier` : ""}
       </p>
     </>
   );
