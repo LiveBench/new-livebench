@@ -61,7 +61,9 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
 
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
-    else { setSortKey(k); setSortDir(k === "model" ? 1 : -1); }
+    // cost columns ($/task, $/quality) and the model name sort ascending first;
+    // score columns sort descending first (best on top). Missing values always sink.
+    else { setSortKey(k); setSortDir((k === "model" || k === "cpq" || k === "perq") ? 1 : -1); }
   };
   const arrow = (k) => (k === sortKey ? <span className="arr">{sortDir < 0 ? "▼" : "▲"}</span> : null);
   const toggleRow = (model) =>
