@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { orgColor, catShort } from "../lib/constants";
+import { orgColor, catShort, catFull } from "../lib/constants";
 import { costPerQuality, collapseVariants } from "../lib/compute";
 
 const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
@@ -102,8 +102,8 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
   const toggleRow = (model) =>
     setExpanded((s) => { const n = new Set(s); n.has(model) ? n.delete(model) : n.add(model); return n; });
 
-  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? k : k in categories ? catShort(k) : k.replace(/_/g, " "));
-  const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? k : k.replace(/_/g, " "));
+  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catShort(k) : k.replace(/_/g, " "));
+  const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : k.replace(/_/g, " "));
   const colCount = 2 + scoreCols.length + (hasCost ? 3 : 0);
 
   return (
@@ -123,7 +123,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
         <span className="lb-cats-label">Category</span>
         <button className="lb-chip" aria-pressed={!focusedCat} onClick={() => focusCat(null)}>All</button>
         {cats.map((c) => (
-          <button key={c} className="lb-chip" aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{c}</button>
+          <button key={c} className="lb-chip" title={catFull(c)} aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{c}</button>
         ))}
       </div>
 
@@ -176,7 +176,7 @@ export default function Leaderboard({ models, categories, hasCost, frontier }) {
                           <div className="lb-det-grid">
                             {(focusedCat ? [focusedCat] : cats).map((c) => (
                               <div className="lb-det-cat" key={c}>
-                                <div className="h">{c}</div>
+                                <div className="h">{catFull(c)}</div>
                                 {categories[c].map((t) => {
                                   const v = m.row[t];
                                   const val = v == null || v === "" ? "—" : Number(v).toFixed(1);

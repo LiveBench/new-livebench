@@ -22,3 +22,7 @@ const CAT_SHORT = {
   "Data Analysis": "Dat", Language: "Lng", IF: "IF", "Instruction Following": "IF",
 };
 export const catShort = (c) => CAT_SHORT[c] || c.slice(0, 3);
+
+// Category key → full display name (only "IF" is abbreviated in the data; others are already full).
+const CAT_FULL = { IF: "Instruction Following" };
+export const catFull = (c) => CAT_FULL[c] || c;
