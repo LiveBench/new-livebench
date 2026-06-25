@@ -26,3 +26,8 @@ export const catShort = (c) => CAT_SHORT[c] || c.slice(0, 3);
 // Category key → full display name (only "IF" is abbreviated in the data; others are already full).
 const CAT_FULL = { IF: "Instruction Following" };
 export const catFull = (c) => CAT_FULL[c] || c;
+
+// Subtask key → display label. Most are underscore_case (split on "_"); a couple
+// are concatenated words that need an explicit space.
+const SUBTASK_LABEL = { tablejoin: "table join", tablereformat: "table reformat" };
+export const subtaskLabel = (t) => SUBTASK_LABEL[t] || t.replace(/_/g, " ");

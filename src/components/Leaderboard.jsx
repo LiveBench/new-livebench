@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { orgColor, catShort, catFull } from "../lib/constants";
+import { orgColor, catShort, catFull, subtaskLabel } from "../lib/constants";
 import { costForScope, costPerQuality, frontierBy, collapseVariants } from "../lib/compute";
 
 const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
@@ -65,7 +65,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const scopeCost = (m) => costForScope(m.cost, categories, costScope);
   const scopeLabel = costScope === "overall"
     ? null
-    : (costScope in categories ? catShort(costScope) : costScope.replace(/_/g, " "));
+    : (costScope in categories ? catShort(costScope) : subtaskLabel(costScope));
 
   // reflect focus + sort in the URL (shareable, no history spam)
   useEffect(() => {
@@ -119,8 +119,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const toggleRow = (model) =>
     setExpanded((s) => { const n = new Set(s); n.has(model) ? n.delete(model) : n.add(model); return n; });
 
-  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catShort(k) : k.replace(/_/g, " "));
-  const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : k.replace(/_/g, " "));
+  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catShort(k) : subtaskLabel(k));
+  const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : subtaskLabel(k));
   const colCount = 2 + scoreCols.length + (hasCost ? 3 : 0);
 
   return (
@@ -201,7 +201,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                                   const val = v == null || v === "" ? "—" : Number(v).toFixed(1);
                                   return (
                                     <div className="lb-subt" key={t}>
-                                      <span className="n">{t.replace(/_/g, " ")}</span>
+                                      <span className="n">{subtaskLabel(t)}</span>
                                       <span className="v">{val}</span>
                                     </div>
                                   );
