@@ -9,7 +9,10 @@ gemini-3.5-flash-high,108280,15522,0.1327,1.5,9.0
 gpt-5.2-codex,36975,9146,0.1388,1.75,14.0
 gemini-3.1-pro-preview-high,99082,13380,0.1459,2.0,12.0
 gpt-5.2-2025-12-11-high,50836,11512,0.1763,1.75,14.0
+claude-sonnet-4-6-thinking-auto-medium-effort,1328,13226,0.2024,3.0,15.0
 gpt-5.4-xhigh,44979,14512,0.2351,2.5,15.0
+claude-opus-4-6-thinking-auto-high-effort,1976,9788,0.2546,5.0,25.0
 claude-opus-4-7-xhigh-effort,1274,11571,0.2956,5.0,25.0
 claude-opus-4-8-xhigh-effort,1258,15909,0.404,5.0,25.0
 gpt-5.5-xhigh,95929,11355,0.4255,5.0,30.0
+claude-opus-4-5-20251101-thinking-64k-high-effort,79045,15203,0.4431,5.0,25.0
