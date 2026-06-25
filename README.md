@@ -1,43 +1,45 @@
-# LiveBench — redesigned site
+# new-livebench
 
-A modernized React build of the LiveBench leaderboard (a challenging, contamination-free LLM benchmark). Same data + scoring as the original `livebench.github.io`, with a refreshed UI: a release timeline, KPI strip, an interactive table (sortable columns, click-to-expand subtask scores, inline filters), first-class cost columns, and SVG insight charts.
+A modern React leaderboard for LiveBench — a contamination-free LLM benchmark. Per-release scores across 7 categories with subtask drill-down, cost-vs-quality insights, and a release timeline. React 18 (CRA) · hand-built SVG charts (no chart dependency) · deploys to GitHub Pages.
 
-## Stack
-React 18 (Create React App) · HashRouter · PapaParse · hand-built SVG charts (no chart dependency). Deploys to GitHub Pages via `gh-pages`.
+## How data is stored
 
-## Data model (per release, in `public/`)
-Each release date has its own files:
-- `table_<YYYY_MM_DD>.csv` — one row per model, one column per subtask (scores 0–100). **Scores only** — overall + category averages are computed in-app from `categories`.
-- `categories_<YYYY_MM_DD>.json` — maps each category to its subtask columns.
-- `cost_<YYYY_MM_DD>.csv` *(optional)* — `model, avg_input_tokens, avg_output_tokens, cost_per_question`. **If absent, all cost columns and cost charts are hidden** for that release.
+All data lives in `public/`, **one set of files per release** (named by date, `YYYY_MM_DD`):
 
-To add a release (e.g. `2026-06-25`): drop the three `*_2026_06_25.*` files in `public/` and add `"2026-06-25"` to `RELEASES` in `src/lib/constants.js`. No other code change.
+| File | Holds | Required |
+|---|---|---|
+| `table_<date>.csv` | one row per model, one column per subtask — raw score 0–100 | ✅ |
+| `categories_<date>.json` | maps each category → its subtask columns | ✅ |
+| `cost_<date>.csv` | per-model cost + pricing (see below) | optional |
 
-`$/1M output`, the value/frontier badge, and overall scores are all derived client-side — never stored.
+**Scores are stored raw, per subtask.** Overall and per-category averages are **computed in the browser** (`src/lib/compute.js`, reusing `src/Table/Averaging.js`) — they are never stored in the CSV.
 
-## Architecture
-- `src/lib/useLeaderboardData.js` — loads the 3 files for the selected date (cost is tolerant of 404 → `hasCost:false`).
-- `src/lib/compute.js` — canonical metrics: `overallOf` (wraps the original `Averaging.js`), `valueFrontier` (Pareto, drives the Best-value badge), `perMillionOut`, `collapseVariants`.
-- `src/Table/{Averaging,modelLinks}.js` — reused unchanged from the original site (score math + model metadata/variants).
-- `src/components/` — `Navbar`, `ReleaseTimeline`, `MetricsStrip`, `Leaderboard`, and `insights/{CostQualityScatter,CostBars,CategoryRadar,Insights}`.
+**Cost** — `cost_<date>.csv` columns:
+`model, avg_input_tokens, avg_output_tokens, cost_per_question, input_price_per_million, output_price_per_million`
 
-## Develop
+- `cost_per_question` → the **`$/Q`** column: measured $ to run the model over that release's tasks.
+- `output_price_per_million` → the **`$/1M out`** column: the provider's **official list price**, read directly (`perMillionOut()` in `compute.js`) — not derived from tokens.
+- If a release has **no** `cost_<date>.csv`, all cost columns and cost charts hide for it (cost is opt-in per release).
+
+**Model metadata** (display name, org, reasoner/open-weight flags, effort-variant grouping) comes from `src/Table/modelLinks.js`, keyed by the `model` string. A model not listed there is hidden.
+
+## How to add a release
+
+1. Drop `table_<date>.csv`, `categories_<date>.json`, and (optionally) `cost_<date>.csv` into `public/`.
+2. Add the date to `RELEASES` in `src/lib/constants.js` (last entry = latest, shown by default).
+3. Ensure every `model` value has an entry in `src/Table/modelLinks.js`.
+
+No other code changes. Run `npm run check-data` to confirm the `model` keys line up across `table` ↔ `cost` ↔ `modelLinks` for every release.
+
+## Develop, test, deploy
+
 ```bash
-npm install        # node_modules is gitignored; first checkout needs this
-npm start          # http://localhost:3000
+npm install            # node_modules is gitignored
+npm start              # dev server at http://localhost:3000
+npm test               # unit (compute) + render tests
+npm run check-data     # model-key integrity across all releases
+npm run build          # production build
+npm run deploy         # build + push to the gh-pages branch (CNAME: new-livebench.ai)
 ```
 
-## Test
-```bash
-npm test               # Jest unit (compute) + integration (App renders with mocked data)
-npm run check-data     # asserts model keys join across table/cost/modelLinks for every release
-npm run build          # production build gate
-```
-
-## Deploy (GitHub Pages)
-```bash
-npm run deploy         # builds and pushes build/ to the gh-pages branch
-```
-The deploy script intentionally has **no `--cname`** so it can't accidentally take over `livebench.ai`. For a preview, set `"homepage"` in `package.json` to `https://<user>.github.io/<repo>`. To publish to the production domain, add `--cname livebench.ai` back to the `deploy` script (and keep `homepage: "."`).
-
-Sponsored by Abacus.AI. Site originally based on the [Nerfies](https://github.com/nerfies/nerfies.github.io) template and [LiveCodeBench](https://livecodebench.github.io/).
+Deploys to GitHub Pages from the `gh-pages` branch. `homepage` in `package.json` is `"."` (relative paths) for serving at the custom domain root; change the `--cname` in the `deploy` script to target a different domain.
