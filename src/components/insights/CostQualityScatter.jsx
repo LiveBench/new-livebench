@@ -81,7 +81,7 @@ export default function CostQualityScatter({ models }) {
               <span>overall</span><span>{tip.m.overall.toFixed(1)}</span>
               <span>$/Q</span><span>${tip.m.costOverall.toFixed(3)}</span>
               <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
-              <span>avg_output_tokens</span><span>{Number(tip.m.cost.avg_output_tokens).toLocaleString()}</span>
+              <span>avg output tokens</span><span>{Number(tip.m.cost.avg_output_tokens).toLocaleString()}</span>
             </div>
             {front.has(tip.m.model) && <div style={{ marginTop: 6, color: "#7Cf0c0" }}>● value frontier</div>}
           </div>

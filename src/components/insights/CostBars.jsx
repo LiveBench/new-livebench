@@ -26,7 +26,7 @@ export default function CostBars({ models }) {
             <span className="name"><span className="lb-mdot" style={{ background: col }} />{m.name}</span>
             <div className="track"><div className="fill" style={{ width: `${(m.costOverall / max) * 100}%`, background: col }} /></div>
             <span className="val">
-              ${m.costOverall.toFixed(3)}
+              <span className="cur">$</span>{m.costOverall.toFixed(3)}
               {front.has(m.model) && <span style={{ color: "var(--live)" }}> ●</span>}
             </span>
           </div>
@@ -38,7 +38,7 @@ export default function CostBars({ models }) {
           <div className="tg">
             <span>$/Q</span><span>${tip.m.costOverall.toFixed(3)}</span>
             <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
-            <span>avg_output_tokens</span><span>{(Number(tip.m.cost.avg_output_tokens) || 0).toLocaleString()}</span>
+            <span>avg output tokens</span><span>{(Number(tip.m.cost.avg_output_tokens) || 0).toLocaleString()}</span>
           </div>
         </div>
       )}

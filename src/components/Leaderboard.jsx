@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { orgColor, catShort, catFull, subtaskLabel } from "../lib/constants";
 import { costForScope, costPerQuality, frontierBy, collapseVariants } from "../lib/compute";
 
-const fmtQuality = (v) => (v == null ? "—" : `$${v.toFixed(4)}`);
+// $X with a slightly larger currency glyph — the bare "$" reads as too small at the cell font size.
+const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
 
 // Numeric value of a score column key: "overall", a category name (average), or a subtask column (raw score).
 const numVal = (m, k) => {
@@ -151,7 +152,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
               <th className="l" onClick={() => clickSort("model")}>Model {arrow("model")}</th>
               {scoreCols.map((k) => (
-                <th key={k} title={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
+                <th key={k} className={focusedCat ? "sub" : undefined} title={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
               ))}
               {hasCost && <th className="grp" title={`Measured cost per question — ${costScope === "overall" ? "overall (mean of category costs)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"} {arrow("cpq")}</th>}
               {hasCost && <th title="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
@@ -184,8 +185,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         </td>
                       );
                     })}
-                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}>{cScope != null ? `$${cScope.toFixed(3)}` : "—"}</td>}
-                    {hasCost && <td className={qScope != null ? "" : "na"}>{qScope != null ? fmtQuality(qScope) : "—"}</td>}
+                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}><Money v={cScope} dp={3} /></td>}
+                    {hasCost && <td className={qScope != null ? "" : "na"}><Money v={qScope} dp={4} /></td>}
                     {hasCost && <td>{frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
                   </tr>
                   {open && (
