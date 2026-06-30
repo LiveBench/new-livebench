@@ -150,12 +150,14 @@ export default function Leaderboard({ models, categories, hasCost }) {
           <thead>
             <tr>
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
-              <th className="l" onClick={() => clickSort("model")}>Model {arrow("model")}</th>
-              {scoreCols.map((k) => (
-                <th key={k} className={focusedCat ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>{headLabel(k)} {arrow(k)}</th>
+              <th className="l" onClick={() => clickSort("model")}><span className="th-h"><span className="th-t">Model</span>{arrow("model")}</span></th>
+              {scoreCols.map((k, i) => (
+                <th key={k} className={focusedCat && i > 0 ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>
+                  <span className="th-h"><span className="th-t">{headLabel(k)}</span>{arrow(k)}</span>
+                </th>
               ))}
-              {hasCost && <th className="grp" data-tip={`Measured cost per question — ${costScope === "overall" ? "overall (total cost ÷ all questions)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}>{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"} {arrow("cpq")}</th>}
-              {hasCost && <th data-tip="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}>{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"} {arrow("perq")}</th>}
+              {hasCost && <th className="grp" data-tip={`Measured cost per question — ${costScope === "overall" ? "overall (total cost ÷ all questions)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"}</span>{arrow("cpq")}</span></th>}
+              {hasCost && <th data-tip="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}><span className="th-h"><span className="th-t">{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"}</span>{arrow("perq")}</span></th>}
               {hasCost && <th data-tip={`Value frontier at the ${scopeLabel || "overall"} scope`}>Value</th>}
             </tr>
           </thead>

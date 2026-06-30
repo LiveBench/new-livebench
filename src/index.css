@@ -81,12 +81,16 @@ a{color:var(--accent);text-decoration:none;}
 /* table */
 .lb-tbl-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);}
 .lb-tbl{border-collapse:collapse;width:100%;font-size:13.5px;}
-.lb-tbl thead th{position:sticky;top:0;background:var(--surface);text-align:right;padding:12px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border-strong);white-space:nowrap;cursor:pointer;user-select:none;}
+.lb-tbl thead th{position:sticky;top:0;background:var(--surface);text-align:right;vertical-align:bottom;padding:12px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border-strong);white-space:nowrap;cursor:pointer;user-select:none;}
 .lb-tbl thead th.l{text-align:left;}
 .lb-tbl thead th:hover{color:var(--accent);}
-.lb-tbl thead th .arr{color:var(--accent);font-size:9px;margin-left:2px;}
+/* label + sort arrow share one flex row so the arrow stays adjacent (never wraps below) even when the label spans two lines */
+.lb-tbl thead th .th-h{display:flex;align-items:center;justify-content:flex-end;gap:3px;}
+.lb-tbl thead th.l .th-h{justify-content:flex-start;}
+.lb-tbl thead th .th-t{min-width:0;}
+.lb-tbl thead th .arr{color:var(--accent);font-size:9px;flex:none;}
 .lb-tbl thead th.grp{border-left:1px solid var(--border);}
-.lb-tbl thead th.sub{white-space:normal;max-width:84px;line-height:1.2;vertical-align:bottom;}
+.lb-tbl thead th.sub{white-space:normal;max-width:96px;line-height:1.25;text-wrap:balance;}
 .lb-tbl tbody td{padding:10px 11px;text-align:right;border-bottom:1px solid var(--border);font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
 .lb-tbl tbody td.l{text-align:left;font-family:var(--sans);}
 .lb-tbl tbody tr.row{cursor:pointer;}
