@@ -88,34 +88,42 @@ def is_anthropic(model):
         return model.startswith('claude')
 
 
-def _answer_cost(a, in_price, out_price, anthropic):
-    """Per-answer cost at official pricing.
+def _answer_cost(a, in_price, out_price, cached_price):
+    """Per-answer cost, matching scripts/spend_report.py.
 
-    Anthropic: total_input_tokens is uncached-only and total_cached_tokens /
-      total_cache_creation_tokens are separate -> charge input + cache-read(0.1x)
-      + cache-write(1.25x) + output. (cost_usd is NOT used: it charged cache-read
-      at $0 and never charged cache-write.)
-    Other providers: cost_usd is authoritative (already prices cache-reads at the
-      provider's official rate; no cache-write). Fall back to (input-cached)x
-      pricing when cost_usd is absent (cached tokens are included in input).
+    Use the provider-reported cost_usd when present. Otherwise fall back to
+    tokens x official pricing with the same split spend_report uses:
+      cached   = min(cached_tokens, input_tokens)   # cached is a subset of input
+      uncached = input_tokens - cached
+      cost     = uncached*input + cached*cached_price + output*output
+    Cache-WRITE (cache_creation) tokens are deliberately NOT charged: only
+    Anthropic reports them, so charging them penalizes Anthropic vs providers
+    that fold cache into input, and they are inflated by cache-miss thrash on
+    long agentic runs. This keeps costs consistent and provider-comparable.
     """
-    ti = a.get('total_input_tokens', 0) or 0
-    to = a.get('total_output_tokens', 0) or 0
-    cr = a.get('total_cached_tokens', 0) or 0
-    cc = a.get('total_cache_creation_tokens', 0) or 0
-    if anthropic:
-        return (ti*in_price + cr*in_price*0.1 + cc*in_price*1.25 + to*out_price) / 1e6
     cu = a.get('cost_usd')
     if cu is not None:
         return cu
-    uncached = ti - cr if ti > cr else ti
-    return (uncached*in_price + cr*in_price*0.1 + to*out_price) / 1e6
+    ti = a.get('total_input_tokens', 0) or 0
+    to = a.get('total_output_tokens', 0) or 0
+    cr = a.get('total_cached_tokens', 0) or 0
+    cached = min(cr, ti)
+    uncached = ti - cached
+    return (uncached*in_price + cached*cached_price + to*out_price) / 1e6
 
 
-def generate(data_dir, model, in_price, out_price):
-    anthropic = is_anthropic(model)
+def generate(data_dir, model, in_price, out_price, cached_price=None):
+    # cache-read price for the cost_usd-absent fallback; defaults to 0.1x input
+    # (the Anthropic/OpenAI standard). Pass explicitly to match a provider's rate.
+    if cached_price is None:
+        cached_price = in_price * 0.1
     def qids(cat, task):
-        return {q['question_id'] for q in _read(f'{data_dir}/{cat}/{task}/question.jsonl')}
+        # Active questions only, matching scripts/spend_report.py active_ids:
+        # a question is active iff its livebench_removal_date is empty. The task
+        # question.jsonl files retain deprecated questions (removal_date set), so
+        # this filter is required to hit the canonical 1198 regular + 72 agentic.
+        return {q['question_id'] for q in _read(f'{data_dir}/{cat}/{task}/question.jsonl')
+                if q.get('livebench_removal_date', '') == ''}
     def judgments(cat, task):
         return _read(f'{data_dir}/{cat}/{task}/model_judgment/ground_truth_judgment.jsonl')
     def answers(cat, task):
@@ -134,7 +142,7 @@ def generate(data_dir, model, in_price, out_price):
             for a in answers(cat, task):
                 if a.get('question_id') not in valid:
                     continue
-                c += _answer_cost(a, in_price, out_price, anthropic)
+                c += _answer_cost(a, in_price, out_price, cached_price)
                 to = a.get('total_output_tokens', 0) or 0
                 if to != -1:
                     tin += a.get('total_input_tokens', 0) or 0; tout += to; nans += 1
