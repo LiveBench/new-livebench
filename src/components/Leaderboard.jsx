@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { orgColor, catShort, catFull, subtaskLabel } from "../lib/constants";
-import { costForScope, costPerQuality, frontierBy, collapseVariants } from "../lib/compute";
+import { costForScope, costPerQuality, collapseVariants } from "../lib/compute";
 
 // Render $X with the "$" in a .cur span (size-only nudge — see index.css).
 const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
@@ -104,12 +104,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const shades = computeShades(rows, scoreCols);
 
-  // value frontier at the current cost scope: cheapest model topping each score ceiling.
-  const frontier = useMemo(
-    () => frontierBy(models, (m) => costForScope(m.cost, categories, costScope), (m) => numVal(m, costScope)),
-    [models, costScope, categories]
-  );
-
   const focusCat = (c) => { setFocusedCat(c); setSortKey(c || "overall"); setSortDir(-1); };
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
@@ -122,7 +116,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catShort(k) : subtaskLabel(k));
   const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : subtaskLabel(k));
-  const colCount = 2 + scoreCols.length + (hasCost ? 3 : 0);
+  const colCount = 2 + scoreCols.length + (hasCost ? 2 : 0);
 
   return (
     <>
@@ -158,7 +152,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
               ))}
               {hasCost && <th className="grp" data-tip={`Measured cost per question — ${costScope === "overall" ? "overall (total cost ÷ all questions)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"}</span>{arrow("cpq")}</span></th>}
               {hasCost && <th data-tip="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}><span className="th-h"><span className="th-t">{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"}</span>{arrow("perq")}</span></th>}
-              {hasCost && <th data-tip={`Value frontier at the ${scopeLabel || "overall"} scope`}>Value</th>}
             </tr>
           </thead>
           <tbody>
@@ -188,7 +181,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
                     })}
                     {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}><Money v={cScope} dp={3} /></td>}
                     {hasCost && <td className={qScope != null ? "" : "na"}><Money v={qScope} dp={4} /></td>}
-                    {hasCost && <td>{frontier.has(m.model) ? <span className="lb-bv">Best value</span> : ""}</td>}
                   </tr>
                   {open && (
                     <tr className="lb-detail">
@@ -225,7 +217,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         {focusedCat
           ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
           : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
-        {hasCost ? ` · $/Q & $/quality reflect the ${scopeLabel || "overall"} scope · pill = value frontier` : ""}
+        {hasCost ? ` · $/Q & $/quality reflect the ${scopeLabel || "overall"} scope` : ""}
       </p>
     </>
   );
