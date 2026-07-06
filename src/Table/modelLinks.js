@@ -496,7 +496,8 @@ export const modelLinks = {
             { rawName: "claude-opus-4-8-medium-effort", displayName: "Claude 4.8 Opus Thinking Medium Effort" },
             { rawName: "claude-opus-4-8-high-effort", displayName: "Claude 4.8 Opus Thinking High Effort" }
         ]
-    }
+    },
+    "claude-fable-5-xhigh-effort": {url: "https://www.anthropic.com/news/claude-fable-5", organization: "Anthropic", displayName: "Claude Fable 5 xHigh Effort", reasoner: true}
 };
 
 const variantLookup = {};
