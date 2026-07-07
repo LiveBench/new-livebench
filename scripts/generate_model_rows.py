@@ -13,7 +13,10 @@ Methodology (validated to reproduce existing rows exactly):
                     cache_creation), excluding runaway answers at the 250-call step cap,
                   - else spend_report's token fallback: uncached*IN + cached*0.1*IN + out*OUT.
   nq_col      = number of scored (judged) questions for the column.
-  avg_*_tokens= mean input/output tokens across the model's answers.
+  avg_*_tokens= mean input/output tokens per question over answers with valid token
+                data (excludes $ERROR$ / -1 answers), on the active 1198+72 basis.
+  out_<col>   = mean output tokens for that subcategory (same basis) — for per-
+                subcategory token charts.
   prices      = cost_per_million.input / .output from the model config.
 
 Pricing comes from the LiveBench model config (same source as scripts/spend_report.py);
@@ -157,10 +160,11 @@ def generate(data_dir, model, in_price, out_price, cached_price=None):
     def answers(cat, task):
         return _read(f'{data_dir}/{cat}/{task}/model_answer/{model}.jsonl')
 
-    score, cost, nq = {}, {}, {}
+    score, cost, nq, out = {}, {}, {}, {}
     tin = tout = nans = 0
     for col, dirs in COLS.items():
         sc, c = [], 0.0
+        col_out = col_n = 0
         for cat, task in dirs:
             valid = qids(cat, task)
             for r in judgments(cat, task):
@@ -171,15 +175,20 @@ def generate(data_dir, model, in_price, out_price, cached_price=None):
                 if a.get('question_id') not in valid:
                     continue
                 c += _answer_cost(a, in_price, out_price, cached_price, add_cache_read, charge_cache_write)
-                to = a.get('total_output_tokens', 0) or 0
-                if to != -1:
-                    tin += a.get('total_input_tokens', 0) or 0; tout += to; nans += 1
+                o = a.get('total_output_tokens')
+                i = a.get('total_input_tokens')
+                if o is not None and o >= 0:   # exclude $ERROR$ / -1 sentinel from token stats
+                    col_out += o; col_n += 1
+                    tout += o; nans += 1
+                    if i is not None and i >= 0:
+                        tin += i
         score[col] = round(100*sum(sc)/len(sc), 3) if sc else None
         cost[col] = round(c, 4)
         nq[col] = len(sc)
+        out[col] = round(col_out/col_n) if col_n else 0   # avg output tokens for this subcategory
     avg_in = round(tin/nans) if nans else 0
     avg_out = round(tout/nans) if nans else 0
-    return score, cost, nq, avg_in, avg_out
+    return score, cost, nq, avg_in, avg_out, out
 
 
 def main():
@@ -201,14 +210,16 @@ def main():
     in_price, out_price = price
     name = args.display_name or args.model
 
-    score, cost, nq, avg_in, avg_out = generate(args.data, args.model, in_price, out_price)
+    score, cost, nq, avg_in, avg_out, out = generate(args.data, args.model, in_price, out_price)
 
     table_row = [name] + [str(score[c]) for c in COLORDER]
+    # cost row: task costs, nq_*, summary tokens/prices, then per-subcategory avg output (out_*)
     cost_row = ([name] + [str(cost[c]) for c in COLORDER] + [str(nq[c]) for c in COLORDER]
-                + [str(avg_in), str(avg_out), _num(in_price), _num(out_price)])
+                + [str(avg_in), str(avg_out), _num(in_price), _num(out_price)]
+                + [str(out[c]) for c in COLORDER])
 
     if args.verify:
-        _verify(args.verify, name, score, cost, nq)
+        _verify(args.verify, name, score, cost, nq, avg_out, out)
         return
     print('# table row (append to table_<release>.csv):')
     print(','.join(table_row))
@@ -220,7 +231,7 @@ def _num(x):
     return str(int(x)) if float(x).is_integer() else str(x)
 
 
-def _verify(public_dir, name, score, cost, nq):
+def _verify(public_dir, name, score, cost, nq, avg_out, out):
     t = {r['model']: r for r in csv.DictReader(open(f'{public_dir}/table_2026_06_25.csv'))}
     c = {r['model']: r for r in csv.DictReader(open(f'{public_dir}/cost_2026_06_25.csv'))}
     if name not in t:
@@ -231,6 +242,12 @@ def _verify(public_dir, name, score, cost, nq):
             if abs(float(gen) - float(ref)) > 0.02:
                 ok = False
                 print(f'  MISMATCH {label} {col}: gen={gen} csv={ref}')
+        if 'out_' + col in c[name] and c[name]['out_' + col] != '' and int(out[col]) != int(float(c[name]['out_' + col])):
+            ok = False
+            print(f'  MISMATCH out_{col}: gen={out[col]} csv={c[name]["out_" + col]}')
+    if c[name].get('avg_output_tokens') and int(avg_out) != int(float(c[name]['avg_output_tokens'])):
+        ok = False
+        print(f'  MISMATCH avg_output_tokens: gen={avg_out} csv={c[name]["avg_output_tokens"]}')
     print('VERIFY: all columns match' if ok else 'VERIFY: mismatches above')
 
 
