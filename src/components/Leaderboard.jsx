@@ -57,9 +57,10 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const scoreCols = focusedCat ? [focusedCat, ...categories[focusedCat]] : ["overall", ...cats];
 
-  // Cost columns are scope-aware — they follow the focused category (or overall):
-  //   Cost / task            = $/question for the scope  (Σ cost ÷ Σ questions)
-  //   Cost / successful task = (cost/task ÷ score) × 100  (penalizes failures / partial credit)
+  // The cost column is scope-aware — it follows the focused category (or overall).
+  // We display only "Cost per successful task" = (cost/task ÷ score) × 100, which
+  // penalizes failures / partial credit. costScope (Σ cost ÷ Σ questions) is the
+  // per-task figure it's derived from.
   const scope = focusedCat || "overall";
   const costScope = (m) => (m.cost ? costForScope(m.cost, categories, scope) : null);
   const scoreScope = (m) => (focusedCat ? (m.cats?.[focusedCat] ?? null) : m.overall);
@@ -78,7 +79,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
   }, [focusedCat, sortKey, sortDir]);
 
   const sortVal = (m, k) => {
-    if (k === "cpq") return costScope(m);
     if (k === "cpst") return costPerSuccess(m);
     if (k === "model") return m.name.toLowerCase();
     return numVal(m, k);
@@ -108,7 +108,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
     // cost columns + model name sort ascending first; score columns sort descending first.
-    else { setSortKey(k); setSortDir((k === "model" || k === "cpq" || k === "cpst") ? 1 : -1); }
+    else { setSortKey(k); setSortDir((k === "model" || k === "cpst") ? 1 : -1); }
   };
   const arrow = (k) => (k === sortKey ? <span className="arr">{sortDir < 0 ? "▼" : "▲"}</span> : null);
   const toggleRow = (model) =>
@@ -116,7 +116,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catFull(k) : subtaskLabel(k));
   const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : subtaskLabel(k));
-  const colCount = 2 + scoreCols.length + (hasCost ? 2 : 0);
+  const colCount = 2 + scoreCols.length + (hasCost ? 1 : 0);
 
   return (
     <>
@@ -151,13 +151,11 @@ export default function Leaderboard({ models, categories, hasCost }) {
                 </th>
               ))}
               {hasCost && <th className="grp wrap2" data-tip="Cost per successful task = (cost per task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost per successful task</span>{arrow("cpst")}</span></th>}
-              {hasCost && <th className="grp" data-tip="Cost per task for the selected scope — Σ cost ÷ Σ questions (official list pricing, cache accounted)" onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">Cost per task</span>{arrow("cpq")}</span></th>}
             </tr>
           </thead>
           <tbody>
             {rows.map((m) => {
               const open = expanded.has(m.model);
-              const cost = costScope(m);          // scope-aware cost per task
               const cpst = costPerSuccess(m);     // scope-aware cost per successful task
               return (
                 <React.Fragment key={m.model}>
@@ -179,7 +177,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
                       );
                     })}
                     {hasCost && <td className={"lb-cost-col" + (cpst != null ? "" : " na")}><Money v={cpst} dp={3} /></td>}
-                    {hasCost && <td className={"lb-cost-col" + (cost != null ? "" : " na")}><Money v={cost} dp={3} /></td>}
                   </tr>
                   {open && (
                     <tr className="lb-detail">
@@ -216,7 +213,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         {focusedCat
           ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
           : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
-        {hasCost ? " · Cost per task = Σ cost ÷ Σ questions (scope-aware) · Cost per successful task = (cost per task ÷ score) × 100" : ""}
+        {hasCost ? " · Cost per successful task = (Σ cost ÷ Σ questions ÷ score) × 100 for the selected scope — penalizes failures / partial credit" : ""}
       </p>
     </>
   );
