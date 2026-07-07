@@ -175,14 +175,26 @@ a{color:var(--accent);text-decoration:none;}
 .Blog .bibtex,.Blog pre{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);}
 
 @media (max-width:900px){.lb-ins-grid{grid-template-columns:1fr}.lb-kpis{grid-template-columns:repeat(2,1fr)}.lb-radar-wrap{grid-template-columns:1fr}}
-/* Mobile nav: don't pin the bar (it was eating the readable area when it wrapped);
-   keep it to a single compact line. */
+/* Mobile: unpin the nav (it ate the readable area when it wrapped) and keep it to
+   one compact line; freeze the model column (rank arrow + name) so only the
+   score/cost columns scroll horizontally — matches the previous LiveBench table. */
 @media (max-width:640px){
   .lb-nav{position:static;}
   .lb-nav-in{padding:9px 15px;gap:10px;}
   .lb-brand{font-size:16px;}
   .lb-links{margin-left:auto;flex-wrap:nowrap;gap:2px;}
   .lb-links a,.lb-links button{font-size:12.5px;padding:5px 8px;}
+
+  .lb-tbl thead th,.lb-tbl tbody td{padding:9px 8px;}
+  .lb-tbl thead th{z-index:3;}                                         /* header above body on vertical scroll */
+  .lb-tbl td.lb-rank,.lb-tbl td.mdl-col{position:sticky;z-index:2;background:var(--surface);}
+  .lb-tbl thead th:first-child,.lb-tbl thead th.mdl-col{z-index:5;}    /* frozen header corners on top */
+  .lb-tbl td.lb-rank,.lb-tbl thead th:first-child{left:0;}
+  .lb-tbl td.mdl-col,.lb-tbl thead th.mdl-col{left:30px;box-shadow:inset -1px 0 0 var(--border);}
+  .lb-tbl td.mdl-col{width:150px;min-width:150px;max-width:150px;white-space:normal;}
+  .lb-mdl{flex-wrap:wrap;gap:3px 6px;}
+  .lb-mdl .nm{white-space:normal;}
+  tr.row:hover td.lb-rank,tr.row:hover td.mdl-col{background:#F3F6FF;}
 }
 @media (max-width:560px){.lb-kpis{grid-template-columns:1fr 1fr}.lb-bar .name{flex-basis:108px}.lb-links a:not(:first-child){display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
