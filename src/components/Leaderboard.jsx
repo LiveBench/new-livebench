@@ -150,8 +150,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
                   <span className="th-h"><span className="th-t">{headLabel(k)}</span>{arrow(k)}</span>
                 </th>
               ))}
-              {hasCost && <th className="grp" data-tip="Cost per task for the selected scope — Σ cost ÷ Σ questions (official list pricing, cache accounted)" onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">Cost per task</span>{arrow("cpq")}</span></th>}
               {hasCost && <th className="grp wrap2" data-tip="Cost per successful task = (cost per task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost per successful task</span>{arrow("cpst")}</span></th>}
+              {hasCost && <th className="grp" data-tip="Cost per task for the selected scope — Σ cost ÷ Σ questions (official list pricing, cache accounted)" onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">Cost per task</span>{arrow("cpq")}</span></th>}
             </tr>
           </thead>
           <tbody>
@@ -178,8 +178,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         </td>
                       );
                     })}
-                    {hasCost && <td className={"lb-cost-col" + (cost != null ? "" : " na")}><Money v={cost} dp={3} /></td>}
                     {hasCost && <td className={"lb-cost-col" + (cpst != null ? "" : " na")}><Money v={cpst} dp={3} /></td>}
+                    {hasCost && <td className={"lb-cost-col" + (cost != null ? "" : " na")}><Money v={cost} dp={3} /></td>}
                   </tr>
                   {open && (
                     <tr className="lb-detail">
