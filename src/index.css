@@ -89,7 +89,7 @@ a{color:var(--accent);text-decoration:none;}
 .lb-tbl thead th.l .th-h{justify-content:flex-start;}
 .lb-tbl thead th .th-t{min-width:0;}
 .lb-tbl thead th .arr{color:var(--accent);font-size:9px;flex:none;}
-.lb-tbl thead th.grp{border-left:1px solid var(--border);}
+.lb-tbl thead th.grp{border-left:1px solid var(--border);white-space:normal;max-width:82px;line-height:1.2;text-wrap:balance;}
 .lb-tbl thead th.sub{white-space:normal;max-width:96px;line-height:1.25;text-wrap:balance;}
 .lb-tbl tbody td{padding:10px 11px;text-align:right;border-bottom:1px solid var(--border);font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
 .lb-tbl tbody td.l{text-align:left;font-family:var(--sans);}
