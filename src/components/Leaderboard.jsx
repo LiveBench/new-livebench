@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { orgColor, catFull, subtaskLabel } from "../lib/constants";
+import { catFull, subtaskLabel } from "../lib/constants";
 import { collapseVariants } from "../lib/compute";
 
 // Render $X with the "$" in a .cur span (size-only nudge — see index.css).
@@ -154,7 +154,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
                     <td className="l lb-rank"><span className="lb-exp">▸</span></td>
                     <td className="l">
                       <div className="lb-mdl">
-                        <span className="lb-mdot" style={{ background: orgColor(m.org) }} />
                         <span className="nm" title={m.name}>{m.name}</span>
                         {showVariants && m.info?.version && <span className="ef">{m.info.version}</span>}
                         {m.open && <span className="opn">open</span>}
