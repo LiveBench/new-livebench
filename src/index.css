@@ -175,5 +175,14 @@ a{color:var(--accent);text-decoration:none;}
 .Blog .bibtex,.Blog pre{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);}
 
 @media (max-width:900px){.lb-ins-grid{grid-template-columns:1fr}.lb-kpis{grid-template-columns:repeat(2,1fr)}.lb-radar-wrap{grid-template-columns:1fr}}
+/* Mobile nav: don't pin the bar (it was eating the readable area when it wrapped);
+   keep it to a single compact line. */
+@media (max-width:640px){
+  .lb-nav{position:static;}
+  .lb-nav-in{padding:9px 15px;gap:10px;}
+  .lb-brand{font-size:16px;}
+  .lb-links{margin-left:auto;flex-wrap:nowrap;gap:2px;}
+  .lb-links a,.lb-links button{font-size:12.5px;padding:5px 8px;}
+}
 @media (max-width:560px){.lb-kpis{grid-template-columns:1fr 1fr}.lb-bar .name{flex-basis:108px}.lb-links a:not(:first-child){display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
