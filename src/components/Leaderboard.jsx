@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { orgColor, catShort, catFull, subtaskLabel } from "../lib/constants";
-import { costForScope, costPerQuality, collapseVariants } from "../lib/compute";
+import { orgColor, catFull, subtaskLabel } from "../lib/constants";
+import { collapseVariants } from "../lib/compute";
 
 // Render $X with the "$" in a .cur span (size-only nudge — see index.css).
 const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
@@ -57,16 +57,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const scoreCols = focusedCat ? [focusedCat, ...categories[focusedCat]] : ["overall", ...cats];
 
-  // The cost columns ($/Q, $/quality, Value) follow the selected score scope:
-  // a focused category or a sorted subtask, else overall. So selecting "Coding"
-  // (or sorting by the python column) makes cost reflect exactly that scope.
-  const costScope = (sortKey === "cpq" || sortKey === "perq" || sortKey === "model")
-    ? (focusedCat || "overall")
-    : sortKey;
-  const scopeCost = (m) => costForScope(m.cost, categories, costScope);
-  const scopeLabel = costScope === "overall"
-    ? null
-    : (costScope in categories ? catShort(costScope) : subtaskLabel(costScope));
+  // Cost is a single fixed metric: overall cost per task (total run cost ÷ tasks),
+  // independent of sort/focus — one column, one definition.
 
   // reflect focus + sort in the URL (shareable, no history spam)
   useEffect(() => {
@@ -78,8 +70,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   }, [focusedCat, sortKey, sortDir]);
 
   const sortVal = (m, k) => {
-    if (k === "cpq") return scopeCost(m);
-    if (k === "perq") return costPerQuality(scopeCost(m), numVal(m, costScope));
+    if (k === "cpq") return m.costOverall;
     if (k === "model") return m.name.toLowerCase();
     return numVal(m, k);
   };
@@ -108,15 +99,15 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
     // cost columns + model name sort ascending first; score columns sort descending first.
-    else { setSortKey(k); setSortDir((k === "model" || k === "cpq" || k === "perq") ? 1 : -1); }
+    else { setSortKey(k); setSortDir((k === "model" || k === "cpq") ? 1 : -1); }
   };
   const arrow = (k) => (k === sortKey ? <span className="arr">{sortDir < 0 ? "▼" : "▲"}</span> : null);
   const toggleRow = (model) =>
     setExpanded((s) => { const n = new Set(s); n.has(model) ? n.delete(model) : n.add(model); return n; });
 
-  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catShort(k) : subtaskLabel(k));
+  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catFull(k) : subtaskLabel(k));
   const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : subtaskLabel(k));
-  const colCount = 2 + scoreCols.length + (hasCost ? 2 : 0);
+  const colCount = 2 + scoreCols.length + (hasCost ? 1 : 0);
 
   return (
     <>
@@ -135,7 +126,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         <span className="lb-cats-label">Category</span>
         <button className="lb-chip" aria-pressed={!focusedCat} onClick={() => focusCat(null)}>All</button>
         {cats.map((c) => (
-          <button key={c} className="lb-chip" data-tip={catFull(c)} aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{c}</button>
+          <button key={c} className="lb-chip" data-tip={catFull(c)} aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{catFull(c)}</button>
         ))}
       </div>
 
@@ -146,19 +137,17 @@ export default function Leaderboard({ models, categories, hasCost }) {
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
               <th className="l" onClick={() => clickSort("model")}><span className="th-h"><span className="th-t">Model</span>{arrow("model")}</span></th>
               {scoreCols.map((k, i) => (
-                <th key={k} className={focusedCat && i > 0 ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>
+                <th key={k} className={i > 0 ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>
                   <span className="th-h"><span className="th-t">{headLabel(k)}</span>{arrow(k)}</span>
                 </th>
               ))}
-              {hasCost && <th className="grp" data-tip={`Measured cost per question — ${costScope === "overall" ? "overall (total cost ÷ all questions)" : "for " + (scopeLabel || costScope)}`} onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">{scopeLabel ? `$/Q·${scopeLabel}` : "$/Q"}</span>{arrow("cpq")}</span></th>}
-              {hasCost && <th data-tip="Cost per LiveBench point — scoped $/Q ÷ scoped score (lower = better value)" onClick={() => clickSort("perq")}><span className="th-h"><span className="th-t">{scopeLabel ? `$/qual·${scopeLabel}` : "$/quality"}</span>{arrow("perq")}</span></th>}
+              {hasCost && <th className="grp" data-tip="Measured cost per task — total run cost ÷ tasks (official list pricing, cache accounted)" onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">Cost / task</span>{arrow("cpq")}</span></th>}
             </tr>
           </thead>
           <tbody>
             {rows.map((m) => {
               const open = expanded.has(m.model);
-              const cScope = scopeCost(m);                                   // $/Q at current scope
-              const qScope = costPerQuality(cScope, numVal(m, costScope));   // $/quality at current scope
+              const cost = m.costOverall;   // overall cost per task
               return (
                 <React.Fragment key={m.model}>
                   <tr className={"row" + (open ? " open" : "")} onClick={() => toggleRow(m.model)}>
@@ -166,7 +155,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                     <td className="l">
                       <div className="lb-mdl">
                         <span className="lb-mdot" style={{ background: orgColor(m.org) }} />
-                        <span className="nm">{m.name}</span>
+                        <span className="nm" title={m.name}>{m.name}</span>
                         {showVariants && m.info?.version && <span className="ef">{m.info.version}</span>}
                         {m.open && <span className="opn">open</span>}
                       </div>
@@ -179,8 +168,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         </td>
                       );
                     })}
-                    {hasCost && <td className={"lb-cost-col" + (cScope != null ? "" : " na")}><Money v={cScope} dp={3} /></td>}
-                    {hasCost && <td className={qScope != null ? "" : "na"}><Money v={qScope} dp={4} /></td>}
+                    {hasCost && <td className={"lb-cost-col" + (cost != null ? "" : " na")}><Money v={cost} dp={3} /></td>}
                   </tr>
                   {open && (
                     <tr className="lb-detail">
@@ -217,7 +205,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         {focusedCat
           ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
           : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
-        {hasCost ? ` · $/Q & $/quality reflect the ${scopeLabel || "overall"} scope` : ""}
+        {hasCost ? " · Cost / task = total run cost ÷ tasks (official list pricing, cache accounted)" : ""}
       </p>
     </>
   );
