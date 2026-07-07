@@ -9,8 +9,9 @@ Methodology (validated to reproduce existing rows exactly):
   cost[col]   = sum over answers of the per-answer cost (see _answer_cost):
                   - provider cost_usd when present (+ cache-read at 0.1x input for
                     CACHE_READ_OMITTED models whose cost_usd charged $0 for reads),
+                  - plus cache-write at 1.25x IN for Anthropic models (only they report
+                    cache_creation), excluding runaway answers at the 250-call step cap,
                   - else spend_report's token fallback: uncached*IN + cached*0.1*IN + out*OUT.
-                  Cache-WRITE (cache_creation) tokens are never charged.
   nq_col      = number of scored (judged) questions for the column.
   avg_*_tokens= mean input/output tokens across the model's answers.
   prices      = cost_per_million.input / .output from the model config.
@@ -102,24 +103,36 @@ CACHE_READ_OMITTED = {
 }
 
 
-def _answer_cost(a, in_price, out_price, cached_price, add_cache_read):
-    """Per-answer cost, matching scripts/spend_report.py + cache-read consistency.
+RUNAWAY_CALLS = 250  # agent step cap; answers that hit it thrash the prompt cache
+                     # (cache-write >> cache-read), so their cache-writes are excluded.
 
-    Use the provider-reported cost_usd when present. Two adjustments:
+
+def _answer_cost(a, in_price, out_price, cached_price, add_cache_read, charge_cache_write):
+    """Per-answer cost, matching scripts/spend_report.py + cache consistency.
+
+    Use the provider-reported cost_usd when present, with two adjustments:
     - CACHE-READS: for models in CACHE_READ_OMITTED (whose cost_usd charged $0 for
       cache reads), add cache-read at 0.1x input so all models are consistent.
-    - CACHE-WRITES are never charged: only Anthropic reports cache_creation
-      tokens, they're inflated by cache-miss thrash on runaway agentic runs, and
-      the provider cost_usd excludes them. See spend_report.py.
+    - CACHE-WRITES: for Anthropic models (charge_cache_write; only they report
+      cache_creation), add cache-write at 1.25x input -- EXCEPT on runaway answers
+      that hit the RUNAWAY_CALLS step cap, whose caching thrashed (re-writing the
+      context every call); those cache-writes are excluded as harness artifacts.
     Fallback when cost_usd is absent uses spend_report's split (cached is a
     subset of input): cost = uncached*in + cached*cached_price + output*out.
     """
     ti = a.get('total_input_tokens', 0) or 0
     to = a.get('total_output_tokens', 0) or 0
     cr = a.get('total_cached_tokens', 0) or 0
+    cc = a.get('total_cache_creation_tokens', 0) or 0
+    ncalls = a.get('n_model_calls') or 0
     cu = a.get('cost_usd')
     if cu is not None:
-        return cu + (cr*in_price*0.1 / 1e6 if add_cache_read else 0.0)
+        cost = cu
+        if add_cache_read:
+            cost += cr*in_price*0.1 / 1e6
+        if charge_cache_write and ncalls < RUNAWAY_CALLS:
+            cost += cc*in_price*1.25 / 1e6
+        return cost
     cached = min(cr, ti)
     uncached = ti - cached
     return (uncached*in_price + cached*cached_price + to*out_price) / 1e6
@@ -131,6 +144,7 @@ def generate(data_dir, model, in_price, out_price, cached_price=None):
     if cached_price is None:
         cached_price = in_price * 0.1
     add_cache_read = model in CACHE_READ_OMITTED
+    charge_cache_write = is_anthropic(model)
     def qids(cat, task):
         # Active questions only, matching scripts/spend_report.py active_ids:
         # a question is active iff its livebench_removal_date is empty. The task
@@ -156,7 +170,7 @@ def generate(data_dir, model, in_price, out_price, cached_price=None):
             for a in answers(cat, task):
                 if a.get('question_id') not in valid:
                     continue
-                c += _answer_cost(a, in_price, out_price, cached_price, add_cache_read)
+                c += _answer_cost(a, in_price, out_price, cached_price, add_cache_read, charge_cache_write)
                 to = a.get('total_output_tokens', 0) or 0
                 if to != -1:
                     tin += a.get('total_input_tokens', 0) or 0; tout += to; nans += 1
