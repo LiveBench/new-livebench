@@ -79,9 +79,12 @@ a{color:var(--accent);text-decoration:none;}
 .lb-cats-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:2px;}
 
 /* table */
-.lb-tbl-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);}
+/* Self-contained scroll pane (like old LiveBench): scroll WITHIN the table — header
+   stays pinned (sticky top) and the model column stays pinned (sticky left) — instead
+   of scrolling the whole page. */
+.lb-tbl-scroll{overflow:auto;max-height:78vh;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);}
 .lb-tbl{border-collapse:collapse;width:100%;font-size:13.5px;}
-.lb-tbl thead th{position:sticky;top:0;background:var(--surface);text-align:right;vertical-align:bottom;padding:12px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border-strong);white-space:nowrap;cursor:pointer;user-select:none;}
+.lb-tbl thead th{position:sticky;top:0;z-index:3;background:var(--surface);text-align:right;vertical-align:bottom;padding:12px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border-strong);white-space:nowrap;cursor:pointer;user-select:none;}
 .lb-tbl thead th.l{text-align:left;}
 .lb-tbl thead th:hover{color:var(--accent);}
 /* label + sort arrow share one flex row so the arrow stays adjacent (never wraps below) even when the label spans two lines */
@@ -93,6 +96,13 @@ a{color:var(--accent);text-decoration:none;}
 .lb-tbl thead th.grp.wrap2{white-space:normal;max-width:124px;min-width:112px;line-height:1.2;}
 .lb-tbl thead th.sub{white-space:normal;max-width:96px;line-height:1.25;text-wrap:balance;}
 .lb-tbl tbody td{padding:10px 11px;text-align:right;border-bottom:1px solid var(--border);font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
+/* Frozen model column at ALL widths: rank arrow + model name stay pinned while the
+   score/cost columns scroll horizontally within the pane (matches old LiveBench). */
+.lb-tbl td.lb-rank,.lb-tbl td.mdl-col{position:sticky;z-index:2;background:var(--surface);}
+.lb-tbl thead th:first-child,.lb-tbl thead th.mdl-col{z-index:5;}
+.lb-tbl td.lb-rank,.lb-tbl thead th:first-child{left:0;width:30px;min-width:30px;max-width:30px;}
+.lb-tbl td.mdl-col,.lb-tbl thead th.mdl-col{left:29px;box-shadow:inset -1px 0 0 var(--border);}
+.lb-tbl tbody tr.row:hover td.lb-rank,.lb-tbl tbody tr.row:hover td.mdl-col{background:#F3F6FF;}
 .lb-tbl tbody td.l{text-align:left;font-family:var(--sans);}
 .lb-tbl tbody tr.row{cursor:pointer;}
 .lb-tbl tbody tr.row:hover td{background:#F3F6FF;}
@@ -187,16 +197,9 @@ a{color:var(--accent);text-decoration:none;}
   .lb-links a,.lb-links button{font-size:12.5px;padding:5px 8px;}
 
   .lb-tbl thead th,.lb-tbl tbody td{padding:7px 6px;}
-  .lb-tbl thead th{z-index:3;}                                         /* header above body on vertical scroll */
-  .lb-tbl td.lb-rank,.lb-tbl td.mdl-col{position:sticky;z-index:2;background:var(--surface);}
-  .lb-tbl thead th:first-child,.lb-tbl thead th.mdl-col{z-index:5;}    /* frozen header corners on top */
-  .lb-tbl td.lb-rank,.lb-tbl thead th:first-child{left:0;width:30px;min-width:30px;max-width:30px;}
-  /* left:29px = 1px overlap onto the rank cell so no scrolled content shows in the seam */
-  .lb-tbl td.mdl-col,.lb-tbl thead th.mdl-col{left:29px;box-shadow:inset -1px 0 0 var(--border);}
-  .lb-tbl td.mdl-col{width:115px;min-width:115px;max-width:115px;white-space:normal;}
+  .lb-tbl td.mdl-col{width:115px;min-width:115px;max-width:115px;white-space:normal;}   /* narrower + multi-line on mobile */
   .lb-mdl{flex-wrap:wrap;gap:3px 5px;}
   .lb-mdl .nm{white-space:normal;font-size:12.5px;line-height:1.25;}
-  tr.row:hover td.lb-rank,tr.row:hover td.mdl-col{background:#F3F6FF;}
 
   /* expanded sub-scores: a self-contained panel pinned to the viewport with its
      own horizontal scroll, so opening/scrolling it never moves the table columns */
