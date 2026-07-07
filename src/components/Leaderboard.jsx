@@ -150,8 +150,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
                   <span className="th-h"><span className="th-t">{headLabel(k)}</span>{arrow(k)}</span>
                 </th>
               ))}
-              {hasCost && <th className="grp" data-tip="Cost per task for the selected scope — Σ cost ÷ Σ questions (official list pricing, cache accounted)" onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">Cost / task</span>{arrow("cpq")}</span></th>}
-              {hasCost && <th className="grp" data-tip="Cost per successful task = (cost/task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost / successful task</span>{arrow("cpst")}</span></th>}
+              {hasCost && <th className="grp" data-tip="Cost per task for the selected scope — Σ cost ÷ Σ questions (official list pricing, cache accounted)" onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">Cost per task</span>{arrow("cpq")}</span></th>}
+              {hasCost && <th className="grp wrap2" data-tip="Cost per successful task = (cost per task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost per successful task</span>{arrow("cpst")}</span></th>}
             </tr>
           </thead>
           <tbody>
@@ -216,7 +216,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
         {focusedCat
           ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
           : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
-        {hasCost ? " · Cost / task = Σ cost ÷ Σ questions (scope-aware) · Cost / successful task = (cost/task ÷ score) × 100" : ""}
+        {hasCost ? " · Cost per task = Σ cost ÷ Σ questions (scope-aware) · Cost per successful task = (cost per task ÷ score) × 100" : ""}
       </p>
     </>
   );
