@@ -195,6 +195,11 @@ a{color:var(--accent);text-decoration:none;}
   .lb-mdl{flex-wrap:wrap;gap:3px 6px;}
   .lb-mdl .nm{white-space:normal;}
   tr.row:hover td.lb-rank,tr.row:hover td.mdl-col{background:#F3F6FF;}
+
+  /* expanded sub-scores: a self-contained panel pinned to the viewport with its
+     own horizontal scroll, so opening/scrolling it never moves the table columns */
+  .lb-detail-in{position:sticky;left:0;width:calc(100vw - 44px);max-width:calc(100vw - 44px);overflow-x:auto;-webkit-overflow-scrolling:touch;padding:14px;}
+  .lb-det-grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(185px,76%);}
 }
 @media (max-width:560px){.lb-kpis{grid-template-columns:1fr 1fr}.lb-bar .name{flex-basis:108px}.lb-links a:not(:first-child){display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
