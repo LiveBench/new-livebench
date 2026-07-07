@@ -175,6 +175,7 @@ const CSVTable = ({dateStr}) => {
         ...row,
         avg_output_tokens: costMap[row.model]?.avg_output_tokens ?? null,
         cost_per_question: costMap[row.model]?.cost_per_question ?? null,
+        cost_per_successful_task: costMap[row.model]?.cost_per_successful_task ?? null,
     })), [rawData, costMap]);
 
     const [sortedData, handleSorting, handleSearch, handleFilter, sortField, sortOrder, searchQuery, filter] = useTable(data, columns, checkedCategories, categories, 'model', getModelInfo);
@@ -211,6 +212,7 @@ const CSVTable = ({dateStr}) => {
                                     avg_output_tokens: r.avg_output_tokens,
                                     avg_input_tokens: r.avg_input_tokens,
                                     cost_per_question: r.cost_per_question,
+                                    cost_per_successful_task: r.cost_per_successful_task,
                                 };
                             }
                         });
@@ -702,6 +704,11 @@ const CSVTable = ({dateStr}) => {
                                     title="Estimated USD cost per question = input·price_in + output·price_out"
                                     onClick={() => handleSortingChange("cost_per_question")}>
                                     Cost / Question</th>}
+                                {showCost && <th
+                                    className={`cost-col ${getSortClass("cost_per_successful_task")}`}
+                                    title="Cost per successful task = (cost per question ÷ score) × 100 — penalizes failures / partial credit"
+                                    onClick={() => handleSortingChange("cost_per_successful_task")}>
+                                    Cost / Successful Task</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -746,6 +753,7 @@ const CSVTable = ({dateStr}) => {
                                                 <>
                                                     <td className="cost-col">{c && c.avg_output_tokens != null ? Math.round(c.avg_output_tokens).toLocaleString() : na}</td>
                                                     <td className="cost-col">{c && c.cost_per_question != null ? `$${Number(c.cost_per_question).toFixed(3)}` : na}</td>
+                                                    <td className="cost-col">{c && c.cost_per_successful_task != null ? `$${Number(c.cost_per_successful_task).toFixed(3)}` : na}</td>
                                                 </>
                                             );
                                         })()}

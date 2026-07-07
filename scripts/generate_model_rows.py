@@ -67,6 +67,23 @@ COLS = {
 }
 COLORDER = list(COLS.keys())
 
+# category -> subcategory columns (for the overall score used by cost_per_successful_task)
+CATEGORIES = {
+    'math': ['AMPS_Hard', 'integrals_with_game', 'math_comp', 'olympiad'],
+    'coding': ['code_completion', 'code_generation'],
+    'data_analysis': ['consecutive_events', 'tablejoin', 'tablereformat'],
+    'instruction_following': ['paraphrase', 'simplify', 'story_generation', 'summarize'],
+    'language': ['connections', 'plot_unscrambling', 'typos'],
+    'reasoning': ['logic_with_navigation', 'spatial', 'theory_of_mind', 'zebra_puzzle'],
+    'agentic_coding': ['python', 'javascript', 'typescript'],
+}
+
+
+def _overall_score(score):
+    """Global average = mean of the 7 category averages (matches the site)."""
+    cats = [sum(score[c] for c in cols) / len(cols) for cols in CATEGORIES.values()]
+    return sum(cats) / len(cats)
+
 
 def load_price(model):
     """(input, output) USD/1M from the LiveBench config, or None if unavailable."""
@@ -212,14 +229,21 @@ def main():
 
     score, cost, nq, avg_in, avg_out, out = generate(args.data, args.model, in_price, out_price)
 
+    # overall $/question and cost per successful task (= $/Q ÷ score × 100)
+    cpq = sum(cost.values()) / sum(nq.values()) if sum(nq.values()) else 0
+    osc = _overall_score(score)
+    cpst = cpq / osc * 100 if osc else 0
+
     table_row = [name] + [str(score[c]) for c in COLORDER]
-    # cost row: task costs, nq_*, summary tokens/prices, then per-subcategory avg output (out_*)
+    # cost row: task costs, nq_*, summary tokens/prices, per-subcategory avg output (out_*),
+    # then overall cost_per_question and cost_per_successful_task.
     cost_row = ([name] + [str(cost[c]) for c in COLORDER] + [str(nq[c]) for c in COLORDER]
                 + [str(avg_in), str(avg_out), _num(in_price), _num(out_price)]
-                + [str(out[c]) for c in COLORDER])
+                + [str(out[c]) for c in COLORDER]
+                + [f'{cpq:.4f}', f'{cpst:.4f}'])
 
     if args.verify:
-        _verify(args.verify, name, score, cost, nq, avg_out, out)
+        _verify(args.verify, name, score, cost, nq, avg_out, out, cpq, cpst)
         return
     print('# table row (append to table_<release>.csv):')
     print(','.join(table_row))
@@ -231,7 +255,7 @@ def _num(x):
     return str(int(x)) if float(x).is_integer() else str(x)
 
 
-def _verify(public_dir, name, score, cost, nq, avg_out, out):
+def _verify(public_dir, name, score, cost, nq, avg_out, out, cpq, cpst):
     t = {r['model']: r for r in csv.DictReader(open(f'{public_dir}/table_2026_06_25.csv'))}
     c = {r['model']: r for r in csv.DictReader(open(f'{public_dir}/cost_2026_06_25.csv'))}
     if name not in t:
@@ -248,6 +272,11 @@ def _verify(public_dir, name, score, cost, nq, avg_out, out):
     if c[name].get('avg_output_tokens') and int(avg_out) != int(float(c[name]['avg_output_tokens'])):
         ok = False
         print(f'  MISMATCH avg_output_tokens: gen={avg_out} csv={c[name]["avg_output_tokens"]}')
+    for label, gen in (('cost_per_question', cpq), ('cost_per_successful_task', cpst)):
+        ref = c[name].get(label)
+        if ref not in (None, '') and abs(gen - float(ref)) > 0.01:
+            ok = False
+            print(f'  MISMATCH {label}: gen={gen:.4f} csv={ref}')
     print('VERIFY: all columns match' if ok else 'VERIFY: mismatches above')
 
 
