@@ -98,6 +98,9 @@ a{color:var(--accent);text-decoration:none;}
 .lb-rank{color:var(--faint);font-size:12px;width:30px;}
 .lb-mdl{display:flex;align-items:center;gap:8px;}
 .lb-mdl .nm{font-weight:600;white-space:nowrap;}
+/* model column hugs its content so it doesn't absorb the table's slack; the
+   numeric score/cost columns take the remaining width */
+.lb-tbl .mdl-col{width:1%;white-space:nowrap;}
 .lb-mdl .ef{flex:none;font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--border-strong);border-radius:4px;padding:0 4px;}
 .lb-mdl .rz{flex:none;font-size:10px;color:var(--accent);font-family:var(--mono);}
 .lb-mdl .opn{flex:none;font-size:9.5px;color:var(--live);font-family:var(--mono);border:1px solid var(--live);border-radius:4px;padding:0 4px;}
@@ -108,7 +111,7 @@ a{color:var(--accent);text-decoration:none;}
 .cur{font-size:1.1em;}
 .lb-tbl td.na{color:var(--faint);}
 .lb-bv{font-family:var(--mono);font-size:10px;font-weight:700;color:#fff;background:var(--live);border-radius:5px;padding:2px 6px;letter-spacing:.03em;}
-.lb-exp{color:var(--faint);font-size:11px;display:inline-block;width:12px;transition:.15s;}
+.lb-exp{color:var(--muted);font-size:14px;display:inline-block;width:14px;transition:.15s;}
 .lb-tbl tr.open .lb-exp{transform:rotate(90deg);color:var(--accent);}
 .lb-detail td{background:#FBFCFE;padding:0;border-bottom:1px solid var(--border);}
 .lb-detail-in{padding:16px 18px 18px;}

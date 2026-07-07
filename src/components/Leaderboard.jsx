@@ -135,7 +135,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
           <thead>
             <tr>
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
-              <th className="l" onClick={() => clickSort("model")}><span className="th-h"><span className="th-t">Model</span>{arrow("model")}</span></th>
+              <th className="l mdl-col" onClick={() => clickSort("model")}><span className="th-h"><span className="th-t">Model</span>{arrow("model")}</span></th>
               {scoreCols.map((k, i) => (
                 <th key={k} className={i > 0 ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>
                   <span className="th-h"><span className="th-t">{headLabel(k)}</span>{arrow(k)}</span>
@@ -152,7 +152,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                 <React.Fragment key={m.model}>
                   <tr className={"row" + (open ? " open" : "")} onClick={() => toggleRow(m.model)}>
                     <td className="l lb-rank"><span className="lb-exp">▸</span></td>
-                    <td className="l">
+                    <td className="l mdl-col">
                       <div className="lb-mdl">
                         <span className="nm" title={m.name}>{m.name}</span>
                         {showVariants && m.info?.version && <span className="ef">{m.info.version}</span>}
