@@ -189,8 +189,9 @@ a{color:var(--accent);text-decoration:none;}
   .lb-tbl thead th{z-index:3;}                                         /* header above body on vertical scroll */
   .lb-tbl td.lb-rank,.lb-tbl td.mdl-col{position:sticky;z-index:2;background:var(--surface);}
   .lb-tbl thead th:first-child,.lb-tbl thead th.mdl-col{z-index:5;}    /* frozen header corners on top */
-  .lb-tbl td.lb-rank,.lb-tbl thead th:first-child{left:0;}
-  .lb-tbl td.mdl-col,.lb-tbl thead th.mdl-col{left:30px;box-shadow:inset -1px 0 0 var(--border);}
+  .lb-tbl td.lb-rank,.lb-tbl thead th:first-child{left:0;width:30px;min-width:30px;max-width:30px;}
+  /* left:29px = 1px overlap onto the rank cell so no scrolled content shows in the seam */
+  .lb-tbl td.mdl-col,.lb-tbl thead th.mdl-col{left:29px;box-shadow:inset -1px 0 0 var(--border);}
   .lb-tbl td.mdl-col{width:115px;min-width:115px;max-width:115px;white-space:normal;}
   .lb-mdl{flex-wrap:wrap;gap:3px 5px;}
   .lb-mdl .nm{white-space:normal;font-size:12.5px;line-height:1.25;}
