@@ -151,7 +151,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                 </th>
               ))}
               {hasCost && <th className="grp" data-tip="Cost per task for the selected scope — Σ cost ÷ Σ questions (official list pricing, cache accounted)" onClick={() => clickSort("cpq")}><span className="th-h"><span className="th-t">Cost / task</span>{arrow("cpq")}</span></th>}
-              {hasCost && <th className="grp" data-tip="Cost per successful task = (cost/task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost / successful task</span>{arrow("cpst")}</span></th>}
+              {hasCost && <th className="grp" data-tip="Cost per successful task = (cost/task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost / success</span>{arrow("cpst")}</span></th>}
             </tr>
           </thead>
           <tbody>
