@@ -50,6 +50,25 @@ export function costForScope(costRow, categories, scope) {
 export const catCost = (costRow, categories, cat) => costForScope(costRow, categories, cat);
 export const overallCost = (costRow, categories) => costForScope(costRow, categories, "overall");
 
+// Avg output tokens/question at a scope. Overall uses the precomputed
+// avg_output_tokens; a category/subtask is the question-weighted mean of its
+// subtasks' out_<subtask> columns (Σ out*nq / Σ nq) — so charts show the
+// per-category output, not the overall number, when a scope is selected.
+export function outputTokensForScope(costRow, categories, scope) {
+  if (!costRow) return null;
+  if (scope === "overall") {
+    const v = Number(costRow.avg_output_tokens);
+    return isNaN(v) ? null : v;
+  }
+  let out = 0, n = 0;
+  for (const t of scopeSubtasks(categories, scope)) {
+    const o = Number(costRow["out_" + t]);
+    const q = Number(costRow["nq_" + t]);
+    if (!isNaN(o) && !isNaN(q) && q > 0) { out += o * q; n += q; }
+  }
+  return n > 0 ? out / n : null;
+}
+
 // $/quality at a scope = scoped cost ÷ scoped score (cost per LiveBench point). Lower = better.
 export const costPerQuality = (costVal, scoreVal) =>
   costVal != null && scoreVal ? costVal / scoreVal : null;

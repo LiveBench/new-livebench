@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { orgColor } from "../../lib/constants";
-import { perMillionOut, frontierBy, costForScope } from "../../lib/compute";
+import { perMillionOut, frontierBy, costForScope, outputTokensForScope } from "../../lib/compute";
 
 const fmtPerM = (v) => (v == null ? "—" : v < 10 ? `$${v.toFixed(1)}` : `$${Math.round(v)}`);
 
@@ -41,7 +41,7 @@ export default function CostBars({ models, categories, scope = "overall" }) {
           <div className="tg">
             <span>$/Q</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
             <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
-            <span>avg output tokens</span><span>{(Number(tip.m.cost.avg_output_tokens) || 0).toLocaleString()}</span>
+            <span>avg output tokens{scope === "overall" ? "" : ` (${scope})`}</span><span>{Math.round(outputTokensForScope(tip.m.cost, categories, scope) || 0).toLocaleString()}</span>
           </div>
         </div>
       )}

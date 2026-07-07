@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { orgColor } from "../../lib/constants";
-import { perMillionOut, frontierBy, costForScope } from "../../lib/compute";
+import { perMillionOut, frontierBy, costForScope, outputTokensForScope } from "../../lib/compute";
 
 const fmtPerM = (v) => (v == null ? "—" : v < 10 ? `$${v.toFixed(1)}` : `$${Math.round(v)}`);
 const W = 560, H = 400, pL = 46, pR = 14, pT = 16, pB = 46, pw = W - pL - pR, ph = H - pT - pB;
@@ -82,7 +82,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
               <span>{scopeName}</span><span>{scoreOf(tip.m).toFixed(1)}</span>
               <span>$/Q</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
               <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
-              <span>avg output tokens</span><span>{Number(tip.m.cost.avg_output_tokens).toLocaleString()}</span>
+              <span>avg output tokens{scope === "overall" ? "" : ` (${scope})`}</span><span>{Math.round(outputTokensForScope(tip.m.cost, categories, scope) || 0).toLocaleString()}</span>
             </div>
             {front.has(tip.m.model) && <div style={{ marginTop: 6, color: "#7Cf0c0" }}>● value frontier</div>}
           </div>
