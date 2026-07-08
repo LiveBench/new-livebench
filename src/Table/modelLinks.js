@@ -497,7 +497,34 @@ export const modelLinks = {
             { rawName: "claude-opus-4-8-high-effort", displayName: "Claude 4.8 Opus Thinking High Effort" }
         ]
     },
-    "claude-fable-5-xhigh-effort": {url: "https://www.anthropic.com/news/claude-fable-5", organization: "Anthropic", displayName: "Claude Fable 5 xHigh Effort", reasoner: true}
+    "claude-fable-5-xhigh-effort": {url: "https://www.anthropic.com/news/claude-fable-5", organization: "Anthropic", displayName: "Claude Fable 5 xHigh Effort", reasoner: true},
+    "gpt-5.6-sol-max": {
+        url: "https://platform.openai.com/docs/models/gpt-5.6",
+        organization: "OpenAI",
+        displayName: "GPT-5.6 Sol Max Effort",
+        reasoner: true,
+        variants: [
+            { rawName: "gpt-5.6-sol-xhigh", displayName: "GPT-5.6 Sol xHigh Effort" }
+        ]
+    },
+    "gpt-5.6-terra-max": {
+        url: "https://platform.openai.com/docs/models/gpt-5.6",
+        organization: "OpenAI",
+        displayName: "GPT-5.6 Terra Max Effort",
+        reasoner: true,
+        variants: [
+            { rawName: "gpt-5.6-terra-xhigh", displayName: "GPT-5.6 Terra xHigh Effort" }
+        ]
+    },
+    "gpt-5.6-luna-max": {
+        url: "https://platform.openai.com/docs/models/gpt-5.6",
+        organization: "OpenAI",
+        displayName: "GPT-5.6 Luna Max Effort",
+        reasoner: true,
+        variants: [
+            { rawName: "gpt-5.6-luna-xhigh", displayName: "GPT-5.6 Luna xHigh Effort" }
+        ]
+    }
 };
 
 const variantLookup = {};
