@@ -115,6 +115,11 @@ a{color:var(--accent);text-decoration:none;}
 /* model column hugs its content so it doesn't absorb the table's slack; the
    numeric score/cost columns take the remaining width */
 .lb-tbl .mdl-col{width:1%;white-space:nowrap;}
+/* optional Organization column (toggled by "Show org"); first scrolling column after the frozen model */
+.lb-tbl .org-col{width:1%;text-align:left;font-family:var(--sans);color:var(--muted);white-space:nowrap;font-size:12.5px;}
+.lb-org-select{font-family:var(--mono);font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;padding:7px 12px;cursor:pointer;}
+.lb-org-select:hover{border-color:var(--accent);color:var(--ink);}
+.lb-org-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 .lb-mdl .ef{flex:none;font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--border-strong);border-radius:4px;padding:0 4px;}
 .lb-mdl .rz{flex:none;font-size:10px;color:var(--accent);font-family:var(--mono);}
 .lb-mdl .opn{flex:none;font-size:9.5px;color:var(--live);font-family:var(--mono);border:1px solid var(--live);border-radius:4px;padding:0 4px;}

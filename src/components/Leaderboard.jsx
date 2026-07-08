@@ -54,6 +54,10 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const [onlyReason, setOnlyReason] = useState(false);
   const [onlyOpen, setOnlyOpen] = useState(false);
   const [q, setQ] = useState("");
+  const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
+  const [orgFilter, setOrgFilter] = useState(init.get("org") || "");
+
+  const orgs = [...new Set(models.map((m) => m.org).filter(Boolean))].sort();
 
   const scoreCols = focusedCat ? [focusedCat, ...categories[focusedCat]] : ["overall", ...cats];
 
@@ -75,12 +79,15 @@ export default function Leaderboard({ models, categories, hasCost }) {
     if (focusedCat) p.set("cat", focusedCat);
     const isDefault = sortKey === (focusedCat || "overall") && sortDir === -1;
     if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
+    if (showOrg) p.set("showorg", "1");
+    if (orgFilter) p.set("org", orgFilter);
     writeHash(p);
-  }, [focusedCat, sortKey, sortDir]);
+  }, [focusedCat, sortKey, sortDir, showOrg, orgFilter]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
     if (k === "model") return m.name.toLowerCase();
+    if (k === "org") return (m.org || "").toLowerCase();
     return numVal(m, k);
   };
 
@@ -88,6 +95,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
     let r = models.filter((m) => {
       if (onlyReason && !m.reasoner) return false;
       if (onlyOpen && !m.open) return false;
+      if (orgFilter && m.org !== orgFilter) return false;
       if (q && !m.name.toLowerCase().includes(q) && !m.model.toLowerCase().includes(q)) return false;
       return true;
     });
@@ -100,7 +108,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyReason, onlyOpen, q, showVariants, sortKey, sortDir]);
+  }, [models, onlyReason, onlyOpen, orgFilter, q, showVariants, sortKey, sortDir]);
 
   const shades = computeShades(rows, scoreCols);
 
@@ -108,7 +116,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
     // cost columns + model name sort ascending first; score columns sort descending first.
-    else { setSortKey(k); setSortDir((k === "model" || k === "cpst") ? 1 : -1); }
+    else { setSortKey(k); setSortDir((k === "model" || k === "cpst" || k === "org") ? 1 : -1); }
   };
   const arrow = (k) => (k === sortKey ? <span className="arr">{sortDir < 0 ? "▼" : "▲"}</span> : null);
   const toggleRow = (model) =>
@@ -116,7 +124,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catFull(k) : subtaskLabel(k));
   const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : subtaskLabel(k));
-  const colCount = 2 + scoreCols.length + (hasCost ? 1 : 0);
+  const colCount = 2 + scoreCols.length + (hasCost ? 1 : 0) + (showOrg ? 1 : 0);
 
   return (
     <>
@@ -129,6 +137,12 @@ export default function Leaderboard({ models, categories, hasCost }) {
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
         <button className="lb-chip" aria-pressed={showVariants} data-tip="Off = best variant per model · On = every effort variant"
           onClick={() => setShowVariants((v) => !v)}>Model variants</button>
+        <button className="lb-chip" aria-pressed={showOrg} data-tip="Show the organization column"
+          onClick={() => setShowOrg((v) => !v)}>Show org</button>
+        <select className="lb-org-select" value={orgFilter} onChange={(e) => setOrgFilter(e.target.value)} aria-label="Filter by organization">
+          <option value="">All organizations</option>
+          {orgs.map((o) => <option key={o} value={o}>{o}</option>)}
+        </select>
       </div>
 
       <div className="lb-cats">
@@ -145,6 +159,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
             <tr>
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
               <th className="l mdl-col" onClick={() => clickSort("model")}><span className="th-h"><span className="th-t">Model</span>{arrow("model")}</span></th>
+              {showOrg && <th className="l org-col" data-tip="Organization" onClick={() => clickSort("org")}><span className="th-h"><span className="th-t">Org</span>{arrow("org")}</span></th>}
               {scoreCols.map((k, i) => (
                 <th key={k} className={i > 0 ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>
                   <span className="th-h"><span className="th-t">{headLabel(k)}</span>{arrow(k)}</span>
@@ -168,6 +183,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                         {m.open && <span className="opn">open</span>}
                       </div>
                     </td>
+                    {showOrg && <td className="l org-col">{m.org}</td>}
                     {scoreCols.map((k, i) => {
                       const v = numVal(m, k);
                       return (
