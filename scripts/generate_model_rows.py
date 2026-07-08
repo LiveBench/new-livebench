@@ -6,12 +6,11 @@ combined-column format the website consumes (task columns + nq_* + avg tokens + 
 Methodology (validated to reproduce existing rows exactly):
   score[col]  = mean(judgment.score for the model over valid question_ids in the
                 mapped task dirs) * 100, rounded to 3 decimals.
-  cost[col]   = sum over answers of the per-answer cost (see _answer_cost):
-                  - provider cost_usd when present (+ cache-read at 0.1x input for
-                    CACHE_READ_OMITTED models whose cost_usd charged $0 for reads),
-                  - plus cache-write at 1.25x IN for Anthropic models (only they report
-                    cache_creation), excluding runaway answers at the 250-call step cap,
-                  - else spend_report's token fallback: uncached*IN + cached*0.1*IN + out*OUT.
+  cost[col]   = sum over answers of the per-answer cost, computed purely from token
+                counts x config pricing (the provider-reported cost_usd is NOT used —
+                it is inconsistent across providers): uncached_in*input + cache_read*cached
+                + output*output, plus cache_write*cache_write_price for models that report
+                cache_creation (Anthropic), excluding runaway answers at the 250-call step cap.
   nq_col      = number of scored (judged) questions for the column.
   avg_*_tokens= mean input/output tokens per question over answers with valid token
                 data (excludes $ERROR$ / -1 answers), on the active 1198+72 basis.
@@ -86,12 +85,14 @@ def _overall_score(score):
 
 
 def load_price(model):
-    """(input, output) USD/1M from the LiveBench config, or None if unavailable."""
+    """(input, cached, output, cache_write) USD/1M from the LiveBench config, or None.
+    Missing cached / cache_write default to the standard 0.1x / 1.25x of input."""
     try:
         from livebench.model import get_model_config
         cpm = getattr(get_model_config(model), 'cost_per_million', None)
         if cpm:
-            return float(cpm.get('input', 0)), float(cpm.get('output', 0))
+            ip = float(cpm.get('input', 0)); op = float(cpm.get('output', 0))
+            return ip, float(cpm.get('cached_input', ip * 0.1)), op, float(cpm.get('cache_creation', ip * 1.25))
     except Exception:
         pass
     return None
@@ -110,63 +111,36 @@ def is_anthropic(model):
         return model.startswith('claude')
 
 
-# Anthropic models whose recorded cost_usd omitted cache reads: they had no
-# cost_per_million in config at eval time, so cost_usd = input + output only
-# ($0 for cache-read tokens) while every other model charges them. For these we
-# add cache-read at 0.1x input so the leaderboard is priced consistently.
-CACHE_READ_OMITTED = {
-    'claude-opus-4-5-20251101-thinking-64k-high-effort',
-    'claude-opus-4-6-thinking-auto-high-effort',
-    'claude-opus-4-7-xhigh-effort',
-    'claude-opus-4-8-xhigh-effort',
-    'claude-sonnet-4-6-thinking-auto-medium-effort',
-}
-
-
 RUNAWAY_CALLS = 250  # agent step cap; answers that hit it thrash the prompt cache
                      # (cache-write >> cache-read), so their cache-writes are excluded.
 
 
-def _answer_cost(a, in_price, out_price, cached_price, add_cache_read, charge_cache_write):
-    """Per-answer cost, matching scripts/spend_report.py + cache consistency.
+def _answer_cost(a, in_price, cached_price, out_price, cache_write_price, charge_cache_write):
+    """Per-answer cost from token counts x config pricing (uniform across providers).
 
-    Use the provider-reported cost_usd when present, with two adjustments:
-    - CACHE-READS: for models in CACHE_READ_OMITTED (whose cost_usd charged $0 for
-      cache reads), add cache-read at 0.1x input so all models are consistent.
-    - CACHE-WRITES: for Anthropic models (charge_cache_write; only they report
-      cache_creation), add cache-write at 1.25x input -- EXCEPT on runaway answers
-      that hit the RUNAWAY_CALLS step cap, whose caching thrashed (re-writing the
-      context every call); those cache-writes are excluded as harness artifacts.
-    Fallback when cost_usd is absent uses spend_report's split (cached is a
-    subset of input): cost = uncached*in + cached*cached_price + output*out.
+    cost = uncached_input*input + cache_read*cached + output*output
+    Cache reads are a subset of input (spend_report's split), so
+    uncached = input - min(cache_read, input). For models that report cache_creation
+    (Anthropic), cache-write is added at cache_write_price -- EXCEPT on runaway answers
+    that hit the RUNAWAY_CALLS step cap, whose caching thrashed (re-writing the context
+    every call); those cache-writes are excluded as harness artifacts.
+    The provider-reported cost_usd is deliberately NOT used: it is inconsistent across
+    providers (undiscounted cache reads, $0 records, differing cache accounting).
     """
     ti = a.get('total_input_tokens', 0) or 0
     to = a.get('total_output_tokens', 0) or 0
     cr = a.get('total_cached_tokens', 0) or 0
     cc = a.get('total_cache_creation_tokens', 0) or 0
     ncalls = a.get('n_model_calls') or 0
-    cu = a.get('cost_usd')
-    # A recorded cost_usd of 0 alongside real token usage means cost was not computed
-    # at eval time (e.g. no pricing configured then) — treat it as missing and fall
-    # back to tokens x pricing below, rather than reporting a bogus $0.
-    if cu:
-        cost = cu
-        if add_cache_read:
-            cost += cr*in_price*0.1 / 1e6
-        if charge_cache_write and ncalls < RUNAWAY_CALLS:
-            cost += cc*in_price*1.25 / 1e6
-        return cost
     cached = min(cr, ti)
     uncached = ti - cached
-    return (uncached*in_price + cached*cached_price + to*out_price) / 1e6
+    cost = (uncached*in_price + cached*cached_price + to*out_price) / 1e6
+    if charge_cache_write and cc and ncalls < RUNAWAY_CALLS:
+        cost += cc*cache_write_price / 1e6
+    return cost
 
 
-def generate(data_dir, model, in_price, out_price, cached_price=None):
-    # cache-read price for the cost_usd-absent fallback; defaults to 0.1x input
-    # (the Anthropic/OpenAI standard). Pass explicitly to match a provider's rate.
-    if cached_price is None:
-        cached_price = in_price * 0.1
-    add_cache_read = model in CACHE_READ_OMITTED
+def generate(data_dir, model, in_price, cached_price, out_price, cache_write_price):
     charge_cache_write = is_anthropic(model)
     def qids(cat, task):
         # Active questions only, matching scripts/spend_report.py active_ids:
@@ -194,7 +168,7 @@ def generate(data_dir, model, in_price, out_price, cached_price=None):
             for a in answers(cat, task):
                 if a.get('question_id') not in valid:
                     continue
-                c += _answer_cost(a, in_price, out_price, cached_price, add_cache_read, charge_cache_write)
+                c += _answer_cost(a, in_price, cached_price, out_price, cache_write_price, charge_cache_write)
                 o = a.get('total_output_tokens')
                 i = a.get('total_input_tokens')
                 if o is not None and o >= 0:   # exclude $ERROR$ / -1 sentinel from token stats
@@ -221,16 +195,17 @@ def main():
     ap.add_argument('--verify', metavar='PUBLIC_DIR', help='compare against table/cost CSVs in this dir')
     args = ap.parse_args()
 
-    price = (args.input_price, args.output_price)
-    if price[0] is None or price[1] is None:
+    if args.input_price is not None and args.output_price is not None:
+        in_price, out_price = args.input_price, args.output_price
+        cached_price, cache_write_price = in_price * 0.1, in_price * 1.25
+    else:
         cfg = load_price(args.model)
         if cfg is None:
             sys.exit('No pricing: pass --input-price/--output-price or ensure the model config is importable.')
-        price = cfg
-    in_price, out_price = price
+        in_price, cached_price, out_price, cache_write_price = cfg
     name = args.display_name or args.model
 
-    score, cost, nq, avg_in, avg_out, out = generate(args.data, args.model, in_price, out_price)
+    score, cost, nq, avg_in, avg_out, out = generate(args.data, args.model, in_price, cached_price, out_price, cache_write_price)
 
     # overall $/question and cost per successful task (= $/Q ÷ score × 100)
     cpq = sum(cost.values()) / sum(nq.values()) if sum(nq.values()) else 0
