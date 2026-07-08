@@ -146,7 +146,10 @@ def _answer_cost(a, in_price, out_price, cached_price, add_cache_read, charge_ca
     cc = a.get('total_cache_creation_tokens', 0) or 0
     ncalls = a.get('n_model_calls') or 0
     cu = a.get('cost_usd')
-    if cu is not None:
+    # A recorded cost_usd of 0 alongside real token usage means cost was not computed
+    # at eval time (e.g. no pricing configured then) — treat it as missing and fall
+    # back to tokens x pricing below, rather than reporting a bogus $0.
+    if cu:
         cost = cu
         if add_cache_read:
             cost += cr*in_price*0.1 / 1e6
