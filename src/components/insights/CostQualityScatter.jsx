@@ -8,7 +8,6 @@ const X_TICKS = [0.002, 0.005, 0.01, 0.02, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.3
 
 export default function CostQualityScatter({ models, categories, scope = "overall" }) {
   const [tip, setTip] = useState(null);
-  const [frontierOnly, setFrontierOnly] = useState(false);
 
   const costOf = (m) => costForScope(m.cost, categories, scope);
   const scoreOf = (m) => (scope === "overall" ? m.overall : m.cats?.[scope]);
@@ -39,10 +38,6 @@ export default function CostQualityScatter({ models, categories, scope = "overal
 
   return (
     <>
-      <div className="lb-card-tools">
-        <button className="lb-chip" style={{ fontSize: 11, padding: "5px 10px" }}
-          aria-pressed={frontierOnly} onClick={() => setFrontierOnly((v) => !v)}>Frontier only</button>
-      </div>
       <h3>Quality vs. cost{scope === "overall" ? "" : ` · ${scope}`}</h3>
       <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. Cost per task (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each price.</p>
       <div style={{ position: "relative" }}>
@@ -65,12 +60,11 @@ export default function CostQualityScatter({ models, categories, scope = "overal
           {frontPath && <path d={frontPath} fill="none" stroke="#2F54EB" strokeWidth="2" strokeDasharray="5 3" />}
           {pts.map((m) => {
             const col = orgColor(m.org);
-            const dim = frontierOnly && !front.has(m.model);
             const cx = X(costOf(m)), cy = Y(scoreOf(m));
             return (
               <circle key={m.model} cx={cx} cy={cy} r={5.5}
                 fill={col} stroke={col} strokeWidth="2"
-                opacity={dim ? 0.16 : 1} style={{ cursor: "pointer" }}
+                opacity={1} style={{ cursor: "pointer" }}
                 onMouseEnter={enter(m)} onMouseLeave={() => setTip(null)} />
             );
           })}
