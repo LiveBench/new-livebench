@@ -39,7 +39,7 @@ export default function CostBars({ models, categories, scope = "overall" }) {
         <div className="lb-tip" style={{ position: "fixed", left: tip.x + 14, top: tip.y - 8, transform: "none" }}>
           <div className="tn">{tip.m.name}</div>
           <div className="tg">
-            <span>$/Q</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
+            <span>Cost per task</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
             <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
             <span>avg output tokens{scope === "overall" ? "" : ` (${scope})`}</span><span>{Math.round(outputTokensForScope(tip.m.cost, categories, scope) || 0).toLocaleString()}</span>
           </div>

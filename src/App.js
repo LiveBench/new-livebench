@@ -92,7 +92,7 @@ export default function App() {
       <footer className="lb-footer">
         <div className="lb-wrap">
           <span>LiveBench · sponsored by Abacus.AI · a contamination-free LLM benchmark.</span>
-          <span className="mono" style={{ color: "var(--faint)" }}>Overall = mean of category averages · cost = $/Q</span>
+          <span className="mono" style={{ color: "var(--faint)" }}>Overall = mean of category averages · cost = cost per task</span>
         </div>
       </footer>
     </div>

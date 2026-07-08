@@ -44,7 +44,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
           aria-pressed={frontierOnly} onClick={() => setFrontierOnly((v) => !v)}>Frontier only</button>
       </div>
       <h3>Quality vs. cost{scope === "overall" ? "" : ` · ${scope}`}</h3>
-      <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. $/Q (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each price.</p>
+      <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. Cost per task (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each price.</p>
       <div style={{ position: "relative" }}>
         <svg className="lb-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Quality versus cost scatter plot">
           {yTicks.map((t) => (
@@ -59,7 +59,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
               <text x={X(t)} y={H - pB + 18} textAnchor="middle" fontFamily="var(--mono)" fontSize="10" fill="#8A99B5">{`$${t}`}</text>
             </g>
           ))}
-          <text x={pL + pw / 2} y={H - 6} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85">$/Q (log) →</text>
+          <text x={pL + pw / 2} y={H - 6} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85">Cost per task (log) →</text>
           <text x={13} y={pT + ph / 2} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85"
             transform={`rotate(-90 13 ${pT + ph / 2})`}>{scope === "overall" ? "LiveBench overall ↑" : `${scope} score ↑`}</text>
           {frontPath && <path d={frontPath} fill="none" stroke="#2F54EB" strokeWidth="2" strokeDasharray="5 3" />}
@@ -80,7 +80,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
             <div className="tn">{tip.m.name}</div>
             <div className="tg">
               <span>{scopeName}</span><span>{scoreOf(tip.m).toFixed(1)}</span>
-              <span>$/Q</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
+              <span>Cost per task</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
               <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
               <span>avg output tokens{scope === "overall" ? "" : ` (${scope})`}</span><span>{Math.round(outputTokensForScope(tip.m.cost, categories, scope) || 0).toLocaleString()}</span>
             </div>
