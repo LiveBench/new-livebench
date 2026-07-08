@@ -307,6 +307,7 @@ export const modelLinks = {
     "grok-4.20-beta-0309-non-reasoning": {url: "https://docs.x.ai/developers/models/grok-4.20-beta-0309-non-reasoning", organization: "xAI", displayName: "Grok 4.20 Beta (Non-Reasoning)", reasoner: false, version: "2026-03-09"},
     "grok-4.20-beta-0309-reasoning": {url: "https://docs.x.ai/developers/models/grok-4.20-beta-0309-reasoning", organization: "xAI", displayName: "Grok 4.20 Beta", reasoner: true, version: "2026-03-09"},
     "grok-4.3": {url: "https://docs.x.ai/developers/models/grok-4.3", organization: "xAI", displayName: "Grok 4.3", reasoner: true},
+    "grok-4.5": {url: "https://docs.x.ai/developers/models/grok-4.5", organization: "xAI", displayName: "Grok 4.5", reasoner: true},
     "grok-build-0.1": {url: "https://docs.x.ai/developers/models/grok-build-0.1", organization: "xAI", displayName: "Grok Build 0.1", reasoner: true},
     "claude-sonnet-5-xhigh-effort": {url: "https://www.anthropic.com/news/claude-sonnet-5", organization: "Anthropic", displayName: "Claude Sonnet 5 xHigh Effort", reasoner: true},
     "claude-opus-4-5-20251101": {
