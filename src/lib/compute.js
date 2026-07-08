@@ -50,6 +50,22 @@ export function costForScope(costRow, categories, scope) {
 export const catCost = (costRow, categories, cat) => costForScope(costRow, categories, cat);
 export const overallCost = (costRow, categories) => costForScope(costRow, categories, "overall");
 
+// $/Q over the UNION of several categories' subtasks (question-weighted): Σ cost ÷ Σ nq
+// across every subtask of every category in catList. Used by the leaderboard's
+// multi-category selection (cost per successful task over the selected categories).
+export function costForCategories(costRow, categories, catList) {
+  if (!costRow) return null;
+  let cost = 0, n = 0;
+  for (const c of catList) {
+    for (const t of (categories[c] || [])) {
+      const cc = Number(costRow[t]);
+      const q = Number(costRow["nq_" + t]);
+      if (!isNaN(cc) && !isNaN(q) && q > 0) { cost += cc; n += q; }
+    }
+  }
+  return n > 0 ? cost / n : null;
+}
+
 // Avg output tokens/question at a scope. Overall uses the precomputed
 // avg_output_tokens; a category/subtask is the question-weighted mean of its
 // subtasks' out_<subtask> columns (Σ out*nq / Σ nq) — so charts show the

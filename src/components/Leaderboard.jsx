@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { catFull, subtaskLabel } from "../lib/constants";
-import { collapseVariants, costForScope } from "../lib/compute";
+import { collapseVariants, costForCategories } from "../lib/compute";
 
 // Render $X with the "$" in a .cur span (size-only nudge — see index.css).
 const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
@@ -15,10 +15,10 @@ const numVal = (m, k) => {
 
 // Relative shading: the top 5 in each score column get an accent tint, darkest (rank 1) → lightest (rank 5).
 const SHADES = ["rgba(47,84,235,0.24)", "rgba(47,84,235,0.17)", "rgba(47,84,235,0.115)", "rgba(47,84,235,0.07)", "rgba(47,84,235,0.035)"];
-function computeShades(rows, cols) {
+function computeShades(rows, cols, valFn) {
   const map = {};
   for (const c of cols) {
-    const vals = rows.map((m) => ({ model: m.model, v: numVal(m, c) }))
+    const vals = rows.map((m) => ({ model: m.model, v: valFn(m, c) }))
       .filter((x) => x.v != null).sort((a, b) => b.v - a.v);
     const cm = {};
     vals.slice(0, 5).forEach((x, i) => { cm[x.model] = SHADES[i]; });
@@ -45,9 +45,9 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   // initialize view state from the URL so links are shareable
   const init = readHash();
-  const initCat = init.get("cat") && categories[init.get("cat")] ? init.get("cat") : null;
-  const [focusedCat, setFocusedCat] = useState(initCat);
-  const [sortKey, setSortKey] = useState(init.get("sort") || initCat || "overall");
+  const initCats = (init.get("cats") || "").split(",").map((s) => s.trim()).filter((c) => c && categories[c]);
+  const [selectedCats, setSelectedCats] = useState(initCats);
+  const [sortKey, setSortKey] = useState(init.get("sort") || (initCats.length === 1 ? initCats[0] : "overall"));
   const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
   const [showVariants, setShowVariants] = useState(false);
@@ -59,36 +59,46 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const orgs = [...new Set(models.map((m) => m.org).filter(Boolean))].sort();
 
-  const scoreCols = focusedCat ? [focusedCat, ...categories[focusedCat]] : ["overall", ...cats];
+  const nSel = selectedCats.length;
+  const single = nSel === 1 ? selectedCats[0] : null;   // the one category, when exactly one is selected
+  const scopeCats = nSel === 0 ? cats : selectedCats;   // categories the cost/score scope covers
 
-  // The cost column is scope-aware — it follows the focused category (or overall).
-  // We display only "Cost per successful task" = (cost/task ÷ score) × 100, which
-  // penalizes failures / partial credit. costScope (Σ cost ÷ Σ questions) is the
-  // per-task figure it's derived from.
-  const scope = focusedCat || "overall";
-  const costScope = (m) => (m.cost ? costForScope(m.cost, categories, scope) : null);
-  const scoreScope = (m) => (focusedCat ? (m.cats?.[focusedCat] ?? null) : m.overall);
+  // 1 category → its average + subtasks; 2+ → Overall(selected) + the selected categories; 0 → Overall + all.
+  const scoreCols = single
+    ? [single, ...categories[single]]
+    : ["overall", ...(nSel >= 2 ? selectedCats : cats)];
+
+  // score of the current scope = mean of its category averages (equal weight per category).
+  const scopeScore = (m) => {
+    const vs = scopeCats.map((c) => m.cats?.[c]).filter((v) => v != null);
+    return vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : null;
+  };
+  // Overall column value: true overall when nothing is selected, else mean of the selected categories.
+  const val = (m, k) => (k === "overall" ? (nSel === 0 ? m.overall : scopeScore(m)) : numVal(m, k));
+
+  // Cost per successful task = (Σ cost ÷ Σ questions over the scope's subtasks) ÷ scope score × 100.
+  const costScope = (m) => (m.cost ? costForCategories(m.cost, categories, scopeCats) : null);
   const costPerSuccess = (m) => {
-    const c = costScope(m), s = scoreScope(m);
+    const c = costScope(m), s = nSel === 0 ? m.overall : scopeScore(m);
     return c != null && s ? (c / s) * 100 : null;
   };
 
   // reflect focus + sort in the URL (shareable, no history spam)
   useEffect(() => {
     const p = new URLSearchParams();
-    if (focusedCat) p.set("cat", focusedCat);
-    const isDefault = sortKey === (focusedCat || "overall") && sortDir === -1;
+    if (selectedCats.length) p.set("cats", selectedCats.join(","));
+    const isDefault = sortKey === (single || "overall") && sortDir === -1;
     if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
     if (showOrg) p.set("showorg", "1");
     if (orgFilter) p.set("org", orgFilter);
     writeHash(p);
-  }, [focusedCat, sortKey, sortDir, showOrg, orgFilter]);
+  }, [selectedCats, single, sortKey, sortDir, showOrg, orgFilter]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
     if (k === "model") return m.name.toLowerCase();
     if (k === "org") return (m.org || "").toLowerCase();
-    return numVal(m, k);
+    return val(m, k);
   };
 
   const rows = useMemo(() => {
@@ -108,11 +118,19 @@ export default function Leaderboard({ models, categories, hasCost }) {
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyReason, onlyOpen, orgFilter, q, showVariants, sortKey, sortDir]);
+  }, [models, onlyReason, onlyOpen, orgFilter, q, showVariants, sortKey, sortDir, selectedCats]);
 
-  const shades = computeShades(rows, scoreCols);
+  const shades = computeShades(rows, scoreCols, val);
 
-  const focusCat = (c) => { setFocusedCat(c); setSortKey(c || "overall"); setSortDir(-1); };
+  const clearCats = () => { setSelectedCats([]); setSortKey("overall"); setSortDir(-1); };
+  const toggleCat = (c) => {
+    const next = selectedCats.includes(c)
+      ? selectedCats.filter((x) => x !== c)
+      : cats.filter((x) => x === c || selectedCats.includes(x)); // keep canonical category order
+    setSelectedCats(next);
+    setSortKey(next.length === 1 ? next[0] : "overall");
+    setSortDir(-1);
+  };
   const clickSort = (k) => {
     if (sortKey === k) setSortDir((d) => -d);
     // cost columns + model name sort ascending first; score columns sort descending first.
@@ -122,8 +140,10 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const toggleRow = (model) =>
     setExpanded((s) => { const n = new Set(s); n.has(model) ? n.delete(model) : n.add(model); return n; });
 
-  const headLabel = (k) => (k === "overall" ? "Overall" : k === focusedCat ? catFull(k) : k in categories ? catFull(k) : subtaskLabel(k));
-  const headTitle = (k) => (k === "overall" ? "Overall — mean of category averages" : k in categories ? catFull(k) : subtaskLabel(k));
+  const headLabel = (k) => (k === "overall" ? "Overall" : k in categories ? catFull(k) : subtaskLabel(k));
+  const headTitle = (k) => (k === "overall"
+    ? (nSel >= 2 ? "Overall — mean of the selected category averages" : "Overall — mean of category averages")
+    : k in categories ? catFull(k) : subtaskLabel(k));
   const colCount = 2 + scoreCols.length + (hasCost ? 1 : 0) + (showOrg ? 1 : 0);
 
   return (
@@ -147,9 +167,9 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
       <div className="lb-cats">
         <span className="lb-cats-label">Category</span>
-        <button className="lb-chip" aria-pressed={!focusedCat} onClick={() => focusCat(null)}>All</button>
+        <button className="lb-chip" aria-pressed={nSel === 0} onClick={clearCats}>All</button>
         {cats.map((c) => (
-          <button key={c} className="lb-chip" data-tip={catFull(c)} aria-pressed={focusedCat === c} onClick={() => focusCat(focusedCat === c ? null : c)}>{catFull(c)}</button>
+          <button key={c} className="lb-chip" data-tip={catFull(c)} aria-pressed={selectedCats.includes(c)} onClick={() => toggleCat(c)}>{catFull(c)}</button>
         ))}
       </div>
 
@@ -184,7 +204,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                     </td>
                     {showOrg && <td className="l org-col">{m.org}</td>}
                     {scoreCols.map((k, i) => {
-                      const v = numVal(m, k);
+                      const v = val(m, k);
                       return (
                         <td key={k} className={i === 0 ? "lb-ovr" : "lb-cat"} style={{ background: shades[k] && shades[k][m.model] }}>
                           {v == null ? "—" : v.toFixed(1)}
@@ -198,7 +218,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
                       <td colSpan={colCount}>
                         <div className="lb-detail-in">
                           <div className="lb-det-grid">
-                            {(focusedCat ? [focusedCat] : cats).map((c) => (
+                            {(selectedCats.length ? selectedCats : cats).map((c) => (
                               <div className="lb-det-cat" key={c}>
                                 <div className="h">{catFull(c)}</div>
                                 {categories[c].map((t) => {
@@ -225,10 +245,12 @@ export default function Leaderboard({ models, categories, hasCost }) {
         </table>
       </div>
       <p className="lb-foot-note">
-        {focusedCat
-          ? `// focused on ${focusedCat} — showing its average + subtasks · click "All" to reset`
-          : "// click a Category to focus its subtasks · shading = top 5 per column · click a row for subtask scores"}
-        {hasCost ? " · Cost per successful task = (Σ cost ÷ Σ questions ÷ score) × 100 for the selected scope — penalizes failures / partial credit" : ""}
+        {nSel === 1
+          ? `// ${catFull(single)} — its average + subtasks · click "All" to reset`
+          : nSel >= 2
+          ? `// comparing ${nSel} categories — Overall = mean of the selected · click "All" to reset`
+          : "// select 1 category for its subtasks, or several to compare category averages · shading = top 5 per column · click a row for subtasks"}
+        {hasCost ? " · Cost per successful task = (Σ cost ÷ Σ questions ÷ score) × 100 over the selected scope" : ""}
       </p>
     </>
   );
