@@ -17,18 +17,22 @@ export default function useLeaderboardData(dateStr) {
     let cancelled = false;
     const d = fileDate(dateStr);
     const base = process.env.PUBLIC_URL || "";
+    // Cache-bust: the CSV/JSON filenames are fixed across deploys, so a browser/CDN
+    // will serve a stale copy after we update the data. REACT_APP_BUILD changes every
+    // build (see package.json), forcing a fresh fetch after each deploy.
+    const v = process.env.REACT_APP_BUILD ? `?v=${process.env.REACT_APP_BUILD}` : "";
     setState((s) => ({ ...s, loading: true, error: null }));
 
     Promise.all([
-      fetch(`${base}/table_${d}.csv`).then((r) => {
+      fetch(`${base}/table_${d}.csv${v}`).then((r) => {
         if (!r.ok) throw new Error(`table_${d}.csv → ${r.status}`);
         return r.text();
       }),
-      fetch(`${base}/categories_${d}.json`).then((r) => {
+      fetch(`${base}/categories_${d}.json${v}`).then((r) => {
         if (!r.ok) throw new Error(`categories_${d}.json → ${r.status}`);
         return r.json();
       }),
-      fetch(`${base}/cost_${d}.csv`).then((r) => (r.ok ? r.text() : null)).catch(() => null),
+      fetch(`${base}/cost_${d}.csv${v}`).then((r) => (r.ok ? r.text() : null)).catch(() => null),
     ])
       .then(([tableText, categories, costText]) => {
         if (cancelled) return;
