@@ -179,7 +179,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
                     <td className="l mdl-col">
                       <div className="lb-mdl">
                         <span className="nm" title={m.name}>{m.name}</span>
-                        {showVariants && m.info?.version && <span className="ef">{m.info.version}</span>}
                         {m.open && <span className="opn">open</span>}
                       </div>
                     </td>
