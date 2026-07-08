@@ -83,7 +83,10 @@ a{color:var(--accent);text-decoration:none;}
    stays pinned (sticky top) and the model column stays pinned (sticky left) — instead
    of scrolling the whole page. */
 .lb-tbl-scroll{overflow:auto;max-height:78vh;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);}
-.lb-tbl{border-collapse:collapse;width:100%;font-size:13.5px;}
+/* min-width:100% fills the pane when columns fit; width:max-content lets the table
+   grow to its natural width (no squishing) so the pane scrolls sideways when zoomed
+   in or when extra columns are shown — the frozen model column stays pinned. */
+.lb-tbl{border-collapse:collapse;min-width:100%;width:max-content;font-size:13.5px;}
 .lb-tbl thead th{position:sticky;top:0;z-index:3;background:var(--surface);text-align:right;vertical-align:bottom;padding:12px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border-strong);white-space:nowrap;cursor:pointer;user-select:none;}
 .lb-tbl thead th.l{text-align:left;}
 .lb-tbl thead th:hover{color:var(--accent);}
