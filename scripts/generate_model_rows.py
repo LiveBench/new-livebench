@@ -118,9 +118,10 @@ RUNAWAY_CALLS = 250  # agent step cap; answers that hit it thrash the prompt cac
 def _answer_cost(a, in_price, cached_price, out_price, cache_write_price, charge_cache_write):
     """Per-answer cost from token counts x config pricing (uniform across providers).
 
-    cost = uncached_input*input + cache_read*cached + output*output
-    Cache reads are a subset of input (spend_report's split), so
-    uncached = input - min(cache_read, input). For models that report cache_creation
+    cost = uncached_input*input + cache_read*cached + output*output. total_input_tokens
+    follows two conventions (auto-detected per answer): Anthropic-native reports it
+    EXCLUSIVE of cache reads (cache_read can exceed input); OpenAI/xAI (and some Anthropic
+    runs) report it INCLUSIVE. For models that report cache_creation
     (Anthropic), cache-write is added at cache_write_price -- EXCEPT on runaway answers
     that hit the RUNAWAY_CALLS step cap, whose caching thrashed (re-writing the context
     every call); those cache-writes are excluded as harness artifacts.
@@ -132,9 +133,15 @@ def _answer_cost(a, in_price, cached_price, out_price, cache_write_price, charge
     cr = a.get('total_cached_tokens', 0) or 0
     cc = a.get('total_cache_creation_tokens', 0) or 0
     ncalls = a.get('n_model_calls') or 0
-    cached = min(cr, ti)
-    uncached = ti - cached
-    cost = (uncached*in_price + cached*cached_price + to*out_price) / 1e6
+    # total_input_tokens uses one of two conventions, auto-detected per answer:
+    #  EXCLUSIVE (Anthropic native, e.g. opus-4-8): input = uncached only; cache_read is
+    #    reported separately and typically exceeds input (cr > ti)  ->  uncached = input.
+    #  INCLUSIVE (OpenAI/xAI, and some Anthropic runs e.g. opus-4-5): input already
+    #    includes cache_read (+ cache_creation)  ->  uncached = input - cache_read - cache_creation.
+    # cache_read (cr) is always billed at cached_price; cache_creation (cc) is billed
+    # separately below (Anthropic), so it must not remain inside uncached either way.
+    uncached = ti if cr > ti else max(0, ti - cr - cc)
+    cost = (uncached*in_price + cr*cached_price + to*out_price) / 1e6
     if charge_cache_write and cc and ncalls < RUNAWAY_CALLS:
         cost += cc*cache_write_price / 1e6
     return cost
