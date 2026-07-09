@@ -51,7 +51,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
   const [showVariants, setShowVariants] = useState(false);
-  const [onlyReason, setOnlyReason] = useState(false);
   const [onlyOpen, setOnlyOpen] = useState(false);
   const [q, setQ] = useState("");
   const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
@@ -103,7 +102,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
 
   const rows = useMemo(() => {
     let r = models.filter((m) => {
-      if (onlyReason && !m.reasoner) return false;
       if (onlyOpen && !m.open) return false;
       if (orgFilter && m.org !== orgFilter) return false;
       if (q && !m.name.toLowerCase().includes(q) && !m.model.toLowerCase().includes(q)) return false;
@@ -118,7 +116,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyReason, onlyOpen, orgFilter, q, showVariants, sortKey, sortDir, selectedCats]);
+  }, [models, onlyOpen, orgFilter, q, showVariants, sortKey, sortDir, selectedCats]);
 
   const shades = computeShades(rows, scoreCols, val);
 
@@ -153,7 +151,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
           <input type="text" value={q} placeholder="Search models…" aria-label="Search models"
             onChange={(e) => setQ(e.target.value.toLowerCase())} />
         </div>
-        <button className="lb-chip" aria-pressed={onlyReason} onClick={() => setOnlyReason((v) => !v)}>Reasoning</button>
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
         <button className="lb-chip" aria-pressed={showVariants} data-tip="Off = best variant per model · On = every effort variant"
           onClick={() => setShowVariants((v) => !v)}>Model variants</button>
