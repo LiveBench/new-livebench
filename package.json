@@ -20,7 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build --nojekyll",
+    "deploy": "gh-pages -d build --cname livebench.ai --nojekyll",
     "build": "REACT_APP_BUILD=$(date +%s) react-scripts build",
     "test": "react-scripts test",
     "check-data": "node scripts/check_data.js",
