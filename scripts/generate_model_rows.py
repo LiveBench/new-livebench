@@ -128,10 +128,10 @@ def _answer_cost(a, in_price, cached_price, out_price, cache_write_price, charge
     The provider-reported cost_usd is deliberately NOT used: it is inconsistent across
     providers (undiscounted cache reads, $0 records, differing cache accounting).
     """
-    ti = a.get('total_input_tokens', 0) or 0
-    to = a.get('total_output_tokens', 0) or 0
-    cr = a.get('total_cached_tokens', 0) or 0
-    cc = a.get('total_cache_creation_tokens', 0) or 0
+    ti = max(0, a.get('total_input_tokens', 0) or 0)   # clamp $ERROR$/-1 sentinels to 0
+    to = max(0, a.get('total_output_tokens', 0) or 0)
+    cr = max(0, a.get('total_cached_tokens', 0) or 0)
+    cc = max(0, a.get('total_cache_creation_tokens', 0) or 0)
     ncalls = a.get('n_model_calls') or 0
     # total_input_tokens uses one of two conventions, auto-detected per answer:
     #  EXCLUSIVE (Anthropic native, e.g. opus-4-8): input = uncached only; cache_read is
@@ -168,13 +168,29 @@ def generate(data_dir, model, in_price, cached_price, out_price, cache_write_pri
         col_out = col_n = 0
         for cat, task in dirs:
             valid = qids(cat, task)
+            judged_qids, judged_aids = set(), set()   # questions scored, and the scored answer_ids
             for r in judgments(cat, task):
                 m = r.get('model')
                 if isinstance(m, str) and m.lower() == model.lower() and r.get('score', -1) != -1 and r.get('question_id') in valid:
                     sc.append(r['score'])
+                    judged_qids.add(r['question_id'])
+                    if r.get('answer_id'):
+                        judged_aids.add(r['answer_id'])
+            # Count cost/tokens for exactly ONE answer per scored question. Answer files
+            # can hold re-runs (duplicate question_ids, different answer_id) and un-scored
+            # error retries; summing all of them over-counts cost. Per question, prefer the
+            # answer whose answer_id was judged; if none matches (e.g. answer_id drift after
+            # a re-judgment), fall back to the latest answer for that question. Restricting
+            # to judged questions keeps the cost numerator aligned with the nq denominator.
+            chosen = {}
             for a in answers(cat, task):
-                if a.get('question_id') not in valid:
+                q = a.get('question_id')
+                if q not in judged_qids:
                     continue
+                cur = chosen.get(q)
+                if cur is None or a.get('answer_id') in judged_aids or cur.get('answer_id') not in judged_aids:
+                    chosen[q] = a
+            for a in chosen.values():
                 c += _answer_cost(a, in_price, cached_price, out_price, cache_write_price, charge_cache_write)
                 o = a.get('total_output_tokens')
                 i = a.get('total_input_tokens')
