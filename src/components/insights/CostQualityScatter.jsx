@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { orgColor } from "../../lib/constants";
-import { perMillionOut, frontierBy, costForScope, outputTokensForScope } from "../../lib/compute";
+import { perMillionOut, frontierBy, costForScope, outputTokensForScope, costPerSuccess } from "../../lib/compute";
 
 const fmtPerM = (v) => (v == null ? "—" : v < 10 ? `$${v.toFixed(1)}` : `$${Math.round(v)}`);
 const W = 560, H = 400, pL = 46, pR = 14, pT = 16, pB = 46, pw = W - pL - pR, ph = H - pT - pB;
-const X_TICKS = [0.002, 0.005, 0.01, 0.02, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 1, 1.5, 2, 3, 5, 7, 10];
+const X_TICKS = [0.002, 0.005, 0.01, 0.02, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 1, 1.5, 2, 3, 5, 7, 10, 15, 20, 30, 50];
 
 export default function CostQualityScatter({ models, categories, scope = "overall" }) {
   const [tip, setTip] = useState(null);
 
-  const costOf = (m) => costForScope(m.cost, categories, scope);
   const scoreOf = (m) => (scope === "overall" ? m.overall : m.cats?.[scope]);
+  // x-axis metric = cost per successful task = ($/task ÷ score) × 100
+  const costOf = (m) => costPerSuccess(costForScope(m.cost, categories, scope), scoreOf(m));
 
   const pts = models.filter((m) => costOf(m) > 0 && scoreOf(m) != null);
   if (pts.length < 2) return null;
@@ -39,7 +40,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
   return (
     <>
       <h3>Quality vs. cost{scope === "overall" ? "" : ` · ${scope}`}</h3>
-      <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. Cost per task (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each price.</p>
+      <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. Cost per successful task (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each cost.</p>
       <div style={{ position: "relative" }}>
         <svg className="lb-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Quality versus cost scatter plot">
           {yTicks.map((t) => (
@@ -54,7 +55,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
               <text x={X(t)} y={H - pB + 18} textAnchor="middle" fontFamily="var(--mono)" fontSize="10" fill="#8A99B5">{`$${t}`}</text>
             </g>
           ))}
-          <text x={pL + pw / 2} y={H - 6} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85">Cost per task (log) →</text>
+          <text x={pL + pw / 2} y={H - 6} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85">Cost per successful task (log) →</text>
           <text x={13} y={pT + ph / 2} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85"
             transform={`rotate(-90 13 ${pT + ph / 2})`}>{scope === "overall" ? "LiveBench overall ↑" : `${scope} score ↑`}</text>
           {frontPath && <path d={frontPath} fill="none" stroke="#2F54EB" strokeWidth="2" strokeDasharray="5 3" />}
@@ -74,7 +75,7 @@ export default function CostQualityScatter({ models, categories, scope = "overal
             <div className="tn">{tip.m.name}</div>
             <div className="tg">
               <span>{scopeName}</span><span>{scoreOf(tip.m).toFixed(1)}</span>
-              <span>Cost per task</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
+              <span>Cost per successful task</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
               <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
               <span>avg output tokens{scope === "overall" ? "" : ` (${scope})`}</span><span>{Math.round(outputTokensForScope(tip.m.cost, categories, scope) || 0).toLocaleString()}</span>
             </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { orgColor } from "../../lib/constants";
-import { perMillionOut, costForScope, outputTokensForScope } from "../../lib/compute";
+import { perMillionOut, costForScope, outputTokensForScope, costPerSuccess } from "../../lib/compute";
 
 const fmtPerM = (v) => (v == null ? "—" : v < 10 ? `$${v.toFixed(1)}` : `$${Math.round(v)}`);
 const TOP = 20;
@@ -8,8 +8,9 @@ const TOP = 20;
 export default function CostBars({ models, categories, scope = "overall" }) {
   const [tip, setTip] = useState(null);
   const [extra, setExtra] = useState(() => new Set()); // extra models added via the dropdown
-  const costOf = (m) => costForScope(m.cost, categories, scope);
   const scoreOf = (m) => (scope === "overall" ? m.overall : m.cats?.[scope]);
+  // bar metric = cost per successful task = ($/task ÷ score) × 100
+  const costOf = (m) => costPerSuccess(costForScope(m.cost, categories, scope), scoreOf(m));
 
   const pts = models
     .filter((m) => costOf(m) > 0)
@@ -56,7 +57,7 @@ export default function CostBars({ models, categories, scope = "overall" }) {
         <div className="lb-tip" style={{ position: "fixed", left: tip.x + 14, top: tip.y - 8, transform: "none" }}>
           <div className="tn">{tip.m.name}</div>
           <div className="tg">
-            <span>Cost per task</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
+            <span>Cost per successful task</span><span><span className="cur">$</span>{costOf(tip.m).toFixed(3)}</span>
             <span>$/1M out</span><span>{fmtPerM(perMillionOut(tip.m.cost))}</span>
             <span>avg output tokens{scope === "overall" ? "" : ` (${scope})`}</span><span>{Math.round(outputTokensForScope(tip.m.cost, categories, scope) || 0).toLocaleString()}</span>
           </div>

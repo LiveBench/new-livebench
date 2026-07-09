@@ -89,6 +89,10 @@ export function outputTokensForScope(costRow, categories, scope) {
 export const costPerQuality = (costVal, scoreVal) =>
   costVal != null && scoreVal ? costVal / scoreVal : null;
 
+// Cost per successful task = ($/task ÷ score) × 100 — matches the leaderboard table. Lower = better.
+export const costPerSuccess = (costVal, scoreVal) =>
+  costVal != null && scoreVal ? (costVal / scoreVal) * 100 : null;
+
 // Score per dollar (for the "best value" KPI).
 export const pointsPerDollar = (scoreVal, costVal) => (costVal ? scoreVal / costVal : null);
 
