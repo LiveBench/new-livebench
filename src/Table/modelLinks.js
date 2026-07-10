@@ -498,7 +498,15 @@ export const modelLinks = {
             { rawName: "claude-opus-4-8-high-effort", displayName: "Claude 4.8 Opus Thinking High Effort" }
         ]
     },
-    "claude-fable-5-xhigh-effort": {url: "https://www.anthropic.com/news/claude-fable-5", organization: "Anthropic", displayName: "Claude Fable 5 xHigh Effort", reasoner: true},
+    "claude-fable-5-max-effort": {
+        url: "https://www.anthropic.com/news/claude-fable-5",
+        organization: "Anthropic",
+        displayName: "Claude Fable 5 Max Effort",
+        reasoner: true,
+        variants: [
+            { rawName: "claude-fable-5-xhigh-effort", displayName: "Claude Fable 5 xHigh Effort" }
+        ]
+    },
     "gpt-5.6-sol-max": {
         url: "https://platform.openai.com/docs/models/gpt-5.6",
         organization: "OpenAI",
