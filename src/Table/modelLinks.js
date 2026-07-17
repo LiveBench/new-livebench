@@ -543,6 +543,12 @@ export const modelLinks = {
         variants: [
             { rawName: "muse-spark-1.1-high", displayName: "Muse Spark 1.1 High Effort" }
         ]
+    },
+    "inkling-xhigh": {
+        url: "https://thinkingmachines.ai/",
+        organization: "Thinking Machines",
+        displayName: "Inkling xHigh Effort",
+        reasoner: true
     }
 };
 
