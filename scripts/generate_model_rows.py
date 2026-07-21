@@ -216,6 +216,13 @@ def main():
     ap.add_argument('--input-price', type=float, help='USD/1M input (else read from config)')
     ap.add_argument('--output-price', type=float, help='USD/1M output (else read from config)')
     ap.add_argument('--verify', metavar='PUBLIC_DIR', help='compare against table/cost CSVs in this dir')
+    ap.add_argument('--append', metavar='PUBLIC_DIR',
+                    help='append the rows to table/cost CSVs in this dir (preserves each '
+                         "file's line endings; refuses duplicates)")
+    ap.add_argument('--links-meta', metavar='JSON',
+                    help='with --append: also insert a modelLinks.js entry, e.g. '
+                         '\'{"displayName":"MiMo V2.5 Pro","organization":"Xiaomi",'
+                         '"url":"https://...","openweight":true,"reasoner":true}\'')
     args = ap.parse_args()
 
     if args.input_price is not None and args.output_price is not None:
@@ -246,10 +253,60 @@ def main():
     if args.verify:
         _verify(args.verify, name, score, cost, nq, avg_out, out, cpq, cpst)
         return
+    if args.append:
+        _append_csv(f'{args.append}/table_2026_06_25.csv', name, ','.join(table_row))
+        _append_csv(f'{args.append}/cost_2026_06_25.csv', name, ','.join(cost_row))
+        if args.links_meta:
+            _insert_links_entry(os.path.join(args.append, '..', 'src', 'Table', 'modelLinks.js'),
+                                name, json.loads(args.links_meta))
+        # round-trip check: the rows we just wrote must verify against ourselves
+        _verify(args.append, name, score, cost, nq, avg_out, out, cpq, cpst)
+        return
     print('# table row (append to table_<release>.csv):')
     print(','.join(table_row))
     print('\n# cost row (append to cost_<release>.csv):')
     print(','.join(cost_row))
+
+
+def _append_csv(path, name, row):
+    """Append one row, preserving the file's own line endings; refuse duplicates."""
+    raw = open(path, 'rb').read()
+    nl = b'\r\n' if b'\r\n' in raw else b'\n'
+    header_cols = len(raw.split(nl)[0].decode().split(','))
+    row_cols = len(row.split(','))
+    if row_cols != header_cols:
+        sys.exit(f'{path}: row has {row_cols} columns, header has {header_cols}')
+    if any(l.decode().split(',', 1)[0] == name for l in raw.split(nl) if l):
+        sys.exit(f'{path}: a row for {name} already exists')
+    if not raw.endswith(nl):
+        raw += nl
+    with open(path, 'wb') as f:
+        f.write(raw + row.encode() + nl)
+    print(f'appended {name} to {path}')
+
+
+def _insert_links_entry(path, name, meta):
+    """Insert a modelLinks entry for `name` before the map's closing `};`."""
+    src = open(path).read()
+    if f'"{name}"' in src:
+        print(f'{path}: entry for {name} already exists, skipping')
+        return
+    fields = [f'        url: {json.dumps(meta["url"])},',
+              f'        organization: {json.dumps(meta["organization"])},',
+              f'        displayName: {json.dumps(meta["displayName"])},']
+    for flag in ('openweight', 'reasoner'):
+        if meta.get(flag):
+            fields.append(f'        {flag}: true,')
+    fields[-1] = fields[-1].rstrip(',')
+    entry = f'    "{name}": {{\n' + '\n'.join(fields) + '\n    }\n};'
+    marker = '\n};'
+    idx = src.find(marker)
+    if idx == -1:
+        sys.exit(f'{path}: could not find the closing }}; of the modelLinks map')
+    src = src[:idx] + ',\n' + entry + src[idx + len(marker):]
+    with open(path, 'w') as f:
+        f.write(src)
+    print(f'inserted modelLinks entry for {name}')
 
 
 def _num(x):
