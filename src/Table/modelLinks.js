@@ -549,6 +549,13 @@ export const modelLinks = {
         organization: "Thinking Machines",
         displayName: "Inkling xHigh Effort",
         reasoner: true
+    },
+    "mimo-v2.5-pro": {
+        url: "https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro",
+        organization: "Xiaomi",
+        displayName: "MiMo V2.5 Pro",
+        openweight: true,
+        reasoner: true
     }
 };
 
