@@ -549,6 +549,18 @@ export const modelLinks = {
         organization: "Thinking Machines",
         displayName: "Inkling xHigh Effort",
         reasoner: true
+    },
+    "gemini-3.5-flash-lite-high": {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+        organization: "Google",
+        displayName: "Gemini 3.5 Flash-Lite High",
+        reasoner: true
+    },
+    "gemini-3.6-flash-high": {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash",
+        organization: "Google",
+        displayName: "Gemini 3.6 Flash High",
+        reasoner: true
     }
 };
 
