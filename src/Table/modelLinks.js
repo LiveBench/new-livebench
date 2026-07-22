@@ -561,6 +561,13 @@ export const modelLinks = {
         organization: "Google",
         displayName: "Gemini 3.6 Flash High",
         reasoner: true
+    },
+    "mimo-v2.5-pro": {
+        url: "https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro",
+        organization: "Xiaomi",
+        displayName: "MiMo V2.5 Pro",
+        openweight: true,
+        reasoner: true
     }
 };
 
