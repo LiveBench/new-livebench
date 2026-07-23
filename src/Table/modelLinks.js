@@ -561,6 +561,17 @@ export const modelLinks = {
         organization: "Google",
         displayName: "Gemini 3.6 Flash High",
         reasoner: true
+    },
+    "claude-opus-5-xhigh-effort": {
+        url: "https://www.anthropic.com/news/claude-opus-5",
+        organization: "Anthropic",
+        displayName: "Claude 5 Opus Thinking xHigh Effort",
+        version: "2026-07-22",
+        reasoner: true,
+        variants: [
+            { rawName: "claude-opus-5-high-effort", displayName: "Claude 5 Opus Thinking High Effort" },
+            { rawName: "claude-opus-5-max-effort", displayName: "Claude 5 Opus Thinking Max Effort" }
+        ]
     }
 };
 
