@@ -51,7 +51,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const [sortKey, setSortKey] = useState(init.get("sort") || (initCats.length === 1 ? initCats[0] : "overall"));
   const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
-  const [onlyOpen, setOnlyOpen] = useState(false);
+  const [onlyOpen, setOnlyOpen] = useState(init.get("open") === "1");
   const [q, setQ] = useState("");
   const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
   const [orgFilter, setOrgFilter] = useState(init.get("org") || "");
@@ -88,10 +88,11 @@ export default function Leaderboard({ models, categories, hasCost }) {
     if (selectedCats.length) p.set("cats", selectedCats.join(","));
     const isDefault = sortKey === (single || "overall") && sortDir === -1;
     if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
+    if (onlyOpen) p.set("open", "1");
     if (showOrg) p.set("showorg", "1");
     if (orgFilter) p.set("org", orgFilter);
     writeHash(p);
-  }, [selectedCats, single, sortKey, sortDir, showOrg, orgFilter]);
+  }, [selectedCats, single, sortKey, sortDir, onlyOpen, showOrg, orgFilter]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
