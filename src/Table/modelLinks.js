@@ -587,7 +587,9 @@ export const modelLinks = {
         url: "https://qwen.ai/blog?id=qwen3.8",
         organization: "Alibaba",
         displayName: "Qwen 3.8 Max",
-        reasoner: true
+        reasoner: true,
+        openweight: true,
+        huggingface: "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B"
     }
 };
 
