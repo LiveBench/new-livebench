@@ -357,6 +357,7 @@ export const modelLinks = {
     "deepseek-v3.2": {url: "https://huggingface.co/deepseek-ai/DeepSeek-V3.2", organization: "DeepSeek", displayName: "DeepSeek V3.2", version: "2025-11-25", openweight: true},
     "deepseek-v3.2-speciale": {url: "https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Speciale", organization: "DeepSeek", displayName: "DeepSeek V3.2 Speciale", version: "2025-11-25", openweight: true, reasoner: true},
     "deepseek-v3.2-thinking": {url: "https://huggingface.co/deepseek-ai/DeepSeek-V3.2", organization: "DeepSeek", displayName: "DeepSeek V3.2 Thinking", version: "2025-11-25", openweight: true, reasoner: true},
+    "deepseek-v4-pro-0813": {url: "https://api-docs.deepseek.com/news/news260424", organization: "DeepSeek", displayName: "DeepSeek V4 Pro 0813", openweight: true, reasoner: true, huggingface: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro"},
     "deepseek-v4-pro": {url: "https://api-docs.deepseek.com/news/news260424", organization: "DeepSeek", displayName: "DeepSeek V4 Pro", openweight: true, reasoner: true, huggingface: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro"},
     "deepseek-v4-flash": {url: "https://api-docs.deepseek.com/news/news260424", organization: "DeepSeek", displayName: "DeepSeek V4 Flash", openweight: true, reasoner: true, huggingface: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash"},
     "gpt-5.1-codex-max": {
