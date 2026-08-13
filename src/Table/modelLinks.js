@@ -597,6 +597,12 @@ export const modelLinks = {
         organization: "xAI",
         displayName: "Grok 4.6",
         reasoner: true
+    },
+    "gemini-3.7-flash-high": {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash",
+        organization: "Google",
+        displayName: "Gemini 3.7 Flash High",
+        reasoner: true
     }
 };
 
