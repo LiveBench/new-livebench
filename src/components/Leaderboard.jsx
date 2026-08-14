@@ -52,6 +52,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
   const [onlyOpen, setOnlyOpen] = useState(init.get("open") === "1");
+  const [noFinetunes, setNoFinetunes] = useState(init.get("noft") === "1");
   const [q, setQ] = useState("");
   const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
   const [orgFilter, setOrgFilter] = useState(init.get("org") || "");
@@ -89,10 +90,11 @@ export default function Leaderboard({ models, categories, hasCost }) {
     const isDefault = sortKey === (single || "overall") && sortDir === -1;
     if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
     if (onlyOpen) p.set("open", "1");
+    if (noFinetunes) p.set("noft", "1");
     if (showOrg) p.set("showorg", "1");
     if (orgFilter) p.set("org", orgFilter);
     writeHash(p);
-  }, [selectedCats, single, sortKey, sortDir, onlyOpen, showOrg, orgFilter]);
+  }, [selectedCats, single, sortKey, sortDir, onlyOpen, noFinetunes, showOrg, orgFilter]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
@@ -104,6 +106,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const rows = useMemo(() => {
     let r = models.filter((m) => {
       if (onlyOpen && !m.open) return false;
+      if (noFinetunes && m.finetune) return false;
       if (orgFilter && m.org !== orgFilter) return false;
       if (q && !m.name.toLowerCase().includes(q) && !m.model.toLowerCase().includes(q)) return false;
       return true;
@@ -117,7 +120,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyOpen, orgFilter, q, sortKey, sortDir, selectedCats]);
+  }, [models, onlyOpen, noFinetunes, orgFilter, q, sortKey, sortDir, selectedCats]);
 
   const shades = computeShades(rows, scoreCols, val);
 
@@ -153,6 +156,8 @@ export default function Leaderboard({ models, categories, hasCost }) {
             onChange={(e) => setQ(e.target.value.toLowerCase())} />
         </div>
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
+        <button className="lb-chip" aria-pressed={noFinetunes} data-tip="Hide models that are finetunes of another model"
+          onClick={() => setNoFinetunes((v) => !v)}>Exclude finetunes</button>
         <button className="lb-chip" aria-pressed={showOrg} data-tip="Show the organization column"
           onClick={() => setShowOrg((v) => !v)}>Show org</button>
         <select className="lb-org-select" value={orgFilter} onChange={(e) => setOrgFilter(e.target.value)} aria-label="Filter by organization">
