@@ -32,7 +32,7 @@ export default function App() {
           model: row.model, row, info,
           name: info.displayName || row.model,
           org: info.organization || "Other",
-          reasoner: !!info.reasoner, open: !!info.openweight,
+          reasoner: !!info.reasoner, open: !!info.openweight, finetune: !!info.finetune,
           overall, cats: c, cost,
           costOverall: overallCost(cost, cats), // overall $/Q: total cost ÷ all questions (for scatter/KPIs)
         };
