@@ -603,6 +603,13 @@ export const modelLinks = {
         organization: "Google",
         displayName: "Gemini 3.7 Flash High",
         reasoner: true
+    },
+    "qwen3.8-27b": {
+        url: "https://huggingface.co/Qwen/Qwen3.8-27B",
+        organization: "Alibaba",
+        displayName: "Qwen3.8 27B",
+        openweight: true,
+        reasoner: true
     }
 };
 
