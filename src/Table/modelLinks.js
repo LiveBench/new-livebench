@@ -610,6 +610,12 @@ export const modelLinks = {
         displayName: "Qwen3.8 27B",
         openweight: true,
         reasoner: true
+    },
+    "ox-alpha-max": {
+        url: "https://openrouter.ai/stealth/ox-alpha",
+        organization: "Stealth",
+        displayName: "ox-alpha-max",
+        reasoner: true
     }
 };
 
