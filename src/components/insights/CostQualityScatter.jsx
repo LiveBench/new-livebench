@@ -8,6 +8,7 @@ const X_TICKS = [0.002, 0.005, 0.01, 0.02, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.3
 
 export default function CostQualityScatter({ models, categories, scope = "overall" }) {
   const [tip, setTip] = useState(null);
+  const [anchor, setAnchor] = useState(null); // model id clicked to anchor the kill zone
 
   const scoreOf = (m) => (scope === "overall" ? m.overall : m.cats?.[scope]);
   // x-axis metric = cost per successful task = ($/task ÷ score) × 100
@@ -35,14 +36,25 @@ export default function CostQualityScatter({ models, categories, scope = "overal
   const orgs = [...new Set(pts.map((p) => p.org))];
   const scopeName = scope === "overall" ? "overall" : scope;
 
+  // Kill zone: click a model (the frontier is the interesting case) and everything that scores
+  // no higher for no less money is dominated — down-and-right of it on these axes. Looked up by
+  // id so a stale pick from another scope or a filtered-out model just clears itself.
+  const sel = anchor ? pts.find((p) => p.model === anchor) : null;
+  const dominated = sel
+    ? pts.filter((m) => m.model !== sel.model && scoreOf(m) <= scoreOf(sel) && costOf(m) >= costOf(sel))
+    : [];
+  const kz = sel && { x: X(costOf(sel)), y: Y(scoreOf(sel)) };
+  const nDom = dominated.length;
+
   const enter = (m) => () => setTip({ xPct: (X(costOf(m)) / W) * 100, yPct: (Y(scoreOf(m)) / H) * 100, m });
 
   return (
     <>
       <h3>Quality vs. cost{scope === "overall" ? "" : ` · ${scope}`}</h3>
-      <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. Cost per successful task (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each cost.</p>
+      <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. Cost per successful task (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each cost. Click a model to grey out its <b>kill zone</b> — everything that scores lower and costs more; click it again to clear.</p>
       <div style={{ position: "relative" }}>
         <svg className="lb-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Quality versus cost scatter plot">
+          {sel && <rect x={pL} y={pT} width={pw} height={ph} fill="transparent" onClick={() => setAnchor(null)} />}
           {yTicks.map((t) => (
             <g key={t}>
               <line x1={pL} y1={Y(t)} x2={W - pR} y2={Y(t)} stroke="#E4E9F2" />
@@ -58,15 +70,29 @@ export default function CostQualityScatter({ models, categories, scope = "overal
           <text x={pL + pw / 2} y={H - 6} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85">Cost per successful task (log) →</text>
           <text x={13} y={pT + ph / 2} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85"
             transform={`rotate(-90 13 ${pT + ph / 2})`}>{scope === "overall" ? "LiveBench overall ↑" : `${scope} score ↑`}</text>
+          {kz && kz.x < W - pR - 1 && kz.y < H - pB - 1 && (
+            <g>
+              <rect x={kz.x} y={kz.y} width={W - pR - kz.x} height={H - pB - kz.y} fill="rgba(20,33,61,0.07)" />
+              <line x1={kz.x} y1={kz.y} x2={W - pR} y2={kz.y} stroke="#A9B4CA" strokeWidth="1" strokeDasharray="4 3" />
+              <line x1={kz.x} y1={kz.y} x2={kz.x} y2={H - pB} stroke="#A9B4CA" strokeWidth="1" strokeDasharray="4 3" />
+              {W - pR - kz.x > 150 && H - pB - kz.y > 34 && (
+                <text x={W - pR - 8} y={kz.y + 15} textAnchor="end" fontFamily="var(--mono)" fontSize="10" fill="#5A6B85">
+                  {`kill zone · ${nDom} ${nDom === 1 ? "model" : "models"} worse & pricier`}
+                </text>
+              )}
+            </g>
+          )}
           {frontPath && <path d={frontPath} fill="none" stroke="#2F54EB" strokeWidth="2" strokeDasharray="5 3" />}
           {pts.map((m) => {
             const col = orgColor(m.org);
             const cx = X(costOf(m)), cy = Y(scoreOf(m));
+            const isAnchor = sel && m.model === sel.model;
             return (
-              <circle key={m.model} cx={cx} cy={cy} r={5.5}
-                fill={col} stroke={col} strokeWidth="2"
+              <circle key={m.model} cx={cx} cy={cy} r={isAnchor ? 7 : 5.5}
+                fill={col} stroke={isAnchor ? "#14213D" : col} strokeWidth={isAnchor ? 2.5 : 2}
                 opacity={1} style={{ cursor: "pointer" }}
-                onMouseEnter={enter(m)} onMouseLeave={() => setTip(null)} />
+                onMouseEnter={enter(m)} onMouseLeave={() => setTip(null)}
+                onClick={() => setAnchor((a) => (a === m.model ? null : m.model))} />
             );
           })}
         </svg>
@@ -80,6 +106,8 @@ export default function CostQualityScatter({ models, categories, scope = "overal
               <span>avg output tokens{scope === "overall" ? "" : ` (${scope})`}</span><span>{Math.round(outputTokensForScope(tip.m.cost, categories, scope) || 0).toLocaleString()}</span>
             </div>
             {front.has(tip.m.model) && <div style={{ marginTop: 6, color: "#7Cf0c0" }}>● value frontier</div>}
+            {sel && tip.m.model === sel.model && <div style={{ marginTop: 6, color: "#A9B4CA" }}>{`◻ kill-zone anchor · ${nDom} dominated`}</div>}
+            {dominated.some((m) => m.model === tip.m.model) && <div style={{ marginTop: 6, color: "#A9B4CA" }}>{`◻ in ${sel.name}'s kill zone`}</div>}
           </div>
         )}
       </div>
