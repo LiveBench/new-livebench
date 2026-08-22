@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { catFull, subtaskLabel } from "../lib/constants";
 import { collapseVariants, costForCategories } from "../lib/compute";
 import { getHuggingFaceUrl } from "../Table/modelLinks";
+import { readHash, writeHash } from "../lib/urlState";
+import FinetuneChip from "./FinetuneChip";
 
 // Render $X with the "$" in a .cur span (size-only nudge — see index.css).
 const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
@@ -28,20 +30,8 @@ function computeShades(rows, cols, valFn) {
   return map;
 }
 
-// ---- URL state lives in the hash query (e.g. #/?cat=Agentic+Coding&sort=python&dir=desc) ----
-const readHash = () => {
-  const h = window.location.hash || "";
-  const qi = h.indexOf("?");
-  return new URLSearchParams(qi >= 0 ? h.slice(qi + 1) : "");
-};
-const writeHash = (params) => {
-  const h = window.location.hash || "#/";
-  const base = h.indexOf("?") >= 0 ? h.slice(0, h.indexOf("?")) : h || "#/";
-  const qs = params.toString();
-  window.history.replaceState(null, "", qs ? `${base}?${qs}` : base);
-};
-
-export default function Leaderboard({ models, categories, hasCost }) {
+// inclFinetunes is owned by App (shared with Insights); everything else is local view state.
+export default function Leaderboard({ models, categories, hasCost, inclFinetunes, onToggleFinetunes }) {
   const cats = Object.keys(categories);
 
   // initialize view state from the URL so links are shareable
@@ -52,7 +42,6 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
   const [onlyOpen, setOnlyOpen] = useState(init.get("open") === "1");
-  const [noFinetunes, setNoFinetunes] = useState(init.get("noft") === "1");
   const [q, setQ] = useState("");
   const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
   const [orgFilter, setOrgFilter] = useState(init.get("org") || "");
@@ -90,11 +79,11 @@ export default function Leaderboard({ models, categories, hasCost }) {
     const isDefault = sortKey === (single || "overall") && sortDir === -1;
     if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
     if (onlyOpen) p.set("open", "1");
-    if (noFinetunes) p.set("noft", "1");
+    if (inclFinetunes) p.set("ft", "1");
     if (showOrg) p.set("showorg", "1");
     if (orgFilter) p.set("org", orgFilter);
     writeHash(p);
-  }, [selectedCats, single, sortKey, sortDir, onlyOpen, noFinetunes, showOrg, orgFilter]);
+  }, [selectedCats, single, sortKey, sortDir, onlyOpen, inclFinetunes, showOrg, orgFilter]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
@@ -106,7 +95,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
   const rows = useMemo(() => {
     let r = models.filter((m) => {
       if (onlyOpen && !m.open) return false;
-      if (noFinetunes && m.finetune) return false;
+      if (!inclFinetunes && m.finetune) return false;
       if (orgFilter && m.org !== orgFilter) return false;
       if (q && !m.name.toLowerCase().includes(q) && !m.model.toLowerCase().includes(q)) return false;
       return true;
@@ -120,7 +109,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyOpen, noFinetunes, orgFilter, q, sortKey, sortDir, selectedCats]);
+  }, [models, onlyOpen, inclFinetunes, orgFilter, q, sortKey, sortDir, selectedCats]);
 
   const shades = computeShades(rows, scoreCols, val);
 
@@ -156,8 +145,7 @@ export default function Leaderboard({ models, categories, hasCost }) {
             onChange={(e) => setQ(e.target.value.toLowerCase())} />
         </div>
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
-        <button className="lb-chip" aria-pressed={noFinetunes} data-tip="Hide models that are finetunes of another model"
-          onClick={() => setNoFinetunes((v) => !v)}>Exclude finetunes</button>
+        <FinetuneChip on={inclFinetunes} onToggle={onToggleFinetunes} />
         <button className="lb-chip" aria-pressed={showOrg} data-tip="Show the organization column"
           onClick={() => setShowOrg((v) => !v)}>Show org</button>
         <select className="lb-org-select" value={orgFilter} onChange={(e) => setOrgFilter(e.target.value)} aria-label="Filter by organization">

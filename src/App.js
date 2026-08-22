@@ -4,6 +4,7 @@ import { RELEASES } from "./lib/constants";
 import useLeaderboardData from "./lib/useLeaderboardData";
 import { overallOf, catAvg, overallCost } from "./lib/compute";
 import { getModelInfo } from "./Table/modelLinks";
+import { readHash } from "./lib/urlState";
 import Navbar from "./components/Navbar";
 import Tooltip from "./components/Tooltip";
 import ReleaseTimeline from "./components/ReleaseTimeline";
@@ -14,6 +15,10 @@ const LATEST = RELEASES[RELEASES.length - 1];
 
 export default function App() {
   const [date, setDate] = useState(LATEST);
+  // Finetunes are hidden by default in both the leaderboard and the insights; ?ft=1 opts in.
+  // Shared here (not per-section) so the two never disagree about which models are in play.
+  const [inclFinetunes, setInclFinetunes] = useState(() => readHash().get("ft") === "1");
+  const toggleFinetunes = () => setInclFinetunes((v) => !v);
   const { rawData, categories, costMap, hasCost, loading, error } = useLeaderboardData(date);
 
   // Enrich each model row with metadata + computed scores once per load.
@@ -79,14 +84,16 @@ export default function App() {
                 Overall + every category, sortable. Click a row for its subtask scores.
                 {hasCost ? " Cost sits right beside the scores." : ""}
               </p>
-              <Leaderboard key={date} models={models} categories={categories} hasCost={hasCost} />
+              <Leaderboard key={date} models={models} categories={categories} hasCost={hasCost}
+                inclFinetunes={inclFinetunes} onToggleFinetunes={toggleFinetunes} />
             </>
           )}
         </div>
       </section>
 
       {!loading && !error && models.length > 0 && (
-        <Insights key={date} models={models} categories={categories} hasCost={hasCost} />
+        <Insights key={date} models={models} categories={categories} hasCost={hasCost}
+          inclFinetunes={inclFinetunes} onToggleFinetunes={toggleFinetunes} />
       )}
 
       <footer className="lb-footer">
