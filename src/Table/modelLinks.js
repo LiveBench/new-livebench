@@ -615,6 +615,12 @@ export const modelLinks = {
         organization: "Stealth",
         displayName: "ox-alpha-max",
         reasoner: true
+    },
+    "deepseek-v4-flash-vision-exp": {
+        url: "https://api-docs.deepseek.com/updates",
+        organization: "DeepSeek",
+        displayName: "DeepSeek V4 Flash Vision Exp",
+        reasoner: true
     }
 };
 
