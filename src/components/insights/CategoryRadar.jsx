@@ -8,7 +8,10 @@ export default function CategoryRadar({ models, categories }) {
   const cats = Object.keys(categories);
   const byName = (name) => models.find((m) => m.model === name);
   const top2 = models.slice().sort((a, b) => b.overall - a.overall).slice(0, 2).map((m) => m.model);
-  const [sel, setSel] = useState(top2);
+  // null = untouched, so the default tracks the current model list (e.g. when finetunes are
+  // toggled). Once picked, drop anything no longer in the list rather than drawing a blank.
+  const [picked, setPicked] = useState(null);
+  const sel = (picked ?? top2).filter((name) => byName(name));
 
   const n = cats.length;
   const ang = (i) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
@@ -19,8 +22,8 @@ export default function CategoryRadar({ models, categories }) {
     return m ? m.name : name;
   };
 
-  const add = (e) => { const v = e.target.value; if (v && sel.length < 3 && !sel.includes(v)) setSel([...sel, v]); };
-  const remove = (name) => setSel(sel.filter((x) => x !== name));
+  const add = (e) => { const v = e.target.value; if (v && sel.length < 3 && !sel.includes(v)) setPicked([...sel, v]); };
+  const remove = (name) => setPicked(sel.filter((x) => x !== name));
 
   const rings = [0.25, 0.5, 0.75, 1];
   const options = models.filter((m) => !sel.includes(m.model)).sort((a, b) => b.overall - a.overall);
