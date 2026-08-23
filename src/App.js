@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "./App.css";
 import { RELEASES } from "./lib/constants";
 import useLeaderboardData from "./lib/useLeaderboardData";
@@ -20,6 +21,13 @@ export default function App() {
   const [inclFinetunes, setInclFinetunes] = useState(() => readHash().get("ft") === "1");
   const toggleFinetunes = () => setInclFinetunes((v) => !v);
   const { rawData, categories, costMap, hasCost, loading, error } = useLeaderboardData(date);
+
+  // #/insights is a static link straight to the Insights section (same page, pre-scrolled).
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (pathname !== "/insights" || loading) return;
+    document.getElementById("lb-insights")?.scrollIntoView();
+  }, [pathname, loading]);
 
   // Enrich each model row with metadata + computed scores once per load.
   const models = useMemo(() => {

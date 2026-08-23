@@ -45,8 +45,18 @@ export default function CostQualityScatter({ models, categories, scope = "overal
     : [];
   const kz = sel && { x: X(costOf(sel)), y: Y(scoreOf(sel)) };
   const nDom = dominated.length;
+  const domSet = new Set(dominated.map((m) => m.model));
 
   const enter = (m) => () => setTip({ xPct: (X(costOf(m)) / W) * 100, yPct: (Y(scoreOf(m)) / H) * 100, m });
+
+  // Point labels: anchored model when one is clicked, otherwise every frontier model.
+  // Up-and-left of a point is open space on these axes; flip to the right near the left edge.
+  const labeled = sel ? [sel] : frontPts;
+  const labelFor = (m) => {
+    const x = X(costOf(m)), y = Y(scoreOf(m));
+    const flip = x - 10 - m.name.length * 5.6 < pL - 12;
+    return { x: flip ? x + 10 : x - 10, y: Math.max(y - 9, pT + 9), ta: flip ? "start" : "end" };
+  };
 
   return (
     <>
@@ -54,6 +64,11 @@ export default function CostQualityScatter({ models, categories, scope = "overal
       <p className="ch-sub">{scope === "overall" ? "LiveBench overall" : `${scope} score`} vs. Cost per successful task (log). The <b style={{ color: "var(--accent)" }}>value frontier</b> is the best score at each cost. Click a model to grey out its <b>kill zone</b> — everything that scores lower and costs more; click it again to clear.</p>
       <div style={{ position: "relative" }}>
         <svg className="lb-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Quality versus cost scatter plot">
+          <defs>
+            <pattern id="lb-kz-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(20,33,61,0.14)" strokeWidth="2" />
+            </pattern>
+          </defs>
           {sel && <rect x={pL} y={pT} width={pw} height={ph} fill="transparent" onClick={() => setAnchor(null)} />}
           {yTicks.map((t) => (
             <g key={t}>
@@ -71,13 +86,15 @@ export default function CostQualityScatter({ models, categories, scope = "overal
           <text x={13} y={pT + ph / 2} textAnchor="middle" fontFamily="var(--mono)" fontSize="10.5" fill="#5A6B85"
             transform={`rotate(-90 13 ${pT + ph / 2})`}>{scope === "overall" ? "LiveBench overall ↑" : `${scope} score ↑`}</text>
           {kz && kz.x < W - pR - 1 && kz.y < H - pB - 1 && (
-            <g>
-              <rect x={kz.x} y={kz.y} width={W - pR - kz.x} height={H - pB - kz.y} fill="rgba(20,33,61,0.07)" />
-              <line x1={kz.x} y1={kz.y} x2={W - pR} y2={kz.y} stroke="#A9B4CA" strokeWidth="1" strokeDasharray="4 3" />
-              <line x1={kz.x} y1={kz.y} x2={kz.x} y2={H - pB} stroke="#A9B4CA" strokeWidth="1" strokeDasharray="4 3" />
+            <g pointerEvents="none">
+              <rect x={kz.x} y={kz.y} width={W - pR - kz.x} height={H - pB - kz.y} fill="rgba(20,33,61,0.08)" />
+              <rect x={kz.x} y={kz.y} width={W - pR - kz.x} height={H - pB - kz.y} fill="url(#lb-kz-hatch)" />
+              <line x1={kz.x} y1={kz.y} x2={W - pR} y2={kz.y} stroke="#5A6B85" strokeWidth="1.2" strokeDasharray="4 3" />
+              <line x1={kz.x} y1={kz.y} x2={kz.x} y2={H - pB} stroke="#5A6B85" strokeWidth="1.2" strokeDasharray="4 3" />
               {W - pR - kz.x > 150 && H - pB - kz.y > 34 && (
-                <text x={W - pR - 8} y={kz.y + 15} textAnchor="end" fontFamily="var(--mono)" fontSize="10" fill="#5A6B85">
-                  {`kill zone · ${nDom} ${nDom === 1 ? "model" : "models"} worse & pricier`}
+                <text x={W - pR - 8} y={kz.y + 16} textAnchor="end" fontFamily="var(--mono)" fontSize="10.5" fontWeight="700" fill="#14213D"
+                  stroke="#FFFFFF" strokeWidth="3" paintOrder="stroke">
+                  {`KILL ZONE · ${nDom} ${nDom === 1 ? "model" : "models"} worse & pricier`}
                 </text>
               )}
             </g>
@@ -87,12 +104,24 @@ export default function CostQualityScatter({ models, categories, scope = "overal
             const col = orgColor(m.org);
             const cx = X(costOf(m)), cy = Y(scoreOf(m));
             const isAnchor = sel && m.model === sel.model;
+            const isDom = domSet.has(m.model);
             return (
               <circle key={m.model} cx={cx} cy={cy} r={isAnchor ? 7 : 5.5}
-                fill={col} stroke={isAnchor ? "#14213D" : col} strokeWidth={isAnchor ? 2.5 : 2}
-                opacity={1} style={{ cursor: "pointer" }}
+                fill={isDom ? "#C3CBDC" : col} stroke={isAnchor ? "#14213D" : isDom ? "#C3CBDC" : col} strokeWidth={isAnchor ? 2.5 : 2}
+                opacity={isDom ? 0.55 : 1} style={{ cursor: "pointer" }}
                 onMouseEnter={enter(m)} onMouseLeave={() => setTip(null)}
                 onClick={() => setAnchor((a) => (a === m.model ? null : m.model))} />
+            );
+          })}
+          {labeled.map((m) => {
+            const l = labelFor(m);
+            const isAnchor = sel && m.model === sel.model;
+            return (
+              <text key={`lbl-${m.model}`} x={l.x} y={l.y} textAnchor={l.ta} pointerEvents="none"
+                fontSize={isAnchor ? "11.5" : "10"} fontWeight={isAnchor ? "800" : "600"}
+                fill={isAnchor ? "#14213D" : "#3D4E6B"} stroke="#FFFFFF" strokeWidth="3" paintOrder="stroke">
+                {m.name}
+              </text>
             );
           })}
         </svg>
@@ -113,6 +142,11 @@ export default function CostQualityScatter({ models, categories, scope = "overal
       </div>
       <div className="lb-legend">
         {orgs.map((o) => <span className="li" key={o}><span className="sw" style={{ background: orgColor(o) }} />{o}</span>)}
+      </div>
+      <div className="lb-attrib">
+        <span className="lb-pulse" />
+        <span>Source: <b>LiveBench.AI</b> — contamination-free LLM benchmark</span>
+        <span className="mono lb-attrib-url">livebench.ai/#/insights</span>
       </div>
     </>
   );
