@@ -58,26 +58,35 @@ export default function CostQualityScatter({ models, categories, scope = "overal
       : { base: name, effort: null };
   };
 
-  // Point labels: anchored model when one is clicked, otherwise frontier models — pruned so
-  // labels never crowd: best score wins a collision, later (lower) ones are skipped.
+  // Point labels: anchored model when one is clicked, otherwise frontier models — placed so
+  // labels never crowd: best score picks first; a collision tries below the point, then skips.
   // Up-and-left of a point is open space on these axes; flip to the right near the left edge.
-  const labelFor = (m) => {
+  const labelFor = (m, below = false) => {
     const { base, effort } = splitEffort(m.name);
     const x = X(costOf(m)), y = Y(scoreOf(m));
     const flip = x - 10 - base.length * 5.6 < pL - 12;
-    return { base, effort, x: flip ? x + 10 : x - 10, y: Math.max(y - (effort ? 19 : 9), pT + 9), ta: flip ? "start" : "end" };
+    const ly = below
+      ? Math.min(y + 17, H - pB - (effort ? 16 : 5))
+      : Math.max(y - (effort ? 19 : 9), pT + 9);
+    return { base, effort, x: flip ? x + 10 : x - 10, y: ly, ta: flip ? "start" : "end" };
   };
   let labeled;
-  if (sel) labeled = [sel];
+  if (sel) labeled = [{ m: sel, below: false }];
   else {
     labeled = [];
     const boxes = [];
     [...frontPts].sort((a, b) => scoreOf(b) - scoreOf(a)).forEach((m) => {
-      const l = labelFor(m);
-      const w = Math.max(l.base.length * 5.6, (l.effort || "").length * 4.4);
-      const b = { x1: l.ta === "end" ? l.x - w : l.x, x2: l.ta === "end" ? l.x : l.x + w, y1: l.y - 8, y2: l.y + (l.effort ? 18 : 2) };
-      if (boxes.some((o) => b.x1 < o.x2 + 8 && o.x1 < b.x2 + 8 && b.y1 < o.y2 + 4 && o.y1 < b.y2 + 4)) return;
-      boxes.push(b); labeled.push(m);
+      for (const below of [false, true]) {
+        const l = labelFor(m, below);
+        const w = Math.max(l.base.length * 5.6, (l.effort || "").length * 4.4);
+        const b = { x1: l.ta === "end" ? l.x - w : l.x, x2: l.ta === "end" ? l.x : l.x + w, y1: l.y - 8, y2: l.y + (l.effort ? 18 : 2) };
+        if (boxes.some((o) => b.x1 < o.x2 + 8 && o.x1 < b.x2 + 8 && b.y1 < o.y2 + 2 && o.y1 < b.y2 + 2)) continue;
+        // The below slot is a fallback — only take it in genuinely clear space (no dots under the text).
+        if (below && pts.some((p) => p.model !== m.model &&
+          X(costOf(p)) > b.x1 - 7 && X(costOf(p)) < b.x2 + 7 && Y(scoreOf(p)) > b.y1 - 7 && Y(scoreOf(p)) < b.y2 + 7)) continue;
+        boxes.push(b); labeled.push({ m, below });
+        return;
+      }
     });
   }
 
@@ -136,8 +145,8 @@ export default function CostQualityScatter({ models, categories, scope = "overal
                 onClick={() => setAnchor((a) => (a === m.model ? null : m.model))} />
             );
           })}
-          {labeled.map((m) => {
-            const l = labelFor(m);
+          {labeled.map(({ m, below }) => {
+            const l = labelFor(m, below);
             const isAnchor = sel && m.model === sel.model;
             return (
               <text key={`lbl-${m.model}`} x={l.x} y={l.y} textAnchor={l.ta} pointerEvents="none"
