@@ -99,6 +99,10 @@ a{color:var(--accent);text-decoration:none;}
    grow to its natural width (no squishing) so the pane scrolls sideways when zoomed
    in or when extra columns are shown — the frozen model column stays pinned. */
 .lb-tbl{border-collapse:collapse;min-width:100%;width:max-content;font-size:13.5px;}
+/* when columns are hidden via the chooser, the pane hugs the table's natural width
+   (capped at the container) instead of stretching remaining columns to fill it */
+.lb-tbl-scroll.fit{width:fit-content;max-width:100%;}
+.lb-tbl-scroll.fit .lb-tbl{min-width:0;}
 .lb-tbl thead th{position:sticky;top:0;z-index:3;background:var(--surface);text-align:right;vertical-align:bottom;padding:12px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border-strong);white-space:nowrap;cursor:pointer;user-select:none;}
 .lb-tbl thead th.l{text-align:left;}
 .lb-tbl thead th:hover{color:var(--accent);}
