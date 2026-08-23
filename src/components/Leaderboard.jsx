@@ -4,6 +4,7 @@ import { collapseVariants, costForCategories } from "../lib/compute";
 import { getHuggingFaceUrl } from "../Table/modelLinks";
 import { readHash, writeHash } from "../lib/urlState";
 import FinetuneChip from "./FinetuneChip";
+import ColumnChooser from "./ColumnChooser";
 
 // Render $X with the "$" in a .cur span (size-only nudge — see index.css).
 const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
@@ -45,6 +46,10 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
   const [q, setQ] = useState("");
   const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
   const [orgFilter, setOrgFilter] = useState(init.get("org") || "");
+  // hidden column groups: "overall", a category key, or "cpst" (cost per successful task)
+  const [hiddenCols, setHiddenCols] = useState(() => new Set(
+    (init.get("hide") || "").split(",").filter((k) => k === "overall" || k === "cpst" || categories[k])
+  ));
 
   const orgs = [...new Set(models.map((m) => m.org).filter(Boolean))].sort();
 
@@ -56,6 +61,16 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
   const scoreCols = single
     ? [single, ...categories[single]]
     : ["overall", ...(nSel >= 2 ? selectedCats : cats)];
+
+  // ---- column chooser: hide/show column groups ("overall", each category, "cpst") ----
+  const groupOf = (k) => (k === "overall" || k in categories ? k : single); // subtask columns belong to the focused category
+  const visibleCols = scoreCols.filter((k) => !hiddenCols.has(groupOf(k)));
+  const showCost = hasCost && !hiddenCols.has("cpst");
+  const colGroups = [
+    { key: "overall", label: "Overall" },
+    ...cats.map((c) => ({ key: c, label: catFull(c) })),
+    ...(hasCost ? [{ key: "cpst", label: "Cost per successful task" }] : []),
+  ];
 
   // score of the current scope = mean of its category averages (equal weight per category).
   const scopeScore = (m) => {
@@ -82,8 +97,9 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
     if (inclFinetunes) p.set("ft", "1");
     if (showOrg) p.set("showorg", "1");
     if (orgFilter) p.set("org", orgFilter);
+    if (hiddenCols.size) p.set("hide", [...hiddenCols].join(","));
     writeHash(p);
-  }, [selectedCats, single, sortKey, sortDir, onlyOpen, inclFinetunes, showOrg, orgFilter]);
+  }, [selectedCats, single, sortKey, sortDir, onlyOpen, inclFinetunes, showOrg, orgFilter, hiddenCols]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
@@ -111,7 +127,21 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [models, onlyOpen, inclFinetunes, orgFilter, q, sortKey, sortDir, selectedCats]);
 
-  const shades = computeShades(rows, scoreCols, val);
+  const shades = computeShades(rows, visibleCols, val);
+
+  const toggleCol = (g) => {
+    const n = new Set(hiddenCols);
+    n.has(g) ? n.delete(g) : n.add(g);
+    setHiddenCols(n);
+    // if the current sort column was just hidden, fall back to the first visible score column
+    const sortGroup = sortKey === "cpst" ? "cpst" : sortKey === "model" || sortKey === "org" ? null : groupOf(sortKey);
+    if (sortGroup && n.has(sortGroup)) {
+      const k = scoreCols.find((c) => !n.has(groupOf(c)));
+      setSortKey(k || "model");
+      setSortDir(k ? -1 : 1);
+    }
+  };
+  const resetCols = () => setHiddenCols(new Set());
 
   const clearCats = () => { setSelectedCats([]); setSortKey("overall"); setSortDir(-1); };
   const toggleCat = (c) => {
@@ -119,6 +149,8 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
       ? selectedCats.filter((x) => x !== c)
       : cats.filter((x) => x === c || selectedCats.includes(x)); // keep canonical category order
     setSelectedCats(next);
+    // explicitly focusing a category un-hides its columns
+    if (next.includes(c) && hiddenCols.has(c)) setHiddenCols((s) => { const n = new Set(s); n.delete(c); return n; });
     setSortKey(next.length === 1 ? next[0] : "overall");
     setSortDir(-1);
   };
@@ -135,7 +167,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
   const headTitle = (k) => (k === "overall"
     ? (nSel >= 2 ? "Overall — mean of the selected category averages" : "Overall — mean of category averages")
     : k in categories ? catFull(k) : subtaskLabel(k));
-  const colCount = 2 + scoreCols.length + (hasCost ? 1 : 0) + (showOrg ? 1 : 0);
+  const colCount = 2 + visibleCols.length + (showCost ? 1 : 0) + (showOrg ? 1 : 0);
 
   return (
     <>
@@ -152,6 +184,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
           <option value="">All organizations</option>
           {orgs.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
+        <ColumnChooser groups={colGroups} hidden={hiddenCols} onToggle={toggleCol} onReset={resetCols} />
       </div>
 
       <div className="lb-cats">
@@ -169,12 +202,12 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
               <th className="l" style={{ width: 30 }} aria-hidden="true" />
               <th className="l mdl-col" onClick={() => clickSort("model")}><span className="th-h"><span className="th-t">Model</span>{arrow("model")}</span></th>
               {showOrg && <th className="l org-col" data-tip="Organization" onClick={() => clickSort("org")}><span className="th-h"><span className="th-t">Org</span>{arrow("org")}</span></th>}
-              {scoreCols.map((k, i) => (
-                <th key={k} className={i > 0 ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>
+              {visibleCols.map((k) => (
+                <th key={k} className={k !== scoreCols[0] ? "sub" : undefined} data-tip={headTitle(k)} onClick={() => clickSort(k)}>
                   <span className="th-h"><span className="th-t">{headLabel(k)}</span>{arrow(k)}</span>
                 </th>
               ))}
-              {hasCost && <th className="grp wrap2" data-tip="Cost per successful task = (cost per task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost per<br />successful&nbsp;task</span>{arrow("cpst")}</span></th>}
+              {showCost && <th className="grp wrap2" data-tip="Cost per successful task = (cost per task ÷ score) × 100 for the selected scope — penalizes failures / partial credit" onClick={() => clickSort("cpst")}><span className="th-h"><span className="th-t">Cost per<br />successful&nbsp;task</span>{arrow("cpst")}</span></th>}
             </tr>
           </thead>
           <tbody>
@@ -192,15 +225,15 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
                       </div>
                     </td>
                     {showOrg && <td className="l org-col">{m.org}</td>}
-                    {scoreCols.map((k, i) => {
+                    {visibleCols.map((k) => {
                       const v = val(m, k);
                       return (
-                        <td key={k} className={i === 0 ? "lb-ovr" : "lb-cat"} style={{ background: shades[k] && shades[k][m.model] }}>
+                        <td key={k} className={k === scoreCols[0] ? "lb-ovr" : "lb-cat"} style={{ background: shades[k] && shades[k][m.model] }}>
                           {v == null ? "—" : v.toFixed(1)}
                         </td>
                       );
                     })}
-                    {hasCost && <td className={"lb-cost-col" + (cpst != null ? "" : " na")}><Money v={cpst} dp={3} /></td>}
+                    {showCost && <td className={"lb-cost-col" + (cpst != null ? "" : " na")}><Money v={cpst} dp={3} /></td>}
                   </tr>
                   {open && (
                     <tr className="lb-detail">
