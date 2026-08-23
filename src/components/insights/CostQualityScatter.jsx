@@ -49,14 +49,37 @@ export default function CostQualityScatter({ models, categories, scope = "overal
 
   const enter = (m) => () => setTip({ xPct: (X(costOf(m)) / W) * 100, yPct: (Y(scoreOf(m)) / H) * 100, m });
 
-  // Point labels: anchored model when one is clicked, otherwise every frontier model.
-  // Up-and-left of a point is open space on these axes; flip to the right near the left edge.
-  const labeled = sel ? [sel] : frontPts;
-  const labelFor = (m) => {
-    const x = X(costOf(m)), y = Y(scoreOf(m));
-    const flip = x - 10 - m.name.length * 5.6 < pL - 12;
-    return { x: flip ? x + 10 : x - 10, y: Math.max(y - 9, pT + 9), ta: flip ? "start" : "end" };
+  // Effort suffix ("High", "xHigh Effort", …) moves to a small bracketed second line to keep
+  // labels narrow. Bare "Max" stays put — that's a model tier (Qwen 3.8 Max), not an effort.
+  const EFFORT_RE = /\s*\(?(Max Effort|Max Thinking|xHigh Effort|High Effort|Medium Effort|Low Effort|xHigh|High|Medium|Low)\)?$/;
+  const splitEffort = (name) => {
+    const m = name.match(EFFORT_RE);
+    return m ? { base: name.slice(0, m.index), effort: `(${m[1].replace(/ Effort$/, "").toLowerCase()})` }
+      : { base: name, effort: null };
   };
+
+  // Point labels: anchored model when one is clicked, otherwise frontier models — pruned so
+  // labels never crowd: best score wins a collision, later (lower) ones are skipped.
+  // Up-and-left of a point is open space on these axes; flip to the right near the left edge.
+  const labelFor = (m) => {
+    const { base, effort } = splitEffort(m.name);
+    const x = X(costOf(m)), y = Y(scoreOf(m));
+    const flip = x - 10 - base.length * 5.6 < pL - 12;
+    return { base, effort, x: flip ? x + 10 : x - 10, y: Math.max(y - (effort ? 19 : 9), pT + 9), ta: flip ? "start" : "end" };
+  };
+  let labeled;
+  if (sel) labeled = [sel];
+  else {
+    labeled = [];
+    const boxes = [];
+    [...frontPts].sort((a, b) => scoreOf(b) - scoreOf(a)).forEach((m) => {
+      const l = labelFor(m);
+      const w = Math.max(l.base.length * 5.6, (l.effort || "").length * 4.4);
+      const b = { x1: l.ta === "end" ? l.x - w : l.x, x2: l.ta === "end" ? l.x : l.x + w, y1: l.y - 8, y2: l.y + (l.effort ? 18 : 2) };
+      if (boxes.some((o) => b.x1 < o.x2 + 8 && o.x1 < b.x2 + 8 && b.y1 < o.y2 + 4 && o.y1 < b.y2 + 4)) return;
+      boxes.push(b); labeled.push(m);
+    });
+  }
 
   return (
     <>
@@ -120,7 +143,11 @@ export default function CostQualityScatter({ models, categories, scope = "overal
               <text key={`lbl-${m.model}`} x={l.x} y={l.y} textAnchor={l.ta} pointerEvents="none"
                 fontSize={isAnchor ? "11.5" : "10"} fontWeight={isAnchor ? "800" : "600"}
                 fill={isAnchor ? "#14213D" : "#3D4E6B"} stroke="#FFFFFF" strokeWidth="3" paintOrder="stroke">
-                {m.name}
+                {l.base}
+                {l.effort && (
+                  <tspan x={l.x} dy="11" fontSize={isAnchor ? "9.5" : "8.5"} fontWeight="500"
+                    fill={isAnchor ? "#5A6B85" : "#8A99B5"}>{l.effort}</tspan>
+                )}
               </text>
             );
           })}
