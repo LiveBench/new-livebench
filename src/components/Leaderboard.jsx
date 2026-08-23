@@ -195,7 +195,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
         ))}
       </div>
 
-      <div className="lb-tbl-scroll">
+      <div className={"lb-tbl-scroll" + (hiddenCols.size ? " fit" : "")}>
         <table className="lb-tbl">
           <thead>
             <tr>
