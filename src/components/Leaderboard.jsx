@@ -5,6 +5,7 @@ import { getHuggingFaceUrl } from "../Table/modelLinks";
 import { readHash, writeHash } from "../lib/urlState";
 import FinetuneChip from "./FinetuneChip";
 import ColumnChooser from "./ColumnChooser";
+import ModelCompare from "./ModelCompare";
 
 // Render $X with the "$" in a .cur span (size-only nudge — see index.css).
 const Money = ({ v, dp }) => (v == null ? "—" : <><span className="cur">$</span>{v.toFixed(dp)}</>);
@@ -50,6 +51,11 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
   const [hiddenCols, setHiddenCols] = useState(() => new Set(
     (init.get("hide") || "").split(",").filter((k) => k === "overall" || k === "cpst" || categories[k])
   ));
+  // compare filter: ids of the (collapsed) rows to show; empty = show all
+  const [compareSet, setCompareSet] = useState(() => {
+    const ids = new Set(collapseVariants(models).map((m) => m.model));
+    return new Set((init.get("compare") || "").split(",").map((s) => s.trim()).filter((id) => ids.has(id)));
+  });
 
   const orgs = [...new Set(models.map((m) => m.org).filter(Boolean))].sort();
 
@@ -98,8 +104,9 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
     if (showOrg) p.set("showorg", "1");
     if (orgFilter) p.set("org", orgFilter);
     if (hiddenCols.size) p.set("hide", [...hiddenCols].join(","));
+    if (compareSet.size) p.set("compare", [...compareSet].join(","));
     writeHash(p);
-  }, [selectedCats, single, sortKey, sortDir, onlyOpen, inclFinetunes, showOrg, orgFilter, hiddenCols]);
+  }, [selectedCats, single, sortKey, sortDir, onlyOpen, inclFinetunes, showOrg, orgFilter, hiddenCols, compareSet]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
@@ -117,6 +124,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
       return true;
     });
     r = collapseVariants(r);
+    if (compareSet.size) r = r.filter((m) => compareSet.has(m.model));
     return r.slice().sort((a, b) => {
       const va = sortVal(a, sortKey), vb = sortVal(b, sortKey);
       if (va == null) return 1;
@@ -125,7 +133,14 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyOpen, inclFinetunes, orgFilter, q, sortKey, sortDir, selectedCats]);
+  }, [models, onlyOpen, inclFinetunes, orgFilter, q, sortKey, sortDir, selectedCats, compareSet]);
+
+  // compare panel options: every (collapsed) model in the table, default order (overall desc)
+  const compareOptions = useMemo(
+    () => collapseVariants(models.filter((m) => inclFinetunes || !m.finetune))
+      .sort((a, b) => (b.overall ?? -1) - (a.overall ?? -1)),
+    [models, inclFinetunes]
+  );
 
   const shades = computeShades(rows, visibleCols, val);
 
@@ -184,6 +199,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
           <option value="">All organizations</option>
           {orgs.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
+        <ModelCompare options={compareOptions} active={compareSet} onApply={setCompareSet} />
         <ColumnChooser groups={colGroups} hidden={hiddenCols} onToggle={toggleCol} onReset={resetCols} />
       </div>
 
