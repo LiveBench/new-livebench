@@ -1,7 +1,7 @@
 export const modelLinks = {
     // openweight: weights promised ~2026-08-28 (not published as of 2026-08-25) — flip to true + add huggingface link when zai-org/GLM-5.3 lands
     "glm-5.3": { url: "https://z.ai", organization: "Z.AI", displayName: "GLM-5.3", openweight: false, reasoner: true },
-    "glm-5.3-flash": { url: "https://z.ai", organization: "Z.AI", displayName: "GLM-5.3 Flash", openweight: false, reasoner: true },
+    "glm-5.3-flash": { url: "https://z.ai", organization: "Z.AI", displayName: "GLM-5.3 Flash", openweight: true, reasoner: true, huggingface: "https://huggingface.co/zai-org/GLM-5.3-Flash" },
     "glm-5.2": { url: "https://z.ai", organization: "Z.AI", displayName: "GLM-5.2", openweight: true, reasoner: true, huggingface: "https://huggingface.co/zai-org/GLM-5.2" },
     "kimi-k2.7-code": { url: "https://moonshot.ai", organization: "Moonshot AI", displayName: "Kimi K2.7 Code", openweight: true, reasoner: true, huggingface: "https://huggingface.co/moonshotai/Kimi-K2.7-Code" },
     "arcee-trinity-large-preview": {url: "https://openrouter.ai/arcee-ai/trinity-large-preview:free", organization: "Arcee", displayName: "Trinity Large Preview", openweight: true, reasoner: true, huggingface: "https://huggingface.co/arcee-ai/Trinity-Large-Preview"},
