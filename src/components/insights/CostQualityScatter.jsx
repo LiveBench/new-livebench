@@ -33,7 +33,6 @@ export default function CostQualityScatter({ models, categories, scope = "overal
   const frontPts = pts.filter((p) => front.has(p.model)).sort((a, b) => costOf(a) - costOf(b));
   const frontPath = frontPts.map((p, i) => `${i ? "L" : "M"}${X(costOf(p))} ${Y(scoreOf(p))}`).join(" ");
 
-  const orgs = [...new Set(pts.map((p) => p.org))];
   const scopeName = scope === "overall" ? "overall" : scope;
 
   // Kill zone: click a model (the frontier is the interesting case) and everything that scores
@@ -175,9 +174,6 @@ export default function CostQualityScatter({ models, categories, scope = "overal
             {dominated.some((m) => m.model === tip.m.model) && <div style={{ marginTop: 6, color: "#A9B4CA" }}>{`◻ in ${sel.name}'s kill zone`}</div>}
           </div>
         )}
-      </div>
-      <div className="lb-legend">
-        {orgs.map((o) => <span className="li" key={o}><span className="sw" style={{ background: orgColor(o) }} />{o}</span>)}
       </div>
       <div className="lb-attrib">
         <span className="lb-pulse" />
