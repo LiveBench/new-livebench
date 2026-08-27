@@ -598,7 +598,9 @@ export const modelLinks = {
         url: "https://qwen.ai/blog?id=qwen3.8",
         organization: "Alibaba",
         displayName: "Qwen 3.8 Flash Next",
-        reasoner: true
+        reasoner: true,
+        openweight: true,
+        huggingface: "https://huggingface.co/Qwen/Qwen3.8-Flash-Next"
     },
     "grok-4.6": {
         url: "https://x.ai/news/grok-4-6",
