@@ -614,7 +614,8 @@ export const modelLinks = {
         reasoner: true
     },
     "qwen3.8-27b": {
-        url: "https://huggingface.co/Qwen/Qwen3.8-27B",
+        url: "https://www.qwencloud.com/models/qwen3.8-27b",
+        huggingface: "https://huggingface.co/Qwen/Qwen3.8-27B",
         organization: "Alibaba",
         displayName: "Qwen3.8 27B",
         openweight: true,
@@ -628,8 +629,10 @@ export const modelLinks = {
     },
     "deepseek-v4-flash-vision-exp": {
         url: "https://api-docs.deepseek.com/updates",
+        huggingface: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
         organization: "DeepSeek",
         displayName: "DeepSeek V4 Flash Vision Exp",
+        openweight: true,
         reasoner: true
     }
 };
