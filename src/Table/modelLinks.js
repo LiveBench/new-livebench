@@ -634,6 +634,12 @@ export const modelLinks = {
         displayName: "DeepSeek V4 Flash Vision Exp",
         openweight: true,
         reasoner: true
+    },
+    "claude-fable-5-1-max-effort": {
+        url: "https://www.anthropic.com/news/claude-fable-5-1",
+        organization: "Anthropic",
+        displayName: "Claude Fable 5.1 Max Effort",
+        reasoner: true
     }
 };
 
