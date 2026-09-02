@@ -613,6 +613,12 @@ export const modelLinks = {
         displayName: "Gemini 3.7 Flash High",
         reasoner: true
     },
+    "gemini-3.8-flash-high": {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+        organization: "Google",
+        displayName: "Gemini 3.8 Flash High",
+        reasoner: true
+    },
     "qwen3.8-27b": {
         url: "https://www.qwencloud.com/models/qwen3.8-27b",
         huggingface: "https://huggingface.co/Qwen/Qwen3.8-27B",
