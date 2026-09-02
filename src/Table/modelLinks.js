@@ -532,6 +532,12 @@ export const modelLinks = {
             { rawName: "gpt-5.6-luna-xhigh", displayName: "GPT-5.6 Luna xHigh Effort" }
         ]
     },
+    "muse-spark-1.3-xhigh": {
+        url: "https://dev.meta.ai/docs/models",
+        organization: "Meta",
+        displayName: "Muse Spark 1.3 xHigh Effort",
+        reasoner: true
+    },
     "muse-spark-1.2-xhigh": {
         url: "https://ai.meta.com/",
         organization: "Meta",
