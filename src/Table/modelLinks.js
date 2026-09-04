@@ -505,6 +505,12 @@ export const modelLinks = {
             { rawName: "claude-fable-5-xhigh-effort", displayName: "Claude Fable 5 xHigh Effort" }
         ]
     },
+    "gpt-6-astra-max": {
+        url: "https://developers.openai.com/api/docs/models/gpt-6-astra",
+        organization: "OpenAI",
+        displayName: "GPT-6 Astra Max Effort",
+        reasoner: true
+    },
     "gpt-5.6-sol-max": {
         url: "https://platform.openai.com/docs/models/gpt-5.6",
         organization: "OpenAI",
