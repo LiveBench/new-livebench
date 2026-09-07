@@ -244,7 +244,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
               const base = baseOf(m);
               return (
                 <React.Fragment key={m.model}>
-                  <tr className={"row" + (open ? " open" : "") + (base ? " lb-ftrow" : "")} onClick={() => toggleRow(m.model)}>
+                  <tr className={"row" + (open ? " open" : "") + (ftOnly && !m.finetune ? " lb-baserow" : "")} onClick={() => toggleRow(m.model)}>
                     <td className="l lb-rank"><span className="lb-exp">▸</span></td>
                     <td className="l mdl-col">
                       <div className="lb-mdl">
@@ -317,7 +317,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
           ? `// comparing ${nSel} categories — Overall = mean of the selected · click "All" to reset`
           : "// select 1 category for its subtasks, or several to compare category averages · shading = top 5 per column · click a row for subtasks"}
         {hasCost ? " · Cost per successful task = (Σ cost ÷ Σ questions ÷ score) × 100 over the selected scope" : ""}
-        {ftOnly ? " · ranked by finetune score; each base model sits above its finetunes, whose first score column shows the gain over the base" : ""}
+        {ftOnly ? " · ranked by finetune score; each base model sits below its finetunes, whose first score column shows the gain over the base" : ""}
       </p>
     </>
   );

@@ -160,7 +160,7 @@ a{color:var(--accent);text-decoration:none;}
 .lb-ft-of{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:1px;}
 .lb-delta{font-family:var(--mono);font-size:10px;font-weight:500;margin-left:4px;}
 .lb-delta.up{color:var(--live);} .lb-delta.dn{color:#C0392B;}
-tr.lb-ftrow td.mdl-col{padding-left:26px;}
+tr.lb-baserow td.mdl-col{padding-left:26px;}
 .lb-ovr{font-weight:700;color:var(--ink);font-size:14px;}
 .lb-cat{font-size:12.5px;border-radius:4px;}
 .lb-cost-col{border-left:1px solid var(--border);}

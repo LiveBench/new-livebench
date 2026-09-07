@@ -95,15 +95,15 @@ test("filterByFtMode: hide drops finetunes, all keeps everything, only = finetun
   expect(filterByFtMode(FT, "only").map((m) => m.model)).toEqual(["base-a", "ft-a1", "ft-a2", "ft-orphan"]);
 });
 
-test("groupByBase: groups ranked by best finetune, base first then its finetunes; orphans trail", () => {
+test("groupByBase: groups ranked by best finetune, finetunes then their base below; orphans trail", () => {
   const only = filterByFtMode(FT, "only");
-  expect(groupByBase(only).map((m) => m.model)).toEqual(["base-a", "ft-a1", "ft-a2", "ft-orphan"]);
+  expect(groupByBase(only).map((m) => m.model)).toEqual(["ft-a1", "ft-a2", "base-a", "ft-orphan"]);
   // a weaker base with a stronger finetune outranks a stronger base with a weaker finetune
   const two = [
     { model: "base-x", overall: 90, finetune: false }, { model: "ft-x", overall: 70, finetune: true, baseKey: "base-x" },
     { model: "base-y", overall: 60, finetune: false }, { model: "ft-y", overall: 80, finetune: true, baseKey: "base-y" },
   ];
-  expect(groupByBase(two).map((m) => m.model)).toEqual(["base-y", "ft-y", "base-x", "ft-x"]);
+  expect(groupByBase(two).map((m) => m.model)).toEqual(["ft-y", "base-y", "ft-x", "base-x"]);
 });
 
 test("ft url param round-trips", () => {

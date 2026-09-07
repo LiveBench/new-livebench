@@ -151,9 +151,9 @@ export function filterByFtMode(models, mode) {
   return models.filter((m) => m.finetune || bases.has(m.model));
 }
 
-// "only" mode ordering: one group per base model — the base row first, then its finetunes
-// (desc). Groups are ranked by their best finetune's overall (desc), so the strongest finetune
-// leads the table. Orphan finetunes (base not on this release) trail at the end.
+// "only" mode ordering: one group per base model — its finetunes (desc), then the base row
+// underneath them. Groups are ranked by their best finetune's overall (desc), so the strongest
+// finetune leads the table. Orphan finetunes (base not on this release) trail at the end.
 export function groupByBase(models) {
   const byBase = {};
   for (const m of models) if (m.finetune && m.baseKey) (byBase[m.baseKey] = byBase[m.baseKey] || []).push(m);
@@ -161,7 +161,7 @@ export function groupByBase(models) {
   const bestFt = (base) => Math.max(-1, ...(byBase[base.model] || []).map((m) => m.overall ?? -1));
   const out = [];
   for (const base of models.filter((m) => !m.finetune).sort((a, b) => bestFt(b) - bestFt(a) || desc(a, b))) {
-    out.push(base, ...(byBase[base.model] || []).sort(desc));
+    out.push(...(byBase[base.model] || []).sort(desc), base);
     delete byBase[base.model];
   }
   const placed = new Set(out);
