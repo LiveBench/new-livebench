@@ -65,9 +65,15 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
   const scopeCats = nSel === 0 ? cats : selectedCats;   // categories the cost/score scope covers
 
   // 1 category → its average + subtasks; 2+ → Overall(selected) + the selected categories; 0 → Overall + all.
+  // Whenever finetunes are listed, Agentic Coding moves up to sit right after Overall (it is the
+  // category finetunes are mostly judged on) and finetune rows show their gain over the base there.
+  const ftShown = ftMode !== "hide";
+  const agenticCat = cats.find((c) => /agentic/i.test(c));
+  const catOrder = (list) => (ftShown && agenticCat && list.includes(agenticCat)
+    ? [agenticCat, ...list.filter((c) => c !== agenticCat)] : list);
   const scoreCols = single
     ? [single, ...categories[single]]
-    : ["overall", ...(nSel >= 2 ? selectedCats : cats)];
+    : ["overall", ...catOrder(nSel >= 2 ? selectedCats : cats)];
 
   // ---- column chooser: hide/show column groups ("overall", each category, "cpst") ----
   const groupOf = (k) => (k === "overall" || k in categories ? k : single); // subtask columns belong to the focused category
@@ -145,12 +151,18 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
       .sort((a, b) => (b.overall ?? -1) - (a.overall ?? -1)),
     [models, ftMode, ftOnly]
   );
-  // "only" mode: each finetune's base row (for the name line + the delta on the first score column)
-  const baseOf = (m) => (ftOnly && m.finetune && m.baseKey ? models.find((x) => x.model === m.baseKey) : null);
-  const Delta = ({ v, b }) => {
+  // A finetune's base row whenever finetunes are listed (the base need not be displayed itself):
+  // drives the gain badge on the Agentic Coding column, and in "only" mode also the name line +
+  // the gain on the first score column.
+  const baseOf = (m) => (ftShown && m.finetune && m.baseKey ? models.find((x) => x.model === m.baseKey) : null);
+  const showDelta = (k) => (ftOnly && k === scoreCols[0]) || (k === agenticCat && agenticCat !== scoreCols[0]);
+  // Gain of a finetune over its base. Scores: higher is better (green when +). Cost per successful
+  // task: lower is better (green when the finetune is cheaper), shown with the column's 3 dp.
+  const Delta = ({ v, b, dp = 1, lowerBetter = false }) => {
     if (v == null || b == null) return null;
     const d = v - b;
-    return <span className={"lb-delta " + (d >= 0 ? "up" : "dn")}>{(d >= 0 ? "+" : "") + d.toFixed(1)}</span>;
+    const good = lowerBetter ? d <= 0 : d >= 0;
+    return <span className={"lb-delta " + (good ? "up" : "dn")}>{(d >= 0 ? "+" : "") + d.toFixed(dp)}</span>;
   };
 
   const shades = computeShades(rows, visibleCols, val);
@@ -253,7 +265,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
                         {m.finetune && <span className="ftn" data-tip={`Finetune of ${m.info.finetune.baseModel} (${m.info.finetune.baseOrganization})`}>finetune</span>}
                         {ftOnly && !m.finetune && <span className="bse">base</span>}
                       </div>
-                      {base && <span className="lb-ft-of">finetune of {base.name}</span>}
+                      {base && ftOnly && <span className="lb-ft-of">finetune of {base.name}</span>}
                     </td>
                     {showOrg && <td className="l org-col">{m.org}</td>}
                     {visibleCols.map((k) => {
@@ -261,11 +273,14 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
                       return (
                         <td key={k} className={k === scoreCols[0] ? "lb-ovr" : "lb-cat"} style={{ background: shades[k] && shades[k][m.model] }}>
                           {v == null ? "—" : v.toFixed(1)}
-                          {base && k === scoreCols[0] && <Delta v={v} b={val(base, k)} />}
+                          {base && showDelta(k) && <Delta v={v} b={val(base, k)} />}
                         </td>
                       );
                     })}
-                    {showCost && <td className={"lb-cost-col" + (cpst != null ? "" : " na")}><Money v={cpst} dp={3} /></td>}
+                    {showCost && <td className={"lb-cost-col" + (cpst != null ? "" : " na")}>
+                      <Money v={cpst} dp={3} />
+                      {base && <Delta v={cpst} b={costPerSuccess(base)} dp={3} lowerBetter />}
+                    </td>}
                   </tr>
                   {open && (
                     <tr className="lb-detail">
@@ -318,6 +333,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
           : "// select 1 category for its subtasks, or several to compare category averages · shading = top 5 per column · click a row for subtasks"}
         {hasCost ? " · Cost per successful task = (Σ cost ÷ Σ questions ÷ score) × 100 over the selected scope" : ""}
         {ftOnly ? " · ranked by finetune score; each base model sits below its finetunes, whose first score column shows the gain over the base" : ""}
+        {ftShown && agenticCat ? ` · ${catFull(agenticCat)} moved next to Overall; finetunes show their gain over their base model there${hasCost ? " and on cost per successful task (green = cheaper)" : ""}` : ""}
       </p>
     </>
   );
