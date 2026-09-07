@@ -317,7 +317,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
           ? `// comparing ${nSel} categories — Overall = mean of the selected · click "All" to reset`
           : "// select 1 category for its subtasks, or several to compare category averages · shading = top 5 per column · click a row for subtasks"}
         {hasCost ? " · Cost per successful task = (Σ cost ÷ Σ questions ÷ score) × 100 over the selected scope" : ""}
-        {ftOnly ? " · finetunes sit under their base model; the first score column shows the finetune's gain over its base" : ""}
+        {ftOnly ? " · ranked by finetune score; each base model sits above its finetunes, whose first score column shows the gain over the base" : ""}
       </p>
     </>
   );
