@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { catFull, subtaskLabel } from "../lib/constants";
-import { collapseVariants, costForCategories } from "../lib/compute";
+import { collapseVariants, costForCategories, filterByFtMode, groupByBase, ftModeToParam } from "../lib/compute";
 import { getHuggingFaceUrl } from "../Table/modelLinks";
 import { readHash, writeHash } from "../lib/urlState";
 import FinetuneChip from "./FinetuneChip";
@@ -32,9 +32,10 @@ function computeShades(rows, cols, valFn) {
   return map;
 }
 
-// inclFinetunes is owned by App (shared with Insights); everything else is local view state.
-export default function Leaderboard({ models, categories, hasCost, inclFinetunes, onToggleFinetunes }) {
+// ftMode ("hide" | "all" | "only") is owned by App (shared with Insights); everything else is local view state.
+export default function Leaderboard({ models, categories, hasCost, ftMode, onFtMode }) {
   const cats = Object.keys(categories);
+  const ftOnly = ftMode === "only";
 
   // initialize view state from the URL so links are shareable
   const init = readHash();
@@ -100,13 +101,14 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
     const isDefault = sortKey === (single || "overall") && sortDir === -1;
     if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
     if (onlyOpen) p.set("open", "1");
-    if (inclFinetunes) p.set("ft", "1");
+    const ftp = ftModeToParam(ftMode);
+    if (ftp) p.set("ft", ftp);
     if (showOrg) p.set("showorg", "1");
     if (orgFilter) p.set("org", orgFilter);
     if (hiddenCols.size) p.set("hide", [...hiddenCols].join(","));
     if (compareSet.size) p.set("compare", [...compareSet].join(","));
     writeHash(p);
-  }, [selectedCats, single, sortKey, sortDir, onlyOpen, inclFinetunes, showOrg, orgFilter, hiddenCols, compareSet]);
+  }, [selectedCats, single, sortKey, sortDir, onlyOpen, ftMode, showOrg, orgFilter, hiddenCols, compareSet]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
@@ -116,15 +118,17 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
   };
 
   const rows = useMemo(() => {
-    let r = models.filter((m) => {
+    let r = filterByFtMode(models, ftMode).filter((m) => {
       if (onlyOpen && !m.open) return false;
-      if (!inclFinetunes && m.finetune) return false;
       if (orgFilter && m.org !== orgFilter) return false;
       if (q && !m.name.toLowerCase().includes(q) && !m.model.toLowerCase().includes(q)) return false;
       return true;
     });
-    r = collapseVariants(r);
+    // "only" mode keeps every base row as-is (no variant collapsing — a base may itself be one
+    // effort variant) and, at the default sort, groups each finetune right under its base.
+    if (!ftOnly) r = collapseVariants(r);
     if (compareSet.size) r = r.filter((m) => compareSet.has(m.model));
+    if (ftOnly && sortKey === "overall") return groupByBase(r);
     return r.slice().sort((a, b) => {
       const va = sortVal(a, sortKey), vb = sortVal(b, sortKey);
       if (va == null) return 1;
@@ -133,14 +137,21 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyOpen, inclFinetunes, orgFilter, q, sortKey, sortDir, selectedCats, compareSet]);
+  }, [models, onlyOpen, ftMode, orgFilter, q, sortKey, sortDir, selectedCats, compareSet]);
 
   // compare panel options: every (collapsed) model in the table, default order (overall desc)
   const compareOptions = useMemo(
-    () => collapseVariants(models.filter((m) => inclFinetunes || !m.finetune))
+    () => (ftOnly ? filterByFtMode(models, ftMode) : collapseVariants(filterByFtMode(models, ftMode)))
       .sort((a, b) => (b.overall ?? -1) - (a.overall ?? -1)),
-    [models, inclFinetunes]
+    [models, ftMode, ftOnly]
   );
+  // "only" mode: each finetune's base row (for the name line + the delta on the first score column)
+  const baseOf = (m) => (ftOnly && m.finetune && m.baseKey ? models.find((x) => x.model === m.baseKey) : null);
+  const Delta = ({ v, b }) => {
+    if (v == null || b == null) return null;
+    const d = v - b;
+    return <span className={"lb-delta " + (d >= 0 ? "up" : "dn")}>{(d >= 0 ? "+" : "") + d.toFixed(1)}</span>;
+  };
 
   const shades = computeShades(rows, visibleCols, val);
 
@@ -192,7 +203,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
             onChange={(e) => setQ(e.target.value.toLowerCase())} />
         </div>
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
-        <FinetuneChip on={inclFinetunes} onToggle={onToggleFinetunes} />
+        <FinetuneChip mode={ftMode} onChange={onFtMode} />
         <button className="lb-chip" aria-pressed={showOrg} data-tip="Show the organization column"
           onClick={() => setShowOrg((v) => !v)}>Show org</button>
         <select className="lb-org-select" value={orgFilter} onChange={(e) => setOrgFilter(e.target.value)} aria-label="Filter by organization">
@@ -230,15 +241,19 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
             {rows.map((m) => {
               const open = expanded.has(m.model);
               const cpst = costPerSuccess(m);     // scope-aware cost per successful task
+              const base = baseOf(m);
               return (
                 <React.Fragment key={m.model}>
-                  <tr className={"row" + (open ? " open" : "")} onClick={() => toggleRow(m.model)}>
+                  <tr className={"row" + (open ? " open" : "") + (base ? " lb-ftrow" : "")} onClick={() => toggleRow(m.model)}>
                     <td className="l lb-rank"><span className="lb-exp">▸</span></td>
                     <td className="l mdl-col">
                       <div className="lb-mdl">
                         <span className="nm" title={m.name}>{m.name}</span>
                         {m.open && <span className="opn">open</span>}
+                        {m.finetune && <span className="ftn" data-tip={`Finetune of ${m.info.finetune.baseModel} (${m.info.finetune.baseOrganization})`}>finetune</span>}
+                        {ftOnly && !m.finetune && <span className="bse">base</span>}
                       </div>
+                      {base && <span className="lb-ft-of">finetune of {base.name}</span>}
                     </td>
                     {showOrg && <td className="l org-col">{m.org}</td>}
                     {visibleCols.map((k) => {
@@ -246,6 +261,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
                       return (
                         <td key={k} className={k === scoreCols[0] ? "lb-ovr" : "lb-cat"} style={{ background: shades[k] && shades[k][m.model] }}>
                           {v == null ? "—" : v.toFixed(1)}
+                          {base && k === scoreCols[0] && <Delta v={v} b={val(base, k)} />}
                         </td>
                       );
                     })}
@@ -301,6 +317,7 @@ export default function Leaderboard({ models, categories, hasCost, inclFinetunes
           ? `// comparing ${nSel} categories — Overall = mean of the selected · click "All" to reset`
           : "// select 1 category for its subtasks, or several to compare category averages · shading = top 5 per column · click a row for subtasks"}
         {hasCost ? " · Cost per successful task = (Σ cost ÷ Σ questions ÷ score) × 100 over the selected scope" : ""}
+        {ftOnly ? " · finetunes sit under their base model; the first score column shows the finetune's gain over its base" : ""}
       </p>
     </>
   );

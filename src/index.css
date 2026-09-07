@@ -155,6 +155,12 @@ a{color:var(--accent);text-decoration:none;}
 .lb-mdl .ef{flex:none;font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--border-strong);border-radius:4px;padding:0 4px;}
 .lb-mdl .rz{flex:none;font-size:10px;color:var(--accent);font-family:var(--mono);}
 .lb-mdl .opn{flex:none;font-size:9.5px;color:var(--live);font-family:var(--mono);border:1px solid var(--live);border-radius:4px;padding:0 4px;}
+.lb-mdl .ftn{flex:none;font-size:9.5px;color:#B5561F;font-family:var(--mono);border:1px solid #B5561F;border-radius:4px;padding:0 4px;}
+.lb-mdl .bse{flex:none;font-size:9.5px;color:var(--muted);font-family:var(--mono);border:1px solid var(--border-strong);border-radius:4px;padding:0 4px;}
+.lb-ft-of{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:1px;}
+.lb-delta{font-family:var(--mono);font-size:10px;font-weight:500;margin-left:4px;}
+.lb-delta.up{color:var(--live);} .lb-delta.dn{color:#C0392B;}
+tr.lb-ftrow td.mdl-col{padding-left:26px;}
 .lb-ovr{font-weight:700;color:var(--ink);font-size:14px;}
 .lb-cat{font-size:12.5px;border-radius:4px;}
 .lb-cost-col{border-left:1px solid var(--border);}

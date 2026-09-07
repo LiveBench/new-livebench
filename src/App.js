@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import "./App.css";
 import { RELEASES } from "./lib/constants";
 import useLeaderboardData from "./lib/useLeaderboardData";
-import { overallOf, catAvg, overallCost } from "./lib/compute";
+import { overallOf, catAvg, overallCost, ftModeFromParam, resolveFinetuneBase } from "./lib/compute";
 import { getModelInfo } from "./Table/modelLinks";
 import { readHash } from "./lib/urlState";
 import Navbar from "./components/Navbar";
@@ -16,23 +16,25 @@ const LATEST = RELEASES[RELEASES.length - 1];
 
 export default function App() {
   const [date, setDate] = useState(LATEST);
-  // Finetunes are hidden by default in both the leaderboard and the insights; ?ft=1 opts in.
-  // Shared here (not per-section) so the two never disagree about which models are in play.
-  const [inclFinetunes, setInclFinetunes] = useState(() => readHash().get("ft") === "1");
-  const toggleFinetunes = () => setInclFinetunes((v) => !v);
+  // Finetunes are hidden by default in both the leaderboard and the insights. ?ft=1 lists them
+  // among everything else; ?ft=only (or the #/finetunes link) shows finetunes next to their base
+  // models. Shared here (not per-section) so the two never disagree about which models are in play.
+  const { pathname } = useLocation();
+  const [ftMode, setFtMode] = useState(() =>
+    pathname === "/finetunes" && !readHash().get("ft") ? "only" : ftModeFromParam(readHash().get("ft")));
   const { rawData, categories, costMap, hasCost, loading, error } = useLeaderboardData(date);
 
-  // #/insights is a static link straight to the Insights section (same page, pre-scrolled).
-  const { pathname } = useLocation();
+  // #/insights and #/finetunes are static links straight to a section (same page, pre-scrolled).
   useEffect(() => {
-    if (pathname !== "/insights" || loading) return;
-    document.getElementById("lb-insights")?.scrollIntoView();
+    if (loading) return;
+    if (pathname === "/insights") document.getElementById("lb-insights")?.scrollIntoView();
+    if (pathname === "/finetunes") document.getElementById("lb-leaderboard")?.scrollIntoView();
   }, [pathname, loading]);
 
   // Enrich each model row with metadata + computed scores once per load.
   const models = useMemo(() => {
     const cats = categories || {};
-    return rawData
+    const list = rawData
       .map((row) => {
         const info = getModelInfo(row.model);
         if (!info) return null; // mirror the site: only models with metadata are shown
@@ -51,6 +53,9 @@ export default function App() {
         };
       })
       .filter(Boolean);
+    // board key of each finetune's base model (null when the base isn't on this release)
+    list.forEach((m) => { m.baseKey = m.finetune ? resolveFinetuneBase(m, list) : null; });
+    return list;
   }, [rawData, categories, costMap, hasCost]);
   const taskCount = Object.values(categories).reduce((s, a) => s + (a ? a.length : 0), 0);
   const catCount = Object.keys(categories).length;
@@ -93,7 +98,7 @@ export default function App() {
                 {hasCost ? " Cost sits right beside the scores." : ""}
               </p>
               <Leaderboard key={date} models={models} categories={categories} hasCost={hasCost}
-                inclFinetunes={inclFinetunes} onToggleFinetunes={toggleFinetunes} />
+                ftMode={ftMode} onFtMode={setFtMode} />
             </>
           )}
         </div>
@@ -101,7 +106,7 @@ export default function App() {
 
       {!loading && !error && models.length > 0 && (
         <Insights key={date} models={models} categories={categories} hasCost={hasCost}
-          inclFinetunes={inclFinetunes} onToggleFinetunes={toggleFinetunes} />
+          ftMode={ftMode} onFtMode={setFtMode} />
       )}
 
       <footer className="lb-footer">

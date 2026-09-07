@@ -3,15 +3,16 @@ import CostQualityScatter from "./CostQualityScatter";
 import CostBars from "./CostBars";
 import CategoryRadar from "./CategoryRadar";
 import FinetuneChip from "../FinetuneChip";
+import { filterByFtMode } from "../../lib/compute";
 
-export default function Insights({ models, categories, hasCost, inclFinetunes, onToggleFinetunes }) {
+export default function Insights({ models, categories, hasCost, ftMode, onFtMode }) {
   const cats = Object.keys(categories);
   const ncats = cats.length;
   const [scope, setScope] = useState("overall"); // "overall" | a category name — drives both cost charts
 
-  // Same rule as the leaderboard: finetunes stay out of every chart unless asked for.
-  const shown = useMemo(
-    () => (inclFinetunes ? models : models.filter((m) => !m.finetune)), [models, inclFinetunes]);
+  // Same rule as the leaderboard: finetunes stay out of every chart unless asked for
+  // ("only" keeps each finetune's base model in play too).
+  const shown = useMemo(() => filterByFtMode(models, ftMode), [models, ftMode]);
 
   return (
     <section className="lb-section" id="lb-insights">
@@ -24,7 +25,7 @@ export default function Insights({ models, categories, hasCost, inclFinetunes, o
         </p>
         <div className="lb-cats">
           <span className="lb-cats-label">Models</span>
-          <FinetuneChip on={inclFinetunes} onToggle={onToggleFinetunes} />
+          <FinetuneChip mode={ftMode} onChange={onFtMode} />
         </div>
         {hasCost && (
           <>
