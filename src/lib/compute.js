@@ -126,6 +126,47 @@ export const heat = (v) => {
   return `rgba(47,84,235,${a.toFixed(3)})`;
 };
 
+// ---- Finetune visibility ----
+// mode: "hide" (default — finetunes stay out), "all" (everything), "only" (finetunes + the base
+// models they were trained from, so each finetune can be read against its base).
+export const ftModeFromParam = (v) => (v === "only" ? "only" : v === "1" || v === "all" ? "all" : "hide");
+export const ftModeToParam = (mode) => (mode === "only" ? "only" : mode === "all" ? "1" : null);
+
+// Resolve the board key of a finetune's base model: an explicit finetune.baseKey wins, else the
+// first model whose display name matches finetune.baseModel (organization must match when given).
+export function resolveFinetuneBase(m, models) {
+  const ft = m.info?.finetune;
+  if (!ft) return null;
+  if (ft.baseKey && models.some((x) => x.model === ft.baseKey)) return ft.baseKey;
+  const hit = models.find((x) => x.name === ft.baseModel && (!ft.baseOrganization || x.org === ft.baseOrganization));
+  return hit ? hit.model : null;
+}
+
+// Models visible under a finetune mode. In "only" mode the base rows are kept alongside
+// their finetunes (the leaderboard badges each row as "finetune" or "base").
+export function filterByFtMode(models, mode) {
+  if (mode === "all") return models;
+  if (mode !== "only") return models.filter((m) => !m.finetune);
+  const bases = new Set(models.filter((m) => m.finetune).map((m) => m.baseKey).filter(Boolean));
+  return models.filter((m) => m.finetune || bases.has(m.model));
+}
+
+// "only" mode ordering: bases by overall (desc), each followed by its finetunes (desc).
+// Orphan finetunes (base not on this release) trail at the end.
+export function groupByBase(models) {
+  const byBase = {};
+  for (const m of models) if (m.finetune && m.baseKey) (byBase[m.baseKey] = byBase[m.baseKey] || []).push(m);
+  const desc = (a, b) => (b.overall ?? -1) - (a.overall ?? -1);
+  const out = [];
+  for (const base of models.filter((m) => !m.finetune).sort(desc)) {
+    out.push(base, ...(byBase[base.model] || []).sort(desc));
+    delete byBase[base.model];
+  }
+  const placed = new Set(out);
+  const orphans = models.filter((m) => m.finetune && !placed.has(m));
+  return [...out, ...orphans.sort(desc)];
+}
+
 // Family key for collapsing effort variants to one row (best overall wins).
 export const familyKey = (model) => getModelInfo(model)?.baseName ?? model;
 

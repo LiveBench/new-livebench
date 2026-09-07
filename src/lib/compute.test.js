@@ -76,3 +76,35 @@ test("collapseVariants keeps the highest-overall variant per family", () => {
   const out = collapseVariants(models).map((m) => m.model).sort();
   expect(out).toEqual(["fam-high", "solo"]);
 });
+
+// ---- finetune visibility (ft=only keeps each finetune's base model alongside it) ----
+import { filterByFtMode, groupByBase, ftModeFromParam, ftModeToParam } from "./compute";
+
+const FT = [
+  { model: "base-a", name: "Base A", overall: 70, finetune: false, baseKey: null },
+  { model: "ft-a1", name: "FT A1", overall: 75, finetune: true, baseKey: "base-a" },
+  { model: "ft-a2", name: "FT A2", overall: 72, finetune: true, baseKey: "base-a" },
+  { model: "base-b", name: "Base B", overall: 80, finetune: false, baseKey: null },
+  { model: "other", name: "Other", overall: 90, finetune: false, baseKey: null },
+  { model: "ft-orphan", name: "FT orphan", overall: 60, finetune: true, baseKey: null },
+];
+
+test("filterByFtMode: hide drops finetunes, all keeps everything, only = finetunes + their bases", () => {
+  expect(filterByFtMode(FT, "hide").map((m) => m.model)).toEqual(["base-a", "base-b", "other"]);
+  expect(filterByFtMode(FT, "all")).toHaveLength(6);
+  expect(filterByFtMode(FT, "only").map((m) => m.model)).toEqual(["base-a", "ft-a1", "ft-a2", "ft-orphan"]);
+});
+
+test("groupByBase: bases by overall, each followed by its finetunes; orphans trail", () => {
+  const only = filterByFtMode(FT, "only");
+  expect(groupByBase(only).map((m) => m.model)).toEqual(["base-a", "ft-a1", "ft-a2", "ft-orphan"]);
+});
+
+test("ft url param round-trips", () => {
+  expect(ftModeFromParam("1")).toBe("all");
+  expect(ftModeFromParam("only")).toBe("only");
+  expect(ftModeFromParam(null)).toBe("hide");
+  expect(ftModeToParam("all")).toBe("1");
+  expect(ftModeToParam("only")).toBe("only");
+  expect(ftModeToParam("hide")).toBeNull();
+});
