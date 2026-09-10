@@ -647,6 +647,15 @@ export const modelLinks = {
         displayName: "ox-alpha-max",
         reasoner: true
     },
+    "deepseek-v4.1-flash-max": {
+        url: "https://api-docs.deepseek.com/updates",
+        huggingface: "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+        organization: "DeepSeek",
+        displayName: "DeepSeek V4.1 Flash Max Effort",
+        version: "2026-09-10",
+        openweight: true,
+        reasoner: true
+    },
     "deepseek-v4-flash-vision-exp": {
         url: "https://api-docs.deepseek.com/updates",
         huggingface: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
