@@ -669,6 +669,12 @@ export const modelLinks = {
         organization: "Anthropic",
         displayName: "Claude Fable 5.1 Max Effort",
         reasoner: true
+    },
+    "union-alpha": {
+        url: "https://openrouter.ai/stealth/union-alpha",
+        organization: "Stealth",
+        displayName: "Union Alpha",
+        reasoner: true
     }
 };
 
