@@ -675,6 +675,12 @@ export const modelLinks = {
         organization: "Stealth",
         displayName: "Union Alpha",
         reasoner: true
+    },
+    "grok-4.7-xhigh": {
+        url: "https://docs.x.ai/developers/models/grok-4.7",
+        organization: "xAI",
+        displayName: "Grok 4.7 xHigh",
+        reasoner: true
     }
 };
 
