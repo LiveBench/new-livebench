@@ -45,6 +45,8 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
   const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
   const [onlyOpen, setOnlyOpen] = useState(init.get("open") === "1");
+  // list every effort level of a model (?variants=1) instead of collapsing each family to its best row
+  const [showVariants, setShowVariants] = useState(init.get("variants") === "1");
   const [q, setQ] = useState("");
   const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
   const [orgFilter, setOrgFilter] = useState(init.get("org") || "");
@@ -54,7 +56,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
   ));
   // compare filter: ids of the (collapsed) rows to show; empty = show all
   const [compareSet, setCompareSet] = useState(() => {
-    const ids = new Set(collapseVariants(models).map((m) => m.model));
+    const ids = new Set(models.map((m) => m.model));
     return new Set((init.get("compare") || "").split(",").map((s) => s.trim()).filter((id) => ids.has(id)));
   });
 
@@ -107,6 +109,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
     const isDefault = sortKey === (single || "overall") && sortDir === -1;
     if (!isDefault) { p.set("sort", sortKey); p.set("dir", sortDir < 0 ? "desc" : "asc"); }
     if (onlyOpen) p.set("open", "1");
+    if (showVariants) p.set("variants", "1");
     const ftp = ftModeToParam(ftMode);
     if (ftp) p.set("ft", ftp);
     if (showOrg) p.set("showorg", "1");
@@ -114,7 +117,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
     if (hiddenCols.size) p.set("hide", [...hiddenCols].join(","));
     if (compareSet.size) p.set("compare", [...compareSet].join(","));
     writeHash(p);
-  }, [selectedCats, single, sortKey, sortDir, onlyOpen, ftMode, showOrg, orgFilter, hiddenCols, compareSet]);
+  }, [selectedCats, single, sortKey, sortDir, onlyOpen, showVariants, ftMode, showOrg, orgFilter, hiddenCols, compareSet]);
 
   const sortVal = (m, k) => {
     if (k === "cpst") return costPerSuccess(m);
@@ -132,7 +135,7 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
     });
     // "only" mode keeps every base row as-is (no variant collapsing — a base may itself be one
     // effort variant) and, at the default sort, groups each finetune right under its base.
-    if (!ftOnly) r = collapseVariants(r);
+    if (!ftOnly && !showVariants) r = collapseVariants(r);
     if (compareSet.size) r = r.filter((m) => compareSet.has(m.model));
     if (ftOnly && sortKey === "overall") return groupByBase(r);
     return r.slice().sort((a, b) => {
@@ -143,13 +146,13 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
       return (va - vb) * sortDir;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [models, onlyOpen, ftMode, orgFilter, q, sortKey, sortDir, selectedCats, compareSet]);
+  }, [models, onlyOpen, showVariants, ftMode, orgFilter, q, sortKey, sortDir, selectedCats, compareSet]);
 
   // compare panel options: every (collapsed) model in the table, default order (overall desc)
   const compareOptions = useMemo(
-    () => (ftOnly ? filterByFtMode(models, ftMode) : collapseVariants(filterByFtMode(models, ftMode)))
+    () => ((ftOnly || showVariants) ? filterByFtMode(models, ftMode) : collapseVariants(filterByFtMode(models, ftMode)))
       .sort((a, b) => (b.overall ?? -1) - (a.overall ?? -1)),
-    [models, ftMode, ftOnly]
+    [models, ftMode, ftOnly, showVariants]
   );
   // A finetune's base row whenever finetunes are listed (the base need not be displayed itself):
   // drives the gain badge on the Agentic Coding column, and in "only" mode also the name line +
@@ -215,6 +218,8 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
             onChange={(e) => setQ(e.target.value.toLowerCase())} />
         </div>
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
+        <button className="lb-chip" aria-pressed={showVariants} data-tip="List every effort level of a model, not just its best"
+          onClick={() => setShowVariants((v) => !v)}>Effort variants</button>
         <FinetuneChip mode={ftMode} onChange={onFtMode} />
         <button className="lb-chip" aria-pressed={showOrg} data-tip="Show the organization column"
           onClick={() => setShowOrg((v) => !v)}>Show org</button>
