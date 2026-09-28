@@ -691,16 +691,16 @@ export const modelLinks = {
         displayName: "Claude Fable 5.1 Max Effort",
         reasoner: true
     },
-    "union-alpha": {
-        url: "https://openrouter.ai/stealth/union-alpha",
-        organization: "Stealth",
-        displayName: "Union Alpha",
-        reasoner: true
-    },
     "grok-4.7-xhigh": {
         url: "https://docs.x.ai/developers/models/grok-4.7",
         organization: "xAI",
         displayName: "Grok 4.7 xHigh",
+        reasoner: true
+    },
+    "claude-sonnet-5-5-max-effort": {
+        url: "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+        organization: "Anthropic",
+        displayName: "Claude Sonnet 5.5 Max Effort",
         reasoner: true
     }
 };
