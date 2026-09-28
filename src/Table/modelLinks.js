@@ -697,11 +697,14 @@ export const modelLinks = {
         displayName: "Grok 4.7 xHigh",
         reasoner: true
     },
-    "claude-sonnet-5-5-max-effort": {
+    "claude-sonnet-5-5-xhigh-effort": {
         url: "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
         organization: "Anthropic",
-        displayName: "Claude Sonnet 5.5 Max Effort",
-        reasoner: true
+        displayName: "Claude Sonnet 5.5 xHigh Effort",
+        reasoner: true,
+        variants: [
+            { rawName: "claude-sonnet-5-5-max-effort", displayName: "Claude Sonnet 5.5 Max Effort" }
+        ]
     }
 };
 
