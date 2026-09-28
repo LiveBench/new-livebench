@@ -45,8 +45,9 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
   const [sortDir, setSortDir] = useState(init.get("dir") === "asc" ? 1 : -1);
   const [expanded, setExpanded] = useState(() => new Set());
   const [onlyOpen, setOnlyOpen] = useState(init.get("open") === "1");
-  // list every effort level of a model (?variants=1) instead of collapsing each family to its best row
-  const [showVariants, setShowVariants] = useState(init.get("variants") === "1");
+  // #/?variants=1 lists every effort level of a model instead of collapsing each family to its best
+  // row. Link-only for now (like #/finetunes) — no control on the page.
+  const showVariants = init.get("variants") === "1";
   const [q, setQ] = useState("");
   const [showOrg, setShowOrg] = useState(init.get("showorg") === "1");
   const [orgFilter, setOrgFilter] = useState(init.get("org") || "");
@@ -218,8 +219,6 @@ export default function Leaderboard({ models, categories, hasCost, ftMode, onFtM
             onChange={(e) => setQ(e.target.value.toLowerCase())} />
         </div>
         <button className="lb-chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((v) => !v)}>Open weights</button>
-        <button className="lb-chip" aria-pressed={showVariants} data-tip="List every effort level of a model, not just its best"
-          onClick={() => setShowVariants((v) => !v)}>Effort variants</button>
         <FinetuneChip mode={ftMode} onChange={onFtMode} />
         <button className="lb-chip" aria-pressed={showOrg} data-tip="Show the organization column"
           onClick={() => setShowOrg((v) => !v)}>Show org</button>
