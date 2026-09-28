@@ -639,7 +639,7 @@ export const modelLinks = {
     "grok-4.6": {
         url: "https://x.ai/news/grok-4-6",
         organization: "xAI",
-        displayName: "Grok 4.6",
+        displayName: "Grok 4.6 xHigh",
         reasoner: true
     },
     "gemini-3.7-flash-high": {
