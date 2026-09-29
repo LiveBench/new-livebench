@@ -705,6 +705,12 @@ export const modelLinks = {
         variants: [
             { rawName: "claude-sonnet-5-5-max-effort", displayName: "Claude Sonnet 5.5 Max Effort" }
         ]
+    },
+    "gpt-6.1-sol-max": {
+        url: "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+        organization: "OpenAI",
+        displayName: "GPT-6.1 Sol Max Effort",
+        reasoner: true
     }
 };
 
