@@ -710,7 +710,10 @@ export const modelLinks = {
         url: "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
         organization: "OpenAI",
         displayName: "GPT-6.1 Sol Max Effort",
-        reasoner: true
+        reasoner: true,
+        variants: [
+            { rawName: "gpt-6.1-sol-xhigh", displayName: "GPT-6.1 Sol xHigh Effort" }
+        ]
     }
 };
 
