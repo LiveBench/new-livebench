@@ -30,6 +30,11 @@ test("renders the leaderboard with real model names and cost columns", async () 
   await flush();
   expect(container.textContent).toContain("ChatGPT-4o");
   expect(container.textContent).toContain("DeepSeek V3");
-  expect(container.textContent).toContain("$/Q"); // cost column present because cost loaded
+  // Cost column present because cost loaded. Assert on the rendered cost cell rather
+  // than the header text: this line asserted "$/Q" long after the header was renamed
+  // to "Cost per successful task", so the suite failed without the cost path breaking.
+  const costCells = container.querySelectorAll("td.lb-cost-col");
+  expect(costCells.length).toBeGreaterThan(0);
+  expect(costCells[0].textContent).toMatch(/^\$\d/);
   expect(container.textContent).toContain("Leaderboard");
 });
