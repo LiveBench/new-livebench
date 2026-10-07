@@ -718,7 +718,7 @@ export const modelLinks = {
     "mistral-large-4-high": {
         url: "https://docs.mistral.ai/models/mistral-large-4",
         organization: "Mistral AI",
-        displayName: "Mistral Large 4",
+        displayName: "Mistral Large 4 High",
         reasoner: true
     }
 };
