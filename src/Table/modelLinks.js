@@ -714,6 +714,12 @@ export const modelLinks = {
         variants: [
             { rawName: "gpt-6.1-sol-xhigh", displayName: "GPT-6.1 Sol xHigh Effort" }
         ]
+    },
+    "mistral-large-4-high": {
+        url: "https://docs.mistral.ai/models/mistral-large-4",
+        organization: "Mistral AI",
+        displayName: "Mistral Large 4",
+        reasoner: true
     }
 };
 
