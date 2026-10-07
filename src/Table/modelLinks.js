@@ -706,6 +706,15 @@ export const modelLinks = {
             { rawName: "claude-sonnet-5-5-max-effort", displayName: "Claude Sonnet 5.5 Max Effort" }
         ]
     },
+    "claude-haiku-5-5-xhigh-effort": {
+        url: "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+        organization: "Anthropic",
+        displayName: "Claude Haiku 5.5 xHigh Effort",
+        reasoner: true,
+        variants: [
+            { rawName: "claude-haiku-5-5-max-effort", displayName: "Claude Haiku 5.5 Max Effort" }
+        ]
+    },
     "gpt-6.1-sol-max": {
         url: "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
         organization: "OpenAI",
