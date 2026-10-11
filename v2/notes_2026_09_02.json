@@ -1,10 +1,8 @@
 [
   "Each cell is the model's mean task score for the suite, 0–100, from a single run.",
-  "App (Next.js): build a working Next.js application from a written brief. Graded by automated tests that drive the running app.",
   "Design: layout and design tasks across presentations, PDFs and documents. Graded on visual and structural checks of the produced file.",
   "Research: open-ended research briefs producing a written report. Graded against a rubric.",
   "Browser: compound tasks in a live web application, completed through a real browser. Scored as the share of tasks passed. Models that cannot accept screenshots are marked n/a rather than scored.",
-  "Data: data-analysis questions on fixed datasets with a verified answer key. Deterministic grading.",
   "Coding: bug-fix tasks taken from real merged pull requests on a frozen codebase. Deterministic grading; a fix that breaks existing behaviour scores 0.",
   "Long-Horizon: long-running work — applications extended over several turns of changing requirements, plus extended coding and optimisation tasks. Deterministic grading.",
   "Reasoning: LiveBench v1's Reasoning category (logic puzzles, spatial and theory-of-mind questions), as published on livebench.ai, from the model's highest-effort v1 run. Graded against ground truth. Its cost is v1's published cost for those questions.",

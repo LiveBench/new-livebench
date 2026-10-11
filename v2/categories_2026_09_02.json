@@ -1,7 +1,4 @@
 {
-  "App": [
-    "app_nextjs"
-  ],
   "Design": [
     "design_layout"
   ],
@@ -10,9 +7,6 @@
   ],
   "Browser": [
     "browser"
-  ],
-  "Data": [
-    "data"
   ],
   "Coding": [
     "coding"
