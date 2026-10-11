@@ -45,3 +45,5 @@ npm run deploy         # build + push to the gh-pages branch (serves at https://
 ```
 
 Deploys to GitHub Pages from the `gh-pages` branch. `homepage` in `package.json` is `"."` (relative paths) for serving at the custom domain root; change the `--cname` in the `deploy` script to target a different domain.
+
+The `gh-pages` branch also holds `v2/`, the LiveBench 2.0 site (https://livebench.ai/v2/). It is deployed separately from [LiveBench/livebench-agents](https://github.com/LiveBench/livebench-agents). `npm run deploy` here passes `--remove '{!(v2)/**,*}'`, so it replaces every v1 file but leaves `v2/` alone. Keep that flag. If a deploy without it wipes `/v2`, the livebench-agents Action restores it within a day; running that Action by hand restores it immediately.
