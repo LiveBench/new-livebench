@@ -1,0 +1,1503 @@
+{
+  "App": {
+    "parts": [
+      {
+        "name": "Create",
+        "gloss": "Build a new application from a brief."
+      },
+      {
+        "name": "Edit",
+        "gloss": "Change an existing application without breaking what already works."
+      }
+    ],
+    "models": {
+      "claude-opus-5": {
+        "scores": {
+          "Create": 92.5,
+          "Edit": 79.5
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Create": 87.3,
+          "Edit": 76.8
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Create": 88.2,
+          "Edit": 74.8
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Create": 48.9,
+          "Edit": 34.6
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Create": 87.3,
+          "Edit": 84.7
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Create": 87.1,
+          "Edit": 74.1
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Create": 92.9,
+          "Edit": 79.0
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Create": 74.7,
+          "Edit": 75.6
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Create": 75.6,
+          "Edit": 46.3
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Create": 70.5,
+          "Edit": 76.3
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Create": 90.9,
+          "Edit": 81.2
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Create": 64.4,
+          "Edit": 72.1
+        }
+      },
+      "deepseek-v4-pro": {
+        "scores": {
+          "Create": 93.7,
+          "Edit": 64.9
+        }
+      },
+      "deepseek-v4-flash": {
+        "scores": {
+          "Create": 84.0,
+          "Edit": 68.6
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Create": 76.6,
+          "Edit": 59.7
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Create": null,
+          "Edit": 4.1
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Create": 89.3,
+          "Edit": 71.9
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Create": 84.9,
+          "Edit": 64.7
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Create": 88.4,
+          "Edit": 79.1
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Create": 83.3,
+          "Edit": 79.1
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Create": 77.2,
+          "Edit": 57.8
+        }
+      },
+      "claude-fable-5.1": {
+        "scores": {
+          "Create": 89.6,
+          "Edit": 81.2
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Create": 94.9,
+          "Edit": 77.4
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Create": 71.0,
+          "Edit": 51.3
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Create": 69.8,
+          "Edit": 84.0
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Create": 80.2,
+          "Edit": 67.9
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Create": 89.0,
+          "Edit": 82.5
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Create": 97.5,
+          "Edit": 82.4
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Create": 82.2,
+          "Edit": 70.8
+        }
+      }
+    }
+  },
+  "Design": {
+    "parts": [
+      {
+        "name": "Documents (DOCX)",
+        "gloss": "Word documents: layout, structure and formatting to a brief."
+      },
+      {
+        "name": "PDF",
+        "gloss": "PDF deliverables: typeset pages, forms and reports."
+      },
+      {
+        "name": "Presentations (PPT)",
+        "gloss": "Slide decks: visual design, content organization and fit to the request."
+      }
+    ],
+    "models": {
+      "claude-opus-5": {
+        "scores": {
+          "Documents (DOCX)": 75.3,
+          "PDF": 86.4,
+          "Presentations (PPT)": 79.2
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Documents (DOCX)": 71.4,
+          "PDF": 78.6,
+          "Presentations (PPT)": 76.9
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Documents (DOCX)": 69.9,
+          "PDF": 81.5,
+          "Presentations (PPT)": 83.0
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Documents (DOCX)": 69.9,
+          "PDF": 54.6,
+          "Presentations (PPT)": 54.7
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Documents (DOCX)": 81.2,
+          "PDF": 75.5,
+          "Presentations (PPT)": 65.4
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Documents (DOCX)": 76.8,
+          "PDF": 78.5,
+          "Presentations (PPT)": 69.0
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Documents (DOCX)": 67.5,
+          "PDF": 66.5,
+          "Presentations (PPT)": 72.3
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Documents (DOCX)": 83.9,
+          "PDF": 71.5,
+          "Presentations (PPT)": 55.2
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Documents (DOCX)": 49.2,
+          "PDF": 59.9,
+          "Presentations (PPT)": 65.2
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Documents (DOCX)": 78.3,
+          "PDF": 76.1,
+          "Presentations (PPT)": 66.2
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Documents (DOCX)": 87.2,
+          "PDF": 78.0,
+          "Presentations (PPT)": 73.9
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Documents (DOCX)": 78.7,
+          "PDF": 80.0,
+          "Presentations (PPT)": 77.0
+        }
+      },
+      "deepseek-v4-pro": {
+        "scores": {
+          "Documents (DOCX)": 74.0,
+          "PDF": 68.7,
+          "Presentations (PPT)": 72.8
+        }
+      },
+      "deepseek-v4-flash": {
+        "scores": {
+          "Documents (DOCX)": 62.8,
+          "PDF": 57.0,
+          "Presentations (PPT)": 76.1
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Documents (DOCX)": 80.0,
+          "PDF": 61.8,
+          "Presentations (PPT)": 68.8
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Documents (DOCX)": 22.6,
+          "PDF": 27.5,
+          "Presentations (PPT)": 41.5
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Documents (DOCX)": 73.2,
+          "PDF": 75.5,
+          "Presentations (PPT)": 74.6
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Documents (DOCX)": 72.7,
+          "PDF": 78.9,
+          "Presentations (PPT)": 79.2
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Documents (DOCX)": 88.3,
+          "PDF": 71.9,
+          "Presentations (PPT)": 80.7
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Documents (DOCX)": 71.9,
+          "PDF": 77.7,
+          "Presentations (PPT)": 77.0
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Documents (DOCX)": 81.4,
+          "PDF": 79.0,
+          "Presentations (PPT)": 72.6
+        }
+      },
+      "claude-fable-5.1": {
+        "scores": {
+          "Documents (DOCX)": 82.5,
+          "PDF": 84.2,
+          "Presentations (PPT)": 75.3
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Documents (DOCX)": 76.6,
+          "PDF": 86.2,
+          "Presentations (PPT)": 81.7
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Documents (DOCX)": 66.8,
+          "PDF": 70.0,
+          "Presentations (PPT)": 73.4
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Documents (DOCX)": 83.1,
+          "PDF": 77.8,
+          "Presentations (PPT)": 62.9
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Documents (DOCX)": 68.8,
+          "PDF": 79.0,
+          "Presentations (PPT)": 77.3
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Documents (DOCX)": 85.4,
+          "PDF": 72.1,
+          "Presentations (PPT)": 79.2
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Documents (DOCX)": 84.7,
+          "PDF": 78.3,
+          "Presentations (PPT)": 79.4
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Documents (DOCX)": 73.4,
+          "PDF": 81.1,
+          "Presentations (PPT)": 70.4
+        }
+      }
+    }
+  },
+  "Research": {
+    "parts": [
+      {
+        "name": "Regulatory & Compliance",
+        "gloss": "Rules, filings and compliance questions answered from primary sources."
+      },
+      {
+        "name": "Legal",
+        "gloss": "Statutes, cases and contractual questions with cited authority."
+      },
+      {
+        "name": "Tax & Finance",
+        "gloss": "Tax rules and financial figures, with the arithmetic shown."
+      },
+      {
+        "name": "Strategy",
+        "gloss": "Market and competitive analysis with sourced evidence."
+      },
+      {
+        "name": "Science & Evidence",
+        "gloss": "Scientific and empirical questions weighed on the published evidence."
+      }
+    ],
+    "models": {
+      "claude-opus-5": {
+        "scores": {
+          "Regulatory & Compliance": 89.2,
+          "Legal": 97.2,
+          "Tax & Finance": 79.4,
+          "Strategy": 90.6,
+          "Science & Evidence": 91.2
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Regulatory & Compliance": 86.7,
+          "Legal": 92.5,
+          "Tax & Finance": 74.4,
+          "Strategy": 91.9,
+          "Science & Evidence": 58.1
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Regulatory & Compliance": 76.4,
+          "Legal": 97.1,
+          "Tax & Finance": 74.2,
+          "Strategy": 87.0,
+          "Science & Evidence": 89.2
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Regulatory & Compliance": 43.5,
+          "Legal": 48.0,
+          "Tax & Finance": 45.3,
+          "Strategy": 39.4,
+          "Science & Evidence": 29.1
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Regulatory & Compliance": 57.8,
+          "Legal": 71.7,
+          "Tax & Finance": 40.6,
+          "Strategy": 56.0,
+          "Science & Evidence": 88.6
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Regulatory & Compliance": 65.6,
+          "Legal": 25.0,
+          "Tax & Finance": 29.3,
+          "Strategy": 83.6,
+          "Science & Evidence": 55.3
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Regulatory & Compliance": 66.7,
+          "Legal": 74.2,
+          "Tax & Finance": 53.6,
+          "Strategy": 55.1,
+          "Science & Evidence": 52.5
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Regulatory & Compliance": 73.4,
+          "Legal": 96.6,
+          "Tax & Finance": 50.1,
+          "Strategy": 55.4,
+          "Science & Evidence": 57.5
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Regulatory & Compliance": 68.6,
+          "Legal": 71.6,
+          "Tax & Finance": 61.8,
+          "Strategy": 68.8,
+          "Science & Evidence": 54.6
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Regulatory & Compliance": 83.3,
+          "Legal": 89.7,
+          "Tax & Finance": 63.6,
+          "Strategy": 89.4,
+          "Science & Evidence": 51.7
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Regulatory & Compliance": 66.2,
+          "Legal": 80.9,
+          "Tax & Finance": 31.2,
+          "Strategy": 58.9,
+          "Science & Evidence": 26.2
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Regulatory & Compliance": 73.0,
+          "Legal": 90.1,
+          "Tax & Finance": 57.8,
+          "Strategy": 71.0,
+          "Science & Evidence": 55.0
+        }
+      },
+      "deepseek-v4-pro": {
+        "scores": {
+          "Regulatory & Compliance": 70.8,
+          "Legal": 67.6,
+          "Tax & Finance": 77.5,
+          "Strategy": 62.9,
+          "Science & Evidence": 80.1
+        }
+      },
+      "deepseek-v4-flash": {
+        "scores": {
+          "Regulatory & Compliance": 66.1,
+          "Legal": 57.5,
+          "Tax & Finance": 67.6,
+          "Strategy": 64.1,
+          "Science & Evidence": 79.3
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Regulatory & Compliance": 80.6,
+          "Legal": 83.0,
+          "Tax & Finance": 36.2,
+          "Strategy": 67.0,
+          "Science & Evidence": 81.7
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Regulatory & Compliance": 40.3,
+          "Legal": 100.0,
+          "Tax & Finance": 13.6,
+          "Strategy": 25.3,
+          "Science & Evidence": 0.0
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Regulatory & Compliance": 89.8,
+          "Legal": 74.1,
+          "Tax & Finance": 32.0,
+          "Strategy": 93.2,
+          "Science & Evidence": 81.6
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Regulatory & Compliance": 72.1,
+          "Legal": 69.3,
+          "Tax & Finance": 56.0,
+          "Strategy": 70.7,
+          "Science & Evidence": 89.4
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Regulatory & Compliance": 77.6,
+          "Legal": 89.8,
+          "Tax & Finance": 65.3,
+          "Strategy": 77.1,
+          "Science & Evidence": 82.2
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Regulatory & Compliance": 62.0,
+          "Legal": 87.5,
+          "Tax & Finance": 78.3,
+          "Strategy": 58.0,
+          "Science & Evidence": 54.7
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Regulatory & Compliance": 78.4,
+          "Legal": 95.1,
+          "Tax & Finance": 67.7,
+          "Strategy": 69.2,
+          "Science & Evidence": 87.6
+        }
+      },
+      "claude-fable-5.1": {
+        "scores": {
+          "Regulatory & Compliance": 86.3,
+          "Legal": 93.5,
+          "Tax & Finance": 75.4,
+          "Strategy": 56.5,
+          "Science & Evidence": 93.5
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Regulatory & Compliance": 88.8,
+          "Legal": 98.9,
+          "Tax & Finance": 68.2,
+          "Strategy": 90.7,
+          "Science & Evidence": 93.6
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Regulatory & Compliance": 71.8,
+          "Legal": 77.1,
+          "Tax & Finance": 60.2,
+          "Strategy": 42.8,
+          "Science & Evidence": 53.0
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Regulatory & Compliance": 79.7,
+          "Legal": 86.7,
+          "Tax & Finance": 72.4,
+          "Strategy": 80.4,
+          "Science & Evidence": 77.6
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Regulatory & Compliance": 71.4,
+          "Legal": 88.0,
+          "Tax & Finance": 59.2,
+          "Strategy": 76.8,
+          "Science & Evidence": 83.8
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Regulatory & Compliance": 90.1,
+          "Legal": 95.6,
+          "Tax & Finance": 83.1,
+          "Strategy": 59.2,
+          "Science & Evidence": 90.1
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Regulatory & Compliance": 80.0,
+          "Legal": 94.4,
+          "Tax & Finance": 85.0,
+          "Strategy": 87.1,
+          "Science & Evidence": 84.0
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Regulatory & Compliance": 87.9,
+          "Legal": 98.4,
+          "Tax & Finance": 28.5,
+          "Strategy": 60.7,
+          "Science & Evidence": 58.2
+        }
+      }
+    }
+  },
+  "Browser": {
+    "parts": [
+      {
+        "name": "Data Aggregation",
+        "gloss": "Exhaustive traversal of a large record set and multi-part roll-ups."
+      },
+      {
+        "name": "Sequential Planning",
+        "gloss": "Order-dependent steps where each step constrains the next."
+      },
+      {
+        "name": "Analysis-Driven Action",
+        "gloss": "Derive a result from the data, then act on it in the app."
+      },
+      {
+        "name": "Structural Integrity",
+        "gloss": "Keep a document or record graph consistent across an edit."
+      },
+      {
+        "name": "Constraint Adherence",
+        "gloss": "Exact fidelity, plus correctly declining what the app won't permit."
+      }
+    ],
+    "models": {
+      "claude-fable-5.1": {
+        "scores": {
+          "Data Aggregation": 100.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Data Aggregation": 86.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Data Aggregation": 86.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Data Aggregation": 86.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 83.0,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Data Aggregation": 71.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 83.0,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Data Aggregation": 57.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "claude-opus-5": {
+        "scores": {
+          "Data Aggregation": 86.0,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 83.0,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Data Aggregation": 71.0,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 83.0,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 67.0
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Data Aggregation": 71.0,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 67.0,
+          "Structural Integrity": 40.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Data Aggregation": 71.0,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 50.0,
+          "Structural Integrity": 60.0,
+          "Constraint Adherence": 67.0
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Data Aggregation": 43.0,
+          "Sequential Planning": 50.0,
+          "Analysis-Driven Action": 33.3,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Data Aggregation": 57.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 20.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Data Aggregation": 14.0,
+          "Sequential Planning": 50.0,
+          "Analysis-Driven Action": 50.0,
+          "Structural Integrity": 40.0,
+          "Constraint Adherence": 67.0
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Data Aggregation": 43.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 50.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 67.0
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Data Aggregation": 29.0,
+          "Sequential Planning": 25.0,
+          "Analysis-Driven Action": 17.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 67.0
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Data Aggregation": 43.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 20.0,
+          "Constraint Adherence": 67.0
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Data Aggregation": 29.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 17.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 33.0
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Data Aggregation": 14.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Data Aggregation": 14.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Data Aggregation": 57.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 83.0,
+          "Structural Integrity": 40.0,
+          "Constraint Adherence": 67.0
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Data Aggregation": 42.9,
+          "Sequential Planning": 25.0,
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Data Aggregation": 71.4,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 66.7
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Data Aggregation": 66.7,
+          "Sequential Planning": 50.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Data Aggregation": 50.0,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Data Aggregation": 40.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 66.7,
+          "Constraint Adherence": 100.0
+        }
+      }
+    }
+  },
+  "Data": {
+    "parts": [
+      {
+        "name": "Compound Ledgers",
+        "gloss": "Questions that combine several related data files."
+      },
+      {
+        "name": "Measurement & Censoring",
+        "gloss": "Data with measurement quirks that must be handled before aggregating."
+      },
+      {
+        "name": "Rules & Definitions",
+        "gloss": "Apply stated rules and definitions exactly as written."
+      },
+      {
+        "name": "Verification & Answerability",
+        "gloss": "Check figures against the source and say what the data cannot support."
+      }
+    ],
+    "models": {
+      "claude-opus-5": {
+        "scores": {
+          "Compound Ledgers": 96.9,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 95.2,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Compound Ledgers": 91.6,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 95.2,
+          "Verification & Answerability": 90.4
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Compound Ledgers": 88.8,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 95.1,
+          "Verification & Answerability": 89.3
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Compound Ledgers": 54.1,
+          "Measurement & Censoring": 55.6,
+          "Rules & Definitions": 58.6,
+          "Verification & Answerability": 74.0
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Compound Ledgers": 95.2,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 93.4,
+          "Verification & Answerability": 82.7
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Compound Ledgers": 92.7,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 93.8,
+          "Verification & Answerability": 86.2
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Compound Ledgers": 85.4,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 93.4,
+          "Verification & Answerability": 86.2
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Compound Ledgers": 95.9,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 93.4,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Compound Ledgers": 94.3,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 93.8,
+          "Verification & Answerability": 86.2
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Compound Ledgers": 93.7,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 95.6,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Compound Ledgers": 88.2,
+          "Measurement & Censoring": 87.5,
+          "Rules & Definitions": 92.9,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Compound Ledgers": 82.8,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 95.2,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "deepseek-v4-pro": {
+        "scores": {
+          "Compound Ledgers": 86.1,
+          "Measurement & Censoring": 55.6,
+          "Rules & Definitions": 93.0,
+          "Verification & Answerability": 88.8
+        }
+      },
+      "deepseek-v4-flash": {
+        "scores": {
+          "Compound Ledgers": 71.3,
+          "Measurement & Censoring": 75.0,
+          "Rules & Definitions": 90.9,
+          "Verification & Answerability": 81.9
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Compound Ledgers": 57.9,
+          "Measurement & Censoring": 55.6,
+          "Rules & Definitions": 74.2,
+          "Verification & Answerability": 55.4
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Compound Ledgers": 81.9,
+          "Measurement & Censoring": 79.2,
+          "Rules & Definitions": 91.6,
+          "Verification & Answerability": 87.7
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Compound Ledgers": 97.8,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 95.2,
+          "Verification & Answerability": 69.2
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Compound Ledgers": 77.3,
+          "Measurement & Censoring": 58.3,
+          "Rules & Definitions": 92.9,
+          "Verification & Answerability": 87.1
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Compound Ledgers": 96.9,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 96.0,
+          "Verification & Answerability": 90.6
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Compound Ledgers": 97.8,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 94.3,
+          "Verification & Answerability": 92.9
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Compound Ledgers": 84.7,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 94.3,
+          "Verification & Answerability": 67.5
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Compound Ledgers": 77.8,
+          "Measurement & Censoring": 66.7,
+          "Rules & Definitions": 95.2,
+          "Verification & Answerability": 88.2
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Compound Ledgers": 84.1,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 94.3,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Compound Ledgers": 69.6,
+          "Measurement & Censoring": 87.5,
+          "Rules & Definitions": 93.8,
+          "Verification & Answerability": 86.2
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Compound Ledgers": 80.0,
+          "Measurement & Censoring": 88.9,
+          "Rules & Definitions": 91.7,
+          "Verification & Answerability": 83.6
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Compound Ledgers": 90.3,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 89.4,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Compound Ledgers": 89.3,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 93.4,
+          "Verification & Answerability": 89.8
+        }
+      },
+      "claude-fable-5.1": {
+        "scores": {
+          "Compound Ledgers": 97.8,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 98.7,
+          "Verification & Answerability": 97.3
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Compound Ledgers": 97.6,
+          "Measurement & Censoring": 100.0,
+          "Rules & Definitions": 92.1,
+          "Verification & Answerability": 92.9
+        }
+      }
+    }
+  },
+  "Coding": {
+    "parts": [
+      {
+        "name": "LLM API Integration",
+        "gloss": "Provider wire formats and request/response handling."
+      },
+      {
+        "name": "Agent Loop",
+        "gloss": "Agent runtime control flow."
+      },
+      {
+        "name": "Billing & Limits",
+        "gloss": "Metering, quotas and limit enforcement."
+      },
+      {
+        "name": "Cloud Infrastructure",
+        "gloss": "Storage, compute and cloud service plumbing."
+      },
+      {
+        "name": "Product & UX",
+        "gloss": "User-facing product behaviour."
+      },
+      {
+        "name": "Memory & Tools",
+        "gloss": "Memory handling and tool integrations."
+      }
+    ],
+    "models": {
+      "claude-fable-5.1": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 83.3,
+          "Memory & Tools": 100.0
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 83.3,
+          "Memory & Tools": 100.0
+        }
+      },
+      "claude-opus-5": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 66.7,
+          "Memory & Tools": 75.0
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 66.7,
+          "Product & UX": 66.7,
+          "Memory & Tools": 75.0
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 83.3,
+          "Product & UX": 66.7,
+          "Memory & Tools": 75.0
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 66.7,
+          "Memory & Tools": 75.0
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 66.7,
+          "Memory & Tools": 100.0
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 60.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 66.7,
+          "Memory & Tools": 50.0
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 33.3,
+          "Memory & Tools": 75.0
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 83.3,
+          "Product & UX": 50.0,
+          "Memory & Tools": 75.0
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 66.7,
+          "Product & UX": 66.7,
+          "Memory & Tools": 100.0
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 83.3,
+          "Product & UX": 66.7,
+          "Memory & Tools": 100.0
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 25.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 50.0,
+          "Memory & Tools": 75.0
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 83.3,
+          "Product & UX": 66.7,
+          "Memory & Tools": 50.0
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 40.0,
+          "Billing & Limits": 50.0,
+          "Cloud Infrastructure": 66.7,
+          "Product & UX": 50.0,
+          "Memory & Tools": 75.0
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 50.0,
+          "Cloud Infrastructure": 66.7,
+          "Product & UX": 50.0,
+          "Memory & Tools": 75.0
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 40.0,
+          "Billing & Limits": 50.0,
+          "Cloud Infrastructure": 50.0,
+          "Product & UX": 33.3,
+          "Memory & Tools": 100.0
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 60.0,
+          "Billing & Limits": 50.0,
+          "Cloud Infrastructure": 33.3,
+          "Product & UX": 50.0,
+          "Memory & Tools": 75.0
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 40.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 50.0,
+          "Product & UX": 50.0,
+          "Memory & Tools": 25.0
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 40.0,
+          "Billing & Limits": 50.0,
+          "Cloud Infrastructure": 33.3,
+          "Product & UX": 16.7,
+          "Memory & Tools": 25.0
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 40.0,
+          "Billing & Limits": 25.0,
+          "Cloud Infrastructure": 33.3,
+          "Product & UX": 0.0,
+          "Memory & Tools": 50.0
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 66.7,
+          "Memory & Tools": 75.0
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 60.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 66.7,
+          "Product & UX": 16.7,
+          "Memory & Tools": 75.0
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 90.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 94.4,
+          "Memory & Tools": 100.0
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "LLM API Integration": 66.7,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 63.4,
+          "Memory & Tools": 100.0
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 95.8,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 72.2,
+          "Memory & Tools": 100.0
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "LLM API Integration": 62.5,
+          "Agent Loop": 75.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 91.7,
+          "Product & UX": 77.8,
+          "Memory & Tools": 100.0
+        }
+      }
+    }
+  }
+}

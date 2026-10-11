@@ -1,0 +1,23 @@
+{
+  "App": [
+    "app_nextjs"
+  ],
+  "Design": [
+    "design_layout"
+  ],
+  "Research": [
+    "research"
+  ],
+  "Browser": [
+    "browser"
+  ],
+  "Data": [
+    "data"
+  ],
+  "Coding": [
+    "coding"
+  ],
+  "Long-Horizon": [
+    "long_horizon"
+  ]
+}
