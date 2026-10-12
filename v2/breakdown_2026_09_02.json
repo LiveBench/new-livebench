@@ -888,19 +888,19 @@
       },
       "gpt-6-sol": {
         "scores": {
-          "Data Aggregation": 57.1,
-          "Sequential Planning": 25.0,
-          "Analysis-Driven Action": 66.7,
-          "Structural Integrity": 60.0,
-          "Constraint Adherence": 66.7
+          "Data Aggregation": 85.7,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
         }
       },
       "gpt-6.1-sol": {
         "scores": {
           "Data Aggregation": 100.0,
-          "Sequential Planning": 75.0,
+          "Sequential Planning": 100.0,
           "Analysis-Driven Action": 83.3,
-          "Structural Integrity": 60.0,
+          "Structural Integrity": 80.0,
           "Constraint Adherence": 66.7
         }
       },
