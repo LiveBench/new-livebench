@@ -1313,7 +1313,7 @@
           "Billing & Limits": 79.2,
           "Cloud Infrastructure": 100.0,
           "Product & UX": 72.2,
-          "Memory & Tools": 58.3
+          "Memory & Tools": 75.0
         }
       },
       "grok-4.7": {
@@ -1321,7 +1321,7 @@
           "LLM API Integration": 58.3,
           "Agent Loop": 80.0,
           "Billing & Limits": 75.0,
-          "Cloud Infrastructure": 66.7,
+          "Cloud Infrastructure": 72.2,
           "Product & UX": 55.6,
           "Memory & Tools": 100.0
         }
