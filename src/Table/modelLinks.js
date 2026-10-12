@@ -729,6 +729,12 @@ export const modelLinks = {
         organization: "Mistral AI",
         displayName: "Mistral Large 4 High",
         reasoner: true
+    },
+    "muse-wonder-1.0-max": {
+        url: "https://dev.meta.ai/docs/models",
+        organization: "Meta",
+        displayName: "Muse Wonder 1.0 Max Effort",
+        reasoner: true
     }
 };
 
