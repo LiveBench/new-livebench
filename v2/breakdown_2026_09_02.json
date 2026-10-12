@@ -266,6 +266,13 @@
           "PDF": 73.5,
           "Presentations (PPT)": 70.0
         }
+      },
+      "xx-model-xx": {
+        "scores": {
+          "Documents (DOCX)": 84.5,
+          "PDF": 74.6,
+          "Presentations (PPT)": 64.1
+        }
       }
     }
   },
@@ -616,6 +623,15 @@
           "Strategy": 87.2,
           "Science & Evidence": 88.5
         }
+      },
+      "xx-model-xx": {
+        "scores": {
+          "Regulatory & Compliance": 77.0,
+          "Legal": 98.1,
+          "Tax & Finance": 76.5,
+          "Strategy": 84.8,
+          "Science & Evidence": 86.7
+        }
       }
     }
   },
@@ -929,6 +945,15 @@
           "Analysis-Driven Action": 100.0,
           "Structural Integrity": 100.0,
           "Constraint Adherence": 66.7
+        }
+      },
+      "xx-model-xx": {
+        "scores": {
+          "Data Aggregation": 85.7,
+          "Sequential Planning": 100.0,
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
         }
       }
     }
@@ -1300,6 +1325,16 @@
           "Product & UX": 55.6,
           "Memory & Tools": 100.0
         }
+      },
+      "xx-model-xx": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 77.8,
+          "Memory & Tools": 83.3
+        }
       }
     }
   },
@@ -1631,6 +1666,15 @@
           "Long-Run Operations": 11.1,
           "Systems Engineering": 68.8,
           "Performance Optimisation": 37.8
+        }
+      },
+      "xx-model-xx": {
+        "scores": {
+          "Finance & Compliance Apps": 91.7,
+          "Operations & Commerce Apps": 66.7,
+          "Long-Run Operations": 19.4,
+          "Systems Engineering": 97.6,
+          "Performance Optimisation": 68.4
         }
       }
     }
