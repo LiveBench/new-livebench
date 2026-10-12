@@ -1306,255 +1306,331 @@
   "Long-Horizon": {
     "parts": [
       {
-        "name": "Business Apps",
-        "gloss": "A web app taken over and extended through three or four turns of changing requirements."
+        "name": "Finance & Compliance Apps",
+        "gloss": "Payroll, budgets, tax claims and audit records: keep the money and the paper trail right as the rules change, turn after turn."
       },
       {
-        "name": "Operations",
-        "gloss": "An existing codebase run over simulated months or weeks of releases, closes and tickets."
+        "name": "Operations & Commerce Apps",
+        "gloss": "Ticketing, equipment hire, stock and site records: keep a live operational app correct as the business changes around it."
       },
       {
-        "name": "Extended Coding",
-        "gloss": "Simulator repair, a compiler from a spec, compiler optimisation, job scheduling and fleet operations."
+        "name": "Long-Run Operations",
+        "gloss": "Run an existing system through simulated months of releases, closes and change requests, where early choices compound."
+      },
+      {
+        "name": "Systems Engineering",
+        "gloss": "Build and repair complex systems from a specification, then keep them running under realistic load and failures."
+      },
+      {
+        "name": "Performance Optimisation",
+        "gloss": "Make real programs faster and real schedules tighter, scored on measured results rather than judgement."
       }
     ],
     "models": {
       "deepseek-v4.1-flash": {
         "scores": {
-          "Business Apps": 32.1,
-          "Operations": 11.1,
-          "Extended Coding": 71.1
+          "Finance & Compliance Apps": 25.7,
+          "Operations & Commerce Apps": 38.5,
+          "Long-Run Operations": 11.1,
+          "Systems Engineering": 85.9,
+          "Performance Optimisation": 60.0
         }
       },
       "gpt-6-astra": {
         "scores": {
-          "Business Apps": 100.0,
-          "Operations": 29.1,
-          "Extended Coding": 85.0
+          "Finance & Compliance Apps": 100.0,
+          "Operations & Commerce Apps": 100.0,
+          "Long-Run Operations": 29.1,
+          "Systems Engineering": 98.3,
+          "Performance Optimisation": 75.1
         }
       },
       "muse-spark-1.3": {
         "scores": {
-          "Business Apps": 14.6,
-          "Operations": 12.5,
-          "Extended Coding": 70.1
+          "Finance & Compliance Apps": 12.5,
+          "Operations & Commerce Apps": 16.7,
+          "Long-Run Operations": 12.5,
+          "Systems Engineering": 73.5,
+          "Performance Optimisation": 67.6
         }
       },
       "gpt-6-sol": {
         "scores": {
-          "Business Apps": 68.8,
-          "Operations": 38.9,
-          "Extended Coding": 76.8
+          "Finance & Compliance Apps": 83.3,
+          "Operations & Commerce Apps": 54.2,
+          "Long-Run Operations": 38.9,
+          "Systems Engineering": 85.2,
+          "Performance Optimisation": 70.5
         }
       },
       "gpt-6.1-sol": {
         "scores": {
-          "Business Apps": 80.2,
-          "Operations": 20.8,
-          "Extended Coding": 87.1
+          "Finance & Compliance Apps": 66.7,
+          "Operations & Commerce Apps": 93.8,
+          "Long-Run Operations": 20.8,
+          "Systems Engineering": 94.6,
+          "Performance Optimisation": 81.5
         }
       },
       "claude-opus-5.5": {
         "scores": {
-          "Business Apps": 93.8,
-          "Operations": 45.4,
-          "Extended Coding": 92.1
+          "Finance & Compliance Apps": 100.0,
+          "Operations & Commerce Apps": 87.5,
+          "Long-Run Operations": 45.4,
+          "Systems Engineering": 98.1,
+          "Performance Optimisation": 87.6
         }
       },
       "claude-sonnet-5.5": {
         "scores": {
-          "Business Apps": 90.6,
-          "Operations": 36.1,
-          "Extended Coding": 83.5
+          "Finance & Compliance Apps": 100.0,
+          "Operations & Commerce Apps": 81.2,
+          "Long-Run Operations": 36.1,
+          "Systems Engineering": 84.9,
+          "Performance Optimisation": 82.5
         }
       },
       "claude-fable-5": {
         "scores": {
-          "Business Apps": 53.1,
-          "Operations": 1.4,
-          "Extended Coding": 75.5
+          "Finance & Compliance Apps": 58.4,
+          "Operations & Commerce Apps": 47.9,
+          "Long-Run Operations": 1.4,
+          "Systems Engineering": 88.3,
+          "Performance Optimisation": 65.9
         }
       },
       "claude-fable-5.1": {
         "scores": {
-          "Business Apps": 88.5,
-          "Operations": 47.8,
-          "Extended Coding": 86.0
+          "Finance & Compliance Apps": 95.8,
+          "Operations & Commerce Apps": 81.2,
+          "Long-Run Operations": 47.8,
+          "Systems Engineering": 92.8,
+          "Performance Optimisation": 81.0
         }
       },
       "deepseek-v4-flash-vision": {
         "scores": {
-          "Business Apps": 35.4,
-          "Operations": 0.0,
-          "Extended Coding": 59.8
+          "Finance & Compliance Apps": 37.5,
+          "Operations & Commerce Apps": 33.3,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 83.5,
+          "Performance Optimisation": 41.9
         }
       },
       "gemini-3.1-pro": {
         "scores": {
-          "Business Apps": 6.2,
-          "Operations": 0.0,
-          "Extended Coding": 54.2
+          "Finance & Compliance Apps": 8.3,
+          "Operations & Commerce Apps": 4.2,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 43.3,
+          "Performance Optimisation": 62.5
         }
       },
       "gemini-3.7-flash": {
         "scores": {
-          "Business Apps": 4.2,
-          "Operations": 0.0,
-          "Extended Coding": 68.1
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 8.3,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 71.2,
+          "Performance Optimisation": 65.8
         }
       },
       "gemini-3.8-flash": {
         "scores": {
-          "Business Apps": 12.5,
-          "Operations": 11.1,
-          "Extended Coding": 58.4
+          "Finance & Compliance Apps": 16.7,
+          "Operations & Commerce Apps": 8.3,
+          "Long-Run Operations": 11.1,
+          "Systems Engineering": 78.2,
+          "Performance Optimisation": 43.5
         }
       },
       "glm-5.3": {
         "scores": {
-          "Business Apps": 32.3,
-          "Operations": 0.0,
-          "Extended Coding": 55.4
+          "Finance & Compliance Apps": 37.5,
+          "Operations & Commerce Apps": 27.1,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 65.0,
+          "Performance Optimisation": 48.3
         }
       },
       "glm-5.3-flash": {
         "scores": {
-          "Business Apps": 14.6,
-          "Operations": 0.0,
-          "Extended Coding": 56.4
+          "Finance & Compliance Apps": 8.3,
+          "Operations & Commerce Apps": 20.9,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 79.0,
+          "Performance Optimisation": 39.5
         }
       },
       "gpt-5.5": {
         "scores": {
-          "Business Apps": 27.1,
-          "Operations": 22.2,
-          "Extended Coding": 74.2
+          "Finance & Compliance Apps": 37.5,
+          "Operations & Commerce Apps": 16.7,
+          "Long-Run Operations": 22.2,
+          "Systems Engineering": 81.4,
+          "Performance Optimisation": 68.8
         }
       },
       "grok-4.5": {
         "scores": {
-          "Business Apps": 6.2,
-          "Operations": 0.0,
-          "Extended Coding": 63.1
+          "Finance & Compliance Apps": 12.5,
+          "Operations & Commerce Apps": 0.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 67.3,
+          "Performance Optimisation": 59.9
         }
       },
       "grok-4.6": {
         "scores": {
-          "Business Apps": 9.4,
-          "Operations": 0.0,
-          "Extended Coding": 56.4
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 18.8,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 77.0,
+          "Performance Optimisation": 41.0
         }
       },
       "claude-haiku-4.5": {
         "scores": {
-          "Business Apps": 0.0,
-          "Operations": 0.0,
-          "Extended Coding": 28.6
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 0.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 13.8,
+          "Performance Optimisation": 39.6
         }
       },
       "kimi-k3": {
         "scores": {
-          "Business Apps": 22.9,
-          "Operations": 6.9,
-          "Extended Coding": 80.9
+          "Finance & Compliance Apps": 37.5,
+          "Operations & Commerce Apps": 8.3,
+          "Long-Run Operations": 6.9,
+          "Systems Engineering": 86.4,
+          "Performance Optimisation": 76.8
         }
       },
       "gpt-5.6-luna": {
         "scores": {
-          "Business Apps": 12.5,
-          "Operations": 0.0,
-          "Extended Coding": 63.8
+          "Finance & Compliance Apps": 12.5,
+          "Operations & Commerce Apps": 12.5,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 69.5,
+          "Performance Optimisation": 59.6
         }
       },
       "gpt-6-luna": {
         "scores": {
-          "Business Apps": 44.8,
-          "Operations": 15.3,
-          "Extended Coding": 65.9
+          "Finance & Compliance Apps": 45.9,
+          "Operations & Commerce Apps": 43.8,
+          "Long-Run Operations": 15.3,
+          "Systems Engineering": 67.8,
+          "Performance Optimisation": 64.4
         }
       },
       "muse-spark-1.2": {
         "scores": {
-          "Business Apps": 10.4,
-          "Operations": 0.0,
-          "Extended Coding": 48.8
+          "Finance & Compliance Apps": 8.3,
+          "Operations & Commerce Apps": 12.5,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 65.3,
+          "Performance Optimisation": 36.4
         }
       },
       "claude-opus-4.8": {
         "scores": {
-          "Business Apps": 42.7,
-          "Operations": 11.1,
-          "Extended Coding": 70.7
+          "Finance & Compliance Apps": 54.1,
+          "Operations & Commerce Apps": 31.2,
+          "Long-Run Operations": 11.1,
+          "Systems Engineering": 73.9,
+          "Performance Optimisation": 68.3
         }
       },
       "claude-opus-5": {
         "scores": {
-          "Business Apps": 61.5,
-          "Operations": 23.6,
-          "Extended Coding": 79.2
+          "Finance & Compliance Apps": 62.5,
+          "Operations & Commerce Apps": 60.4,
+          "Long-Run Operations": 23.6,
+          "Systems Engineering": 95.2,
+          "Performance Optimisation": 67.3
         }
       },
       "qwen3.8-flash": {
         "scores": {
-          "Business Apps": 20.8,
-          "Operations": 6.9,
-          "Extended Coding": 65.7
+          "Finance & Compliance Apps": 12.5,
+          "Operations & Commerce Apps": 29.2,
+          "Long-Run Operations": 6.9,
+          "Systems Engineering": 69.5,
+          "Performance Optimisation": 62.8
         }
       },
       "qwen3.8-max": {
         "scores": {
-          "Business Apps": 26.0,
-          "Operations": 12.5,
-          "Extended Coding": 73.7
+          "Finance & Compliance Apps": 29.1,
+          "Operations & Commerce Apps": 22.9,
+          "Long-Run Operations": 12.5,
+          "Systems Engineering": 81.4,
+          "Performance Optimisation": 67.8
         }
       },
       "smaug-flash": {
         "scores": {
-          "Business Apps": 4.2,
-          "Operations": 0.0,
-          "Extended Coding": 64.8
+          "Finance & Compliance Apps": 4.2,
+          "Operations & Commerce Apps": 4.2,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 66.8,
+          "Performance Optimisation": 63.4
         }
       },
       "gpt-5.6-sol": {
         "scores": {
-          "Business Apps": 47.9,
-          "Operations": 16.7,
-          "Extended Coding": 62.9
+          "Finance & Compliance Apps": 54.2,
+          "Operations & Commerce Apps": 41.7,
+          "Long-Run Operations": 16.7,
+          "Systems Engineering": 87.8,
+          "Performance Optimisation": 44.2
         }
       },
       "claude-sonnet-4.6": {
         "scores": {
-          "Business Apps": 5.2,
-          "Operations": 0.0,
-          "Extended Coding": 53.6
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 10.4,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 68.2,
+          "Performance Optimisation": 42.6
         }
       },
       "claude-sonnet-5": {
         "scores": {
-          "Business Apps": 28.1,
-          "Operations": 5.6,
-          "Extended Coding": 65.7
+          "Finance & Compliance Apps": 16.7,
+          "Operations & Commerce Apps": 39.6,
+          "Long-Run Operations": 5.6,
+          "Systems Engineering": 70.1,
+          "Performance Optimisation": 62.4
         }
       },
       "gpt-5.6-terra": {
         "scores": {
-          "Business Apps": 40.6,
-          "Operations": 11.1,
-          "Extended Coding": 73.2
+          "Finance & Compliance Apps": 54.1,
+          "Operations & Commerce Apps": 27.1,
+          "Long-Run Operations": 11.1,
+          "Systems Engineering": 79.1,
+          "Performance Optimisation": 68.7
         }
       },
       "claude-haiku-5.5": {
         "scores": {
-          "Business Apps": 61.5,
-          "Operations": 18.1,
-          "Extended Coding": 67.6
+          "Finance & Compliance Apps": 66.7,
+          "Operations & Commerce Apps": 56.3,
+          "Long-Run Operations": 18.1,
+          "Systems Engineering": 96.1,
+          "Performance Optimisation": 46.3
         }
       },
       "grok-4.7": {
         "scores": {
-          "Business Apps": 18.8,
-          "Operations": 11.1,
-          "Extended Coding": 51.1
+          "Finance & Compliance Apps": 25.0,
+          "Operations & Commerce Apps": 12.5,
+          "Long-Run Operations": 11.1,
+          "Systems Engineering": 68.8,
+          "Performance Optimisation": 37.8
         }
       }
     }
