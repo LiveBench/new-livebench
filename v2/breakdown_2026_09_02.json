@@ -217,6 +217,55 @@
           "PDF": 81.1,
           "Presentations (PPT)": 70.4
         }
+      },
+      "claude-opus-5.5": {
+        "scores": {
+          "Documents (DOCX)": 90.3,
+          "PDF": 88.2,
+          "Presentations (PPT)": 82.3
+        }
+      },
+      "claude-sonnet-5.5": {
+        "scores": {
+          "Documents (DOCX)": 94.1,
+          "PDF": 87.6,
+          "Presentations (PPT)": 78.1
+        }
+      },
+      "gpt-6-sol": {
+        "scores": {
+          "Documents (DOCX)": 89.4,
+          "PDF": 83.0,
+          "Presentations (PPT)": 70.8
+        }
+      },
+      "gpt-6.1-sol": {
+        "scores": {
+          "Documents (DOCX)": 86.2,
+          "PDF": 79.1,
+          "Presentations (PPT)": 78.4
+        }
+      },
+      "gpt-6-luna": {
+        "scores": {
+          "Documents (DOCX)": 86.5,
+          "PDF": 78.9,
+          "Presentations (PPT)": 77.1
+        }
+      },
+      "claude-haiku-5.5": {
+        "scores": {
+          "Documents (DOCX)": 94.4,
+          "PDF": 82.2,
+          "Presentations (PPT)": 74.3
+        }
+      },
+      "grok-4.7": {
+        "scores": {
+          "Documents (DOCX)": 76.9,
+          "PDF": 73.5,
+          "Presentations (PPT)": 70.0
+        }
       }
     }
   },
@@ -504,6 +553,69 @@
           "Strategy": 60.7,
           "Science & Evidence": 58.2
         }
+      },
+      "claude-opus-5.5": {
+        "scores": {
+          "Regulatory & Compliance": 87.2,
+          "Legal": 99.9,
+          "Tax & Finance": 82.0,
+          "Strategy": 87.5,
+          "Science & Evidence": 62.4
+        }
+      },
+      "claude-sonnet-5.5": {
+        "scores": {
+          "Regulatory & Compliance": 89.2,
+          "Legal": 95.1,
+          "Tax & Finance": 60.5,
+          "Strategy": 82.6,
+          "Science & Evidence": 94.8
+        }
+      },
+      "gpt-6.1-sol": {
+        "scores": {
+          "Regulatory & Compliance": 77.3,
+          "Legal": 99.8,
+          "Tax & Finance": 81.8,
+          "Strategy": 76.0,
+          "Science & Evidence": 86.7
+        }
+      },
+      "gpt-6-sol": {
+        "scores": {
+          "Regulatory & Compliance": 83.9,
+          "Legal": 89.3,
+          "Tax & Finance": 46.7,
+          "Strategy": 57.9,
+          "Science & Evidence": 57.4
+        }
+      },
+      "gpt-6-luna": {
+        "scores": {
+          "Regulatory & Compliance": 35.9,
+          "Legal": 73.4,
+          "Tax & Finance": 14.3,
+          "Strategy": 55.3,
+          "Science & Evidence": 58.3
+        }
+      },
+      "claude-haiku-5.5": {
+        "scores": {
+          "Regulatory & Compliance": 66.9,
+          "Legal": 72.6,
+          "Tax & Finance": 69.9,
+          "Strategy": 79.0,
+          "Science & Evidence": 92.2
+        }
+      },
+      "grok-4.7": {
+        "scores": {
+          "Regulatory & Compliance": 56.4,
+          "Legal": 96.6,
+          "Tax & Finance": 41.5,
+          "Strategy": 87.2,
+          "Science & Evidence": 88.5
+        }
       }
     }
   },
@@ -754,6 +866,69 @@
           "Analysis-Driven Action": 0.0,
           "Structural Integrity": 66.7,
           "Constraint Adherence": 100.0
+        }
+      },
+      "claude-opus-5.5": {
+        "scores": {
+          "Data Aggregation": 71.4,
+          "Sequential Planning": 50.0,
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "claude-sonnet-5.5": {
+        "scores": {
+          "Data Aggregation": 71.4,
+          "Sequential Planning": 50.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "gpt-6-sol": {
+        "scores": {
+          "Data Aggregation": 57.1,
+          "Sequential Planning": 25.0,
+          "Analysis-Driven Action": 66.7,
+          "Structural Integrity": 60.0,
+          "Constraint Adherence": 66.7
+        }
+      },
+      "gpt-6.1-sol": {
+        "scores": {
+          "Data Aggregation": 100.0,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 60.0,
+          "Constraint Adherence": 66.7
+        }
+      },
+      "gpt-6-luna": {
+        "scores": {
+          "Data Aggregation": 71.4,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 40.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "grok-4.7": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 20.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "claude-haiku-5.5": {
+        "scores": {
+          "Data Aggregation": 85.7,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 66.7
         }
       }
     }
@@ -1054,6 +1229,332 @@
           "Cloud Infrastructure": 91.7,
           "Product & UX": 77.8,
           "Memory & Tools": 100.0
+        }
+      },
+      "claude-opus-5.5": {
+        "scores": {
+          "LLM API Integration": 97.5,
+          "Agent Loop": 96.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 88.9,
+          "Memory & Tools": 97.5
+        }
+      },
+      "claude-sonnet-5.5": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 83.3,
+          "Cloud Infrastructure": 98.3,
+          "Product & UX": 87.2,
+          "Memory & Tools": 100.0
+        }
+      },
+      "gpt-6-sol": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 66.7,
+          "Memory & Tools": 100.0
+        }
+      },
+      "gpt-6.1-sol": {
+        "scores": {
+          "LLM API Integration": 83.3,
+          "Agent Loop": 90.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 100.0,
+          "Memory & Tools": 100.0
+        }
+      },
+      "gpt-6-luna": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 90.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 83.3,
+          "Memory & Tools": 50.0
+        }
+      },
+      "claude-haiku-5.5": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 79.2,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 72.2,
+          "Memory & Tools": 58.3
+        }
+      },
+      "grok-4.7": {
+        "scores": {
+          "LLM API Integration": 58.3,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 66.7,
+          "Product & UX": 55.6,
+          "Memory & Tools": 100.0
+        }
+      }
+    }
+  },
+  "Long-Horizon": {
+    "parts": [
+      {
+        "name": "Business Apps",
+        "gloss": "A web app taken over and extended through three or four turns of changing requirements."
+      },
+      {
+        "name": "Operations",
+        "gloss": "An existing codebase run over simulated months or weeks of releases, closes and tickets."
+      },
+      {
+        "name": "Extended Coding",
+        "gloss": "Simulator repair, a compiler from a spec, compiler optimisation, job scheduling and fleet operations."
+      }
+    ],
+    "models": {
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Business Apps": 32.1,
+          "Operations": 11.1,
+          "Extended Coding": 71.1
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Business Apps": 100.0,
+          "Operations": 29.1,
+          "Extended Coding": 85.0
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Business Apps": 14.6,
+          "Operations": 12.5,
+          "Extended Coding": 70.1
+        }
+      },
+      "gpt-6-sol": {
+        "scores": {
+          "Business Apps": 68.8,
+          "Operations": 38.9,
+          "Extended Coding": 76.8
+        }
+      },
+      "gpt-6.1-sol": {
+        "scores": {
+          "Business Apps": 80.2,
+          "Operations": 20.8,
+          "Extended Coding": 87.1
+        }
+      },
+      "claude-opus-5.5": {
+        "scores": {
+          "Business Apps": 93.8,
+          "Operations": 45.4,
+          "Extended Coding": 92.1
+        }
+      },
+      "claude-sonnet-5.5": {
+        "scores": {
+          "Business Apps": 90.6,
+          "Operations": 36.1,
+          "Extended Coding": 83.5
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Business Apps": 53.1,
+          "Operations": 1.4,
+          "Extended Coding": 75.5
+        }
+      },
+      "claude-fable-5.1": {
+        "scores": {
+          "Business Apps": 88.5,
+          "Operations": 47.8,
+          "Extended Coding": 86.0
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Business Apps": 35.4,
+          "Operations": 0.0,
+          "Extended Coding": 59.8
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Business Apps": 6.2,
+          "Operations": 0.0,
+          "Extended Coding": 54.2
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Business Apps": 4.2,
+          "Operations": 0.0,
+          "Extended Coding": 68.1
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Business Apps": 12.5,
+          "Operations": 11.1,
+          "Extended Coding": 58.4
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Business Apps": 32.3,
+          "Operations": 0.0,
+          "Extended Coding": 55.4
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Business Apps": 14.6,
+          "Operations": 0.0,
+          "Extended Coding": 56.4
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Business Apps": 27.1,
+          "Operations": 22.2,
+          "Extended Coding": 74.2
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Business Apps": 6.2,
+          "Operations": 0.0,
+          "Extended Coding": 63.1
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Business Apps": 9.4,
+          "Operations": 0.0,
+          "Extended Coding": 56.4
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Business Apps": 0.0,
+          "Operations": 0.0,
+          "Extended Coding": 28.6
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Business Apps": 22.9,
+          "Operations": 6.9,
+          "Extended Coding": 80.9
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Business Apps": 12.5,
+          "Operations": 0.0,
+          "Extended Coding": 63.8
+        }
+      },
+      "gpt-6-luna": {
+        "scores": {
+          "Business Apps": 44.8,
+          "Operations": 15.3,
+          "Extended Coding": 65.9
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Business Apps": 10.4,
+          "Operations": 0.0,
+          "Extended Coding": 48.8
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Business Apps": 42.7,
+          "Operations": 11.1,
+          "Extended Coding": 70.7
+        }
+      },
+      "claude-opus-5": {
+        "scores": {
+          "Business Apps": 61.5,
+          "Operations": 23.6,
+          "Extended Coding": 79.2
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Business Apps": 20.8,
+          "Operations": 6.9,
+          "Extended Coding": 65.7
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Business Apps": 26.0,
+          "Operations": 12.5,
+          "Extended Coding": 73.7
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Business Apps": 4.2,
+          "Operations": 0.0,
+          "Extended Coding": 64.8
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Business Apps": 47.9,
+          "Operations": 16.7,
+          "Extended Coding": 62.9
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Business Apps": 5.2,
+          "Operations": 0.0,
+          "Extended Coding": 53.6
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Business Apps": 28.1,
+          "Operations": 5.6,
+          "Extended Coding": 65.7
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Business Apps": 40.6,
+          "Operations": 11.1,
+          "Extended Coding": 73.2
+        }
+      },
+      "claude-haiku-5.5": {
+        "scores": {
+          "Business Apps": 61.5,
+          "Operations": 18.1,
+          "Extended Coding": 67.6
+        }
+      },
+      "grok-4.7": {
+        "scores": {
+          "Business Apps": 18.8,
+          "Operations": 11.1,
+          "Extended Coding": 51.1
         }
       }
     }
