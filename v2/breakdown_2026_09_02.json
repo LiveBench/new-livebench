@@ -1678,5 +1678,268 @@
         }
       }
     }
+  },
+  "Data Analysis": {
+    "parts": [
+      {
+        "name": "Consecutive events",
+        "gloss": "Find users or entities with runs of consecutive growth in a small, messy table of dated values."
+      },
+      {
+        "name": "Table join",
+        "gloss": "Map the columns of one table onto the obfuscated columns of another."
+      },
+      {
+        "name": "Table reformat",
+        "gloss": "Convert a table between CSV, TSV, JSON, JSONL, Markdown and HTML."
+      }
+    ],
+    "models": {
+      "claude-opus-5": {
+        "scores": {
+          "Consecutive events": 77.6,
+          "Table join": 52.0,
+          "Table reformat": 94.1
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Consecutive events": 52.9,
+          "Table join": 51.1,
+          "Table reformat": 94.1
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Consecutive events": 74.7,
+          "Table join": 42.4,
+          "Table reformat": 98.0
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Consecutive events": 39.2,
+          "Table join": 42.6,
+          "Table reformat": 96.1
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Consecutive events": 87.7,
+          "Table join": 50.2,
+          "Table reformat": 100.0
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Consecutive events": 86.5,
+          "Table join": 47.6,
+          "Table reformat": 100.0
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Consecutive events": 88.8,
+          "Table join": 55.9,
+          "Table reformat": 100.0
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Consecutive events": 82.5,
+          "Table join": 46.8,
+          "Table reformat": 100.0
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Consecutive events": 85.2,
+          "Table join": 52.3,
+          "Table reformat": 98.0
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Consecutive events": 60.4,
+          "Table join": 45.5,
+          "Table reformat": 98.0
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Consecutive events": 90.2,
+          "Table join": 49.3,
+          "Table reformat": 100.0
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Consecutive events": 87.1,
+          "Table join": 50.1,
+          "Table reformat": 98.0
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Consecutive events": 90.0,
+          "Table join": 50.3,
+          "Table reformat": 98.0
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Consecutive events": 75.6,
+          "Table join": 51.0,
+          "Table reformat": 96.1
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Consecutive events": 72.3,
+          "Table join": 42.3,
+          "Table reformat": 96.1
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Consecutive events": 84.3,
+          "Table join": 48.8,
+          "Table reformat": 96.1
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Consecutive events": 75.5,
+          "Table join": 43.6,
+          "Table reformat": 100.0
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Consecutive events": 78.1,
+          "Table join": 43.4,
+          "Table reformat": 100.0
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Consecutive events": 89.8,
+          "Table join": 48.4,
+          "Table reformat": 98.0
+        }
+      },
+      "claude-fable-5.1": {
+        "scores": {
+          "Consecutive events": 90.6,
+          "Table join": 56.2,
+          "Table reformat": 94.1
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Consecutive events": 91.4,
+          "Table join": 56.1,
+          "Table reformat": 94.1
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Consecutive events": 82.9,
+          "Table join": 49.2,
+          "Table reformat": 96.1
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Consecutive events": 20.6,
+          "Table join": 45.3,
+          "Table reformat": 96.1
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Consecutive events": 88.6,
+          "Table join": 50.7,
+          "Table reformat": 98.0
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Consecutive events": 88.7,
+          "Table join": 49.0,
+          "Table reformat": 100.0
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Consecutive events": 90.6,
+          "Table join": 58.4,
+          "Table reformat": 100.0
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Consecutive events": 90.5,
+          "Table join": 48.2,
+          "Table reformat": 100.0
+        }
+      },
+      "claude-opus-5.5": {
+        "scores": {
+          "Consecutive events": 90.6,
+          "Table join": 52.3,
+          "Table reformat": 98.0
+        }
+      },
+      "claude-sonnet-5.5": {
+        "scores": {
+          "Consecutive events": 40.6,
+          "Table join": 39.8,
+          "Table reformat": 98.0
+        }
+      },
+      "gpt-6-sol": {
+        "scores": {
+          "Consecutive events": 89.5,
+          "Table join": 54.0,
+          "Table reformat": 100.0
+        }
+      },
+      "gpt-6.1-sol": {
+        "scores": {
+          "Consecutive events": 90.6,
+          "Table join": 57.4,
+          "Table reformat": 100.0
+        }
+      },
+      "gpt-6-luna": {
+        "scores": {
+          "Consecutive events": 70.5,
+          "Table join": 49.6,
+          "Table reformat": 100.0
+        }
+      },
+      "grok-4.7": {
+        "scores": {
+          "Consecutive events": 85.7,
+          "Table join": 44.9,
+          "Table reformat": 100.0
+        }
+      },
+      "claude-haiku-5.5": {
+        "scores": {
+          "Consecutive events": 10.6,
+          "Table join": 46.7,
+          "Table reformat": 98.0
+        }
+      },
+      "xx-model-xx": {
+        "scores": {
+          "Consecutive events": 91.4,
+          "Table join": 69.9,
+          "Table reformat": 94.1
+        }
+      }
+    }
   }
 }
