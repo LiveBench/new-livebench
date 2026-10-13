@@ -276,6 +276,13 @@
           "PDF": 74.6,
           "Presentations (PPT)": 68.6
         }
+      },
+      "muse-wonder-1.0": {
+        "scores": {
+          "Documents (DOCX)": 58.8,
+          "PDF": 65.3,
+          "Presentations (PPT)": 76.1
+        }
       }
     }
   },
@@ -640,6 +647,15 @@
           "Strategy": 84.8,
           "Science & Evidence": 86.7
         }
+      },
+      "muse-wonder-1.0": {
+        "scores": {
+          "Regulatory & Compliance": 71.9,
+          "Legal": 99.6,
+          "Tax & Finance": 60.6,
+          "Strategy": 89.2,
+          "Science & Evidence": 89.4
+        }
       }
     }
   },
@@ -967,6 +983,15 @@
           "Analysis-Driven Action": 83.3,
           "Structural Integrity": 100.0,
           "Constraint Adherence": 100.0
+        }
+      },
+      "muse-wonder-1.0": {
+        "scores": {
+          "Data Aggregation": 28.6,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 16.7,
+          "Structural Integrity": 20.0,
+          "Constraint Adherence": 66.7
         }
       }
     }
@@ -1354,6 +1379,16 @@
           "Product & UX": 77.8,
           "Memory & Tools": 83.3
         }
+      },
+      "muse-wonder-1.0": {
+        "scores": {
+          "LLM API Integration": 62.5,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 88.9,
+          "Memory & Tools": 100.0
+        }
       }
     }
   },
@@ -1700,6 +1735,15 @@
           "Systems Engineering": 97.6,
           "Performance Optimisation": 68.4
         }
+      },
+      "muse-wonder-1.0": {
+        "scores": {
+          "Finance & Compliance Apps": 54.2,
+          "Operations & Commerce Apps": 31.2,
+          "Long-Run Operations": 27.7,
+          "Systems Engineering": 70.8,
+          "Performance Optimisation": 61.6
+        }
       }
     }
   },
@@ -1908,6 +1952,13 @@
         "scores": {
           "Consecutive events": 90.5,
           "Table join": 48.2,
+          "Table reformat": 100.0
+        }
+      },
+      "muse-wonder-1.0": {
+        "scores": {
+          "Consecutive events": 98.5,
+          "Table join": 46.3,
           "Table reformat": 100.0
         }
       },
@@ -2207,6 +2258,14 @@
           "Zebra puzzles": 98.0,
           "Spatial": 100.0,
           "Logic with navigation": 76.0
+        }
+      },
+      "muse-wonder-1.0": {
+        "scores": {
+          "Theory of mind": 86.5,
+          "Zebra puzzles": 100.0,
+          "Spatial": 96.0,
+          "Logic with navigation": 80.0
         }
       },
       "claude-opus-5.5": {
