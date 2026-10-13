@@ -1,0 +1,23 @@
+{
+  "Long-Horizon": [
+    "long_horizon"
+  ],
+  "Reasoning": [
+    "reasoning"
+  ],
+  "Coding": [
+    "coding"
+  ],
+  "Browser": [
+    "browser"
+  ],
+  "Data Analysis": [
+    "data_analysis"
+  ],
+  "Research": [
+    "research"
+  ],
+  "Design": [
+    "design_layout"
+  ]
+}

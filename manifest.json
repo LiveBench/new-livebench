@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "LiveBench 2.0",
+  "name": "LiveBench 2.0 leaderboard",
   "icons": [
     {
       "src": "favicon.ico",
