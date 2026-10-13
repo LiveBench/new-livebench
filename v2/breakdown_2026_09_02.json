@@ -993,6 +993,24 @@
           "Structural Integrity": 20.0,
           "Constraint Adherence": 66.7
         }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
       }
     }
   },
