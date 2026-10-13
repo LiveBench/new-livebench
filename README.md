@@ -33,6 +33,8 @@ All data lives in `public/`, **one set of files per release** (named by date, `Y
 
 No other code changes. Run `npm run check-data` to confirm the `model` keys line up across `table` ↔ `cost` ↔ `modelLinks` for every release.
 
+A new release (or any board change) here also shows up on **livebench.ai/v2** within a day. See [LiveBench 2.0 shows these releases too](#livebench-20-shows-these-releases-too).
+
 ## Develop, test, deploy
 
 ```bash
@@ -47,3 +49,17 @@ npm run deploy         # build + push to the gh-pages branch (serves at https://
 Deploys to GitHub Pages from the `gh-pages` branch. `homepage` in `package.json` is `"."` (relative paths) for serving at the custom domain root; change the `--cname` in the `deploy` script to target a different domain.
 
 The `gh-pages` branch also holds `v2/`, the LiveBench 2.0 site (https://livebench.ai/v2/). It is deployed separately from [LiveBench/livebench-agents](https://github.com/LiveBench/livebench-agents). `npm run deploy` here passes `--remove '{!(v2)/**,*}'`, so it replaces every v1 file but leaves `v2/` alone. Keep that flag. If a deploy without it wipes `/v2`, the livebench-agents Action restores it within a day; running that Action by hand restores it immediately.
+
+## LiveBench 2.0 shows these releases too
+
+**https://livebench.ai/v2/** has one release timeline: every v1 release from this repo, then LiveBench 2.0 as the newest release, which it shows by default. Clicking an older dot there opens that v1 board on /v2 (at `#/release/<date>`), rendered with this repo's own leaderboard code and data. **The main livebench.ai URL is unchanged and still serves this site.**
+
+How it stays in sync (details in [livebench-agents → README → "Release timeline: v1 + 2.0"](https://github.com/LiveBench/livebench-agents#release-timeline-v1--20)):
+
+- livebench-agents' `scripts/sync_v1.sh` copies this repo's `src/components`, `src/lib`, `src/Table` and the `table_` / `categories_` / `cost_` files from `public/`, verbatim, from `main`.
+- Its deploy Action runs that sync before every deploy. Its daily run redeploys when `main` here has moved, so merge to `main` and /v2 follows within a day. Run the livebench-agents workflow by hand to publish it at once.
+- **Keep these working, or the sync fails loudly:**
+  - the release list stays in `RELEASES` in `src/lib/constants.js`;
+  - `src/lib/useLeaderboardData.js` keeps the line `const base = process.env.PUBLIC_URL || "";` (the sync points it at `v1/`).
+- /v2 mirrors this repo's `App.js` body in its `src/V1Board.js`. If you change how `App.js` builds the board (props to `Leaderboard` / `Insights`, how models are enriched), tell whoever maintains livebench-agents.
+
