@@ -3,15 +3,18 @@
     "parts": [
       {
         "name": "Documents (DOCX)",
-        "gloss": "Word documents: layout, structure and formatting to a brief."
+        "gloss": "Word documents: layout, structure and formatting to a brief.",
+        "tasks": 5
       },
       {
         "name": "PDF",
-        "gloss": "PDF deliverables: typeset pages, forms and reports."
+        "gloss": "PDF deliverables: typeset pages, forms and reports.",
+        "tasks": 8
       },
       {
         "name": "Presentations (PPT)",
-        "gloss": "Slide decks: visual design, content organization and fit to the request."
+        "gloss": "Slide decks: visual design, content organization and fit to the request.",
+        "tasks": 12
       }
     ],
     "models": {
@@ -280,23 +283,28 @@
     "parts": [
       {
         "name": "Regulatory & Compliance",
-        "gloss": "Rules, filings and compliance questions answered from primary sources."
+        "gloss": "Rules, filings and compliance questions answered from primary sources.",
+        "tasks": 7
       },
       {
         "name": "Legal",
-        "gloss": "Statutes, cases and contractual questions with cited authority."
+        "gloss": "Statutes, cases and contractual questions with cited authority.",
+        "tasks": 4
       },
       {
         "name": "Tax & Finance",
-        "gloss": "Tax rules and financial figures, with the arithmetic shown."
+        "gloss": "Tax rules and financial figures, with the arithmetic shown.",
+        "tasks": 5
       },
       {
         "name": "Strategy",
-        "gloss": "Market and competitive analysis with sourced evidence."
+        "gloss": "Market and competitive analysis with sourced evidence.",
+        "tasks": 3
       },
       {
         "name": "Science & Evidence",
-        "gloss": "Scientific and empirical questions weighed on the published evidence."
+        "gloss": "Scientific and empirical questions weighed on the published evidence.",
+        "tasks": 3
       }
     ],
     "models": {
@@ -639,23 +647,28 @@
     "parts": [
       {
         "name": "Data Aggregation",
-        "gloss": "Exhaustive traversal of a large record set and multi-part roll-ups."
+        "gloss": "Exhaustive traversal of a large record set and multi-part roll-ups.",
+        "tasks": 7
       },
       {
         "name": "Sequential Planning",
-        "gloss": "Order-dependent steps where each step constrains the next."
+        "gloss": "Order-dependent steps where each step constrains the next.",
+        "tasks": 4
       },
       {
         "name": "Analysis-Driven Action",
-        "gloss": "Derive a result from the data, then act on it in the app."
+        "gloss": "Derive a result from the data, then act on it in the app.",
+        "tasks": 6
       },
       {
         "name": "Structural Integrity",
-        "gloss": "Keep a document or record graph consistent across an edit."
+        "gloss": "Keep a document or record graph consistent across an edit.",
+        "tasks": 5
       },
       {
         "name": "Constraint Adherence",
-        "gloss": "Exact fidelity, plus correctly declining what the app won't permit."
+        "gloss": "Exact fidelity, plus correctly declining what the app won't permit.",
+        "tasks": 3
       }
     ],
     "models": {
@@ -962,27 +975,33 @@
     "parts": [
       {
         "name": "LLM API Integration",
-        "gloss": "Provider wire formats and request/response handling."
+        "gloss": "Provider wire formats and request/response handling.",
+        "tasks": 4
       },
       {
         "name": "Agent Loop",
-        "gloss": "Agent runtime control flow."
+        "gloss": "Agent runtime control flow.",
+        "tasks": 5
       },
       {
         "name": "Billing & Limits",
-        "gloss": "Metering, quotas and limit enforcement."
+        "gloss": "Metering, quotas and limit enforcement.",
+        "tasks": 4
       },
       {
         "name": "Cloud Infrastructure",
-        "gloss": "Storage, compute and cloud service plumbing."
+        "gloss": "Storage, compute and cloud service plumbing.",
+        "tasks": 6
       },
       {
         "name": "Product & UX",
-        "gloss": "User-facing product behaviour."
+        "gloss": "User-facing product behaviour.",
+        "tasks": 6
       },
       {
         "name": "Memory & Tools",
-        "gloss": "Memory handling and tool integrations."
+        "gloss": "Memory handling and tool integrations.",
+        "tasks": 4
       }
     ],
     "models": {
@@ -1342,23 +1361,28 @@
     "parts": [
       {
         "name": "Finance & Compliance Apps",
-        "gloss": "Payroll, budgets, tax claims and audit records: keep the money and the paper trail right as the rules change, turn after turn."
+        "gloss": "Payroll, budgets, tax claims and audit records: keep the money and the paper trail right as the rules change, turn after turn.",
+        "tasks": 4
       },
       {
         "name": "Operations & Commerce Apps",
-        "gloss": "Ticketing, equipment hire, stock and site records: keep a live operational app correct as the business changes around it."
+        "gloss": "Ticketing, equipment hire, stock and site records: keep a live operational app correct as the business changes around it.",
+        "tasks": 4
       },
       {
         "name": "Long-Run Operations",
-        "gloss": "Run an existing system through simulated months of releases, closes and change requests, where early choices compound."
+        "gloss": "Run an existing system through simulated months of releases, closes and change requests, where early choices compound.",
+        "tasks": 3
       },
       {
         "name": "Systems Engineering",
-        "gloss": "Build and repair complex systems from a specification, then keep them running under realistic load and failures."
+        "gloss": "Build and repair complex systems from a specification, then keep them running under realistic load and failures.",
+        "tasks": 3
       },
       {
         "name": "Performance Optimisation",
-        "gloss": "Make real programs faster and real schedules tighter, scored on measured results rather than judgement."
+        "gloss": "Make real programs faster and real schedules tighter, scored on measured results rather than judgement.",
+        "tasks": 4
       }
     ],
     "models": {
@@ -1683,15 +1707,18 @@
     "parts": [
       {
         "name": "Consecutive events",
-        "gloss": "Find users or entities with runs of consecutive growth in a small, messy table of dated values."
+        "gloss": "Find users or entities with runs of consecutive growth in a small, messy table of dated values.",
+        "tasks": 47
       },
       {
         "name": "Table join",
-        "gloss": "Map the columns of one table onto the obfuscated columns of another."
+        "gloss": "Map the columns of one table onto the obfuscated columns of another.",
+        "tasks": 52
       },
       {
         "name": "Table reformat",
-        "gloss": "Convert a table between CSV, TSV, JSON, JSONL, Markdown and HTML."
+        "gloss": "Convert a table between CSV, TSV, JSON, JSONL, Markdown and HTML.",
+        "tasks": 51
       }
     ],
     "models": {
@@ -1938,6 +1965,312 @@
           "Consecutive events": 91.4,
           "Table join": 69.9,
           "Table reformat": 94.1
+        }
+      }
+    }
+  },
+  "Reasoning": {
+    "parts": [
+      {
+        "name": "Theory of mind",
+        "gloss": "Track who knows or believes what in a short story.",
+        "tasks": 52
+      },
+      {
+        "name": "Zebra puzzles",
+        "gloss": "Deduce who has which attribute from interlocking clues.",
+        "tasks": 50
+      },
+      {
+        "name": "Spatial",
+        "gloss": "Reason about shapes and positions in 2D and 3D.",
+        "tasks": 50
+      },
+      {
+        "name": "Logic with navigation",
+        "gloss": "Work out who tells the truth from a chain of statements.",
+        "tasks": 50
+      }
+    ],
+    "models": {
+      "claude-opus-5": {
+        "scores": {
+          "Theory of mind": 78.8,
+          "Zebra puzzles": 100.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 86.0
+        }
+      },
+      "claude-opus-4.8": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 100.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 78.0
+        }
+      },
+      "claude-sonnet-5": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 88.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 86.0
+        }
+      },
+      "claude-haiku-4.5": {
+        "scores": {
+          "Theory of mind": 44.2,
+          "Zebra puzzles": 58.5,
+          "Spatial": 90.0,
+          "Logic with navigation": 54.0
+        }
+      },
+      "gpt-5.6-terra": {
+        "scores": {
+          "Theory of mind": 86.5,
+          "Zebra puzzles": 100.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 76.0
+        }
+      },
+      "gpt-5.6-luna": {
+        "scores": {
+          "Theory of mind": 73.1,
+          "Zebra puzzles": 93.5,
+          "Spatial": 96.0,
+          "Logic with navigation": 80.0
+        }
+      },
+      "gpt-5.5": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 100.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 76.0
+        }
+      },
+      "muse-spark-1.2": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 95.2,
+          "Spatial": 96.0,
+          "Logic with navigation": 88.0
+        }
+      },
+      "gemini-3.1-pro": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 85.2,
+          "Spatial": 98.0,
+          "Logic with navigation": 72.0
+        }
+      },
+      "gemini-3.7-flash": {
+        "scores": {
+          "Theory of mind": 82.7,
+          "Zebra puzzles": 94.5,
+          "Spatial": 100.0,
+          "Logic with navigation": 74.0
+        }
+      },
+      "gpt-5.6-sol": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 100.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 82.0
+        }
+      },
+      "qwen3.8-max": {
+        "scores": {
+          "Theory of mind": 78.8,
+          "Zebra puzzles": 100.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 74.0
+        }
+      },
+      "deepseek-v4-flash-vision": {
+        "scores": {
+          "Theory of mind": 78.8,
+          "Zebra puzzles": 98.8,
+          "Spatial": 96.0,
+          "Logic with navigation": 68.0
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 98.8,
+          "Spatial": 100.0,
+          "Logic with navigation": 70.0
+        }
+      },
+      "glm-5.3": {
+        "scores": {
+          "Theory of mind": 88.5,
+          "Zebra puzzles": 88.8,
+          "Spatial": 96.0,
+          "Logic with navigation": 70.0
+        }
+      },
+      "glm-5.3-flash": {
+        "scores": {
+          "Theory of mind": 73.1,
+          "Zebra puzzles": 79.5,
+          "Spatial": 96.0,
+          "Logic with navigation": 62.0
+        }
+      },
+      "grok-4.5": {
+        "scores": {
+          "Theory of mind": 82.7,
+          "Zebra puzzles": 94.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 72.0
+        }
+      },
+      "grok-4.6": {
+        "scores": {
+          "Theory of mind": 86.5,
+          "Zebra puzzles": 95.5,
+          "Spatial": 98.0,
+          "Logic with navigation": 82.0
+        }
+      },
+      "kimi-k3": {
+        "scores": {
+          "Theory of mind": 82.7,
+          "Zebra puzzles": 100.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 80.0
+        }
+      },
+      "claude-fable-5.1": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 100.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 86.0
+        }
+      },
+      "claude-fable-5": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 100.0,
+          "Spatial": 96.0,
+          "Logic with navigation": 78.0
+        }
+      },
+      "claude-sonnet-4.6": {
+        "scores": {
+          "Theory of mind": 75.0,
+          "Zebra puzzles": 94.5,
+          "Spatial": 100.0,
+          "Logic with navigation": 76.0
+        }
+      },
+      "gemini-3.8-flash": {
+        "scores": {
+          "Theory of mind": 76.9,
+          "Zebra puzzles": 98.2,
+          "Spatial": 100.0,
+          "Logic with navigation": 82.0
+        }
+      },
+      "smaug-flash": {
+        "scores": {
+          "Theory of mind": 76.9,
+          "Zebra puzzles": 98.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 72.0
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 100.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 68.0
+        }
+      },
+      "gpt-6-astra": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 100.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 88.0
+        }
+      },
+      "muse-spark-1.3": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 98.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 76.0
+        }
+      },
+      "claude-opus-5.5": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 100.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 86.0
+        }
+      },
+      "claude-sonnet-5.5": {
+        "scores": {
+          "Theory of mind": 86.5,
+          "Zebra puzzles": 100.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 82.0
+        }
+      },
+      "gpt-6-sol": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 100.0,
+          "Spatial": 96.0,
+          "Logic with navigation": 74.0
+        }
+      },
+      "gpt-6.1-sol": {
+        "scores": {
+          "Theory of mind": 86.5,
+          "Zebra puzzles": 100.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 86.0
+        }
+      },
+      "gpt-6-luna": {
+        "scores": {
+          "Theory of mind": 73.1,
+          "Zebra puzzles": 96.0,
+          "Spatial": 96.0,
+          "Logic with navigation": 62.0
+        }
+      },
+      "grok-4.7": {
+        "scores": {
+          "Theory of mind": 84.6,
+          "Zebra puzzles": 86.0,
+          "Spatial": 94.0,
+          "Logic with navigation": 66.0
+        }
+      },
+      "claude-haiku-5.5": {
+        "scores": {
+          "Theory of mind": 86.5,
+          "Zebra puzzles": 94.0,
+          "Spatial": 92.0,
+          "Logic with navigation": 66.0
+        }
+      },
+      "xx-model-xx": {
+        "scores": {
+          "Theory of mind": 92.3,
+          "Zebra puzzles": 100.0,
+          "Spatial": 100.0,
+          "Logic with navigation": 88.0
         }
       }
     }
