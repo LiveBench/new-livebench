@@ -68,7 +68,7 @@
         "scores": {
           "Documents (DOCX)": 83.9,
           "PDF": 71.5,
-          "Presentations (PPT)": 55.2
+          "Presentations (PPT)": 57.1
         }
       },
       "gemini-3.1-pro": {
@@ -82,7 +82,7 @@
         "scores": {
           "Documents (DOCX)": 80.9,
           "PDF": 76.1,
-          "Presentations (PPT)": 65.9
+          "Presentations (PPT)": 68.1
         }
       },
       "gpt-5.6-sol": {
@@ -124,7 +124,7 @@
         "scores": {
           "Documents (DOCX)": 32.2,
           "PDF": 27.5,
-          "Presentations (PPT)": 43.8
+          "Presentations (PPT)": 44.4
         }
       },
       "glm-5.3": {
@@ -180,14 +180,14 @@
         "scores": {
           "Documents (DOCX)": 66.8,
           "PDF": 70.0,
-          "Presentations (PPT)": 73.4
+          "Presentations (PPT)": 75.1
         }
       },
       "gemini-3.8-flash": {
         "scores": {
           "Documents (DOCX)": 83.1,
           "PDF": 77.8,
-          "Presentations (PPT)": 62.9
+          "Presentations (PPT)": 64.9
         }
       },
       "smaug-flash": {
@@ -215,7 +215,7 @@
         "scores": {
           "Documents (DOCX)": 73.4,
           "PDF": 81.1,
-          "Presentations (PPT)": 70.4
+          "Presentations (PPT)": 71.1
         }
       },
       "claude-opus-5.5": {
@@ -243,14 +243,14 @@
         "scores": {
           "Documents (DOCX)": 86.2,
           "PDF": 79.1,
-          "Presentations (PPT)": 81.7
+          "Presentations (PPT)": 82.3
         }
       },
       "gpt-6-luna": {
         "scores": {
           "Documents (DOCX)": 86.5,
           "PDF": 78.9,
-          "Presentations (PPT)": 80.8
+          "Presentations (PPT)": 83.2
         }
       },
       "claude-haiku-5.5": {
@@ -264,14 +264,14 @@
         "scores": {
           "Documents (DOCX)": 76.9,
           "PDF": 73.5,
-          "Presentations (PPT)": 73.6
+          "Presentations (PPT)": 74.6
         }
       },
       "xx-model-xx": {
         "scores": {
           "Documents (DOCX)": 84.5,
           "PDF": 74.6,
-          "Presentations (PPT)": 66.7
+          "Presentations (PPT)": 68.6
         }
       }
     }
