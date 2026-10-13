@@ -19,8 +19,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build --cname livebench.ai --nojekyll --remove '{!(v2)/**,*}'",
+    "deploy": "gh workflow run deploy.yml -R LiveBench/livebench-agents && echo 'Started the livebench.ai deploy: https://github.com/LiveBench/livebench-agents/actions'",
+    "predeploy-v1-root": "npm run build",
+    "deploy-v1-root": "gh-pages -d build --cname livebench.ai --nojekyll --remove '{!(v2)/**,*}'",
     "build": "REACT_APP_BUILD=$(date +%s) react-scripts build",
     "test": "react-scripts test",
     "check-data": "node scripts/check_data.js",

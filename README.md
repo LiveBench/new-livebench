@@ -41,9 +41,11 @@ npm start              # dev server at http://localhost:3000
 npm test               # unit (compute) + render tests
 npm run check-data     # model-key integrity across all releases
 npm run build          # production build
-npm run deploy         # build + push to the gh-pages branch (serves at https://livebench.ai/new-livebench/)
+npm run deploy         # publish livebench.ai (runs the LiveBench/livebench-agents deploy Action; needs `gh` logged in)
 ```
 
-Deploys to GitHub Pages from the `gh-pages` branch. `homepage` in `package.json` is `"."` (relative paths) for serving at the custom domain root; change the `--cname` in the `deploy` script to target a different domain.
+**livebench.ai is the LiveBench 2.0 site** from [LiveBench/livebench-agents](https://github.com/LiveBench/livebench-agents). It shows the v1 releases on its timeline, copied from `main` here on every deploy. So the v1 data flow is unchanged: update the data here, merge to `main`, then run `npm run deploy` (or the livebench-agents Actions tab → *Deploy to livebench.ai* → **Run workflow**). Without that, its daily run picks up the new `main` within a day.
 
-The `gh-pages` branch also holds `v2/`, the LiveBench 2.0 site (https://livebench.ai/v2/). It is deployed separately from [LiveBench/livebench-agents](https://github.com/LiveBench/livebench-agents). `npm run deploy` here passes `--remove '{!(v2)/**,*}'`, so it replaces every v1 file but leaves `v2/` alone. Keep that flag. If a deploy without it wipes `/v2`, the livebench-agents Action restores it within a day; running that Action by hand restores it immediately.
+Both sites are published to the `gh-pages` branch of this repo, which GitHub Pages serves as livebench.ai. LiveBench 2.0 goes to the root and to `v2/`.
+
+**Rollback to the v1 app at the root:** `npm run deploy-v1-root` (the old deploy). It builds this repo, replaces every root file except `v2/` (`--remove '{!(v2)/**,*}'`), and keeps https://livebench.ai/v2/. The livebench-agents daily run would put 2.0 back at the root, so disable that workflow first if the rollback should stick.
