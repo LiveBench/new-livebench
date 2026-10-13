@@ -270,7 +270,7 @@
           "Presentations (PPT)": 78.6
         }
       },
-      "xx-model-xx": {
+      "gemini-4-argon": {
         "scores": {
           "Documents (DOCX)": 84.5,
           "PDF": 74.6,
@@ -639,7 +639,7 @@
           "Science & Evidence": 88.9
         }
       },
-      "xx-model-xx": {
+      "gemini-4-argon": {
         "scores": {
           "Regulatory & Compliance": 77.0,
           "Legal": 98.1,
@@ -976,7 +976,7 @@
           "Constraint Adherence": 66.7
         }
       },
-      "xx-model-xx": {
+      "gemini-4-argon": {
         "scores": {
           "Data Aggregation": 85.7,
           "Sequential Planning": 100.0,
@@ -1388,7 +1388,7 @@
           "Memory & Tools": 100.0
         }
       },
-      "xx-model-xx": {
+      "gemini-4-argon": {
         "scores": {
           "LLM API Integration": 100.0,
           "Agent Loop": 80.0,
@@ -1745,7 +1745,7 @@
           "Performance Optimisation": 61.7
         }
       },
-      "xx-model-xx": {
+      "gemini-4-argon": {
         "scores": {
           "Finance & Compliance Apps": 91.7,
           "Operations & Commerce Apps": 66.7,
@@ -2029,7 +2029,7 @@
           "Table reformat": 98.0
         }
       },
-      "xx-model-xx": {
+      "gemini-4-argon": {
         "scores": {
           "Consecutive events": 91.4,
           "Table join": 69.9,
@@ -2342,7 +2342,7 @@
           "Logic with navigation": 66.0
         }
       },
-      "xx-model-xx": {
+      "gemini-4-argon": {
         "scores": {
           "Theory of mind": 92.3,
           "Zebra puzzles": 100.0,
