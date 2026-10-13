@@ -146,16 +146,16 @@
       },
       "grok-4.5": {
         "scores": {
-          "Documents (DOCX)": 88.3,
-          "PDF": 71.9,
-          "Presentations (PPT)": 81.3
+          "Documents (DOCX)": 82.4,
+          "PDF": 68.8,
+          "Presentations (PPT)": 82.6
         }
       },
       "grok-4.6": {
         "scores": {
-          "Documents (DOCX)": 81.5,
-          "PDF": 77.7,
-          "Presentations (PPT)": 81.0
+          "Documents (DOCX)": 76.9,
+          "PDF": 82.0,
+          "Presentations (PPT)": 79.6
         }
       },
       "kimi-k3": {
@@ -265,9 +265,9 @@
       },
       "grok-4.7": {
         "scores": {
-          "Documents (DOCX)": 76.9,
-          "PDF": 73.5,
-          "Presentations (PPT)": 74.6
+          "Documents (DOCX)": 72.9,
+          "PDF": 80.1,
+          "Presentations (PPT)": 78.6
         }
       },
       "xx-model-xx": {
@@ -479,20 +479,20 @@
       },
       "grok-4.5": {
         "scores": {
-          "Regulatory & Compliance": 77.6,
-          "Legal": 89.8,
-          "Tax & Finance": 65.3,
-          "Strategy": 77.1,
-          "Science & Evidence": 82.2
+          "Regulatory & Compliance": 83.5,
+          "Legal": 89.5,
+          "Tax & Finance": 83.5,
+          "Strategy": 90.5,
+          "Science & Evidence": 86.3
         }
       },
       "grok-4.6": {
         "scores": {
-          "Regulatory & Compliance": 62.0,
-          "Legal": 87.5,
-          "Tax & Finance": 78.3,
-          "Strategy": 58.0,
-          "Science & Evidence": 54.7
+          "Regulatory & Compliance": 85.3,
+          "Legal": 88.5,
+          "Tax & Finance": 79.9,
+          "Strategy": 82.9,
+          "Science & Evidence": 86.8
         }
       },
       "kimi-k3": {
@@ -632,11 +632,11 @@
       },
       "grok-4.7": {
         "scores": {
-          "Regulatory & Compliance": 56.4,
-          "Legal": 96.6,
-          "Tax & Finance": 41.5,
-          "Strategy": 87.2,
-          "Science & Evidence": 88.5
+          "Regulatory & Compliance": 83.9,
+          "Legal": 90.8,
+          "Tax & Finance": 81.9,
+          "Strategy": 91.6,
+          "Science & Evidence": 88.9
         }
       },
       "xx-model-xx": {
@@ -816,20 +816,20 @@
       },
       "grok-4.6": {
         "scores": {
-          "Data Aggregation": 29.0,
+          "Data Aggregation": 42.9,
           "Sequential Planning": 25.0,
-          "Analysis-Driven Action": 17.0,
-          "Structural Integrity": 0.0,
-          "Constraint Adherence": 67.0
+          "Analysis-Driven Action": 83.3,
+          "Structural Integrity": 80.0,
+          "Constraint Adherence": 100.0
         }
       },
       "grok-4.5": {
         "scores": {
-          "Data Aggregation": 43.0,
-          "Sequential Planning": 0.0,
+          "Data Aggregation": 57.1,
+          "Sequential Planning": 25.0,
           "Analysis-Driven Action": 0.0,
-          "Structural Integrity": 20.0,
-          "Constraint Adherence": 67.0
+          "Structural Integrity": 60.0,
+          "Constraint Adherence": 100.0
         }
       },
       "kimi-k3": {
@@ -960,11 +960,11 @@
       },
       "grok-4.7": {
         "scores": {
-          "Data Aggregation": 0.0,
-          "Sequential Planning": 0.0,
-          "Analysis-Driven Action": 0.0,
-          "Structural Integrity": 20.0,
-          "Constraint Adherence": 100.0
+          "Data Aggregation": 85.7,
+          "Sequential Planning": 25.0,
+          "Analysis-Driven Action": 16.7,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 66.7
         }
       },
       "claude-haiku-5.5": {
@@ -1131,11 +1131,11 @@
       "grok-4.6": {
         "scores": {
           "LLM API Integration": 75.0,
-          "Agent Loop": 100.0,
-          "Billing & Limits": 75.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 95.8,
           "Cloud Infrastructure": 100.0,
-          "Product & UX": 33.3,
-          "Memory & Tools": 75.0
+          "Product & UX": 83.3,
+          "Memory & Tools": 100.0
         }
       },
       "glm-5.3-flash": {
@@ -1160,11 +1160,11 @@
       },
       "grok-4.5": {
         "scores": {
-          "LLM API Integration": 100.0,
-          "Agent Loop": 80.0,
+          "LLM API Integration": 75.0,
+          "Agent Loop": 100.0,
           "Billing & Limits": 100.0,
-          "Cloud Infrastructure": 83.3,
-          "Product & UX": 66.7,
+          "Cloud Infrastructure": 94.4,
+          "Product & UX": 94.4,
           "Memory & Tools": 100.0
         }
       },
@@ -1380,11 +1380,11 @@
       },
       "grok-4.7": {
         "scores": {
-          "LLM API Integration": 58.3,
-          "Agent Loop": 80.0,
-          "Billing & Limits": 75.0,
-          "Cloud Infrastructure": 72.2,
-          "Product & UX": 55.6,
+          "LLM API Integration": 37.5,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 100.0,
+          "Product & UX": 66.7,
           "Memory & Tools": 100.0
         }
       },
@@ -1588,17 +1588,17 @@
           "Finance & Compliance Apps": 12.5,
           "Operations & Commerce Apps": 0.0,
           "Long-Run Operations": 0.0,
-          "Systems Engineering": 67.3,
-          "Performance Optimisation": 59.9
+          "Systems Engineering": 67.6,
+          "Performance Optimisation": 62.4
         }
       },
       "grok-4.6": {
         "scores": {
-          "Finance & Compliance Apps": 0.0,
-          "Operations & Commerce Apps": 18.8,
-          "Long-Run Operations": 0.0,
-          "Systems Engineering": 77.0,
-          "Performance Optimisation": 41.0
+          "Finance & Compliance Apps": 37.5,
+          "Operations & Commerce Apps": 35.4,
+          "Long-Run Operations": 5.6,
+          "Systems Engineering": 80.4,
+          "Performance Optimisation": 45.6
         }
       },
       "claude-haiku-4.5": {
@@ -1738,11 +1738,11 @@
       },
       "grok-4.7": {
         "scores": {
-          "Finance & Compliance Apps": 25.0,
-          "Operations & Commerce Apps": 12.5,
-          "Long-Run Operations": 11.1,
-          "Systems Engineering": 68.8,
-          "Performance Optimisation": 37.8
+          "Finance & Compliance Apps": 50.0,
+          "Operations & Commerce Apps": 50.0,
+          "Long-Run Operations": 5.6,
+          "Systems Engineering": 79.3,
+          "Performance Optimisation": 61.7
         }
       },
       "xx-model-xx": {
