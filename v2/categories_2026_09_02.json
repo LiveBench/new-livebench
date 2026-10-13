@@ -1,23 +1,23 @@
 {
-  "Design": [
-    "design_layout"
+  "Long-Horizon": [
+    "long_horizon"
   ],
-  "Research": [
-    "research"
-  ],
-  "Browser": [
-    "browser"
+  "Reasoning": [
+    "reasoning"
   ],
   "Coding": [
     "coding"
   ],
-  "Long-Horizon": [
-    "long_horizon"
+  "Browser": [
+    "browser"
   ],
   "Data Analysis": [
     "data_analysis"
   ],
-  "Reasoning": [
-    "reasoning"
+  "Research": [
+    "research"
+  ],
+  "Design": [
+    "design_layout"
   ]
 }

@@ -2,7 +2,7 @@
   "Each cell is the model's mean task score for the suite, 0–100, from a single run.",
   "Design: layout and design tasks across presentations, PDFs and documents. Graded on visual and structural checks of the produced file.",
   "Research: open-ended research briefs producing a written report. Graded against a rubric.",
-  "Browser: multi-step tasks in working web applications, completed through a real browser. Scored as the share of tasks passed. A model that cannot accept screenshots cannot do these tasks and scores 0.",
+  "Browser Use: multi-step tasks in working web applications, completed through a real browser. Scored as the share of tasks passed. A model that cannot accept screenshots cannot do these tasks and scores 0.",
   "Coding: bug-fix tasks taken from real merged pull requests on a frozen codebase. Deterministic grading; a fix that breaks existing behaviour scores 0.",
   "Long-Horizon: long-running work — applications extended over several turns of changing requirements, operations on an existing codebase over simulated months or weeks, and extended coding and optimisation tasks. Deterministic grading.",
   "Data Analysis: short data-analysis questions on small tables — finding runs of consecutive growth, mapping the columns of one table onto another, and converting a table between formats — each with a single correct answer, graded against ground truth. Each question costs far less than an agentic task.",
