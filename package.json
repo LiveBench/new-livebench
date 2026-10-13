@@ -20,6 +20,8 @@
   "scripts": {
     "start": "react-scripts start",
     "deploy": "gh workflow run deploy.yml -R LiveBench/livebench-agents && echo 'Started the livebench.ai deploy: https://github.com/LiveBench/livebench-agents/actions'",
+    "predeploy-v1": "npm run build",
+    "deploy-v1": "gh-pages -d build --dest v1 --nojekyll -m 'Deploy LiveBench 1.0 to livebench.ai/v1'",
     "predeploy-v1-root": "npm run build",
     "deploy-v1-root": "gh-pages -d build --cname livebench.ai --nojekyll --remove '{!(v2)/**,*}'",
     "build": "REACT_APP_BUILD=$(date +%s) react-scripts build",

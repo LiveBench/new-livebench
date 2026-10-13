@@ -23,6 +23,7 @@ export default function Navbar({ variant = "home" }) {
           <a href="./#/details">Details</a>
           <a href="https://arxiv.org/abs/2406.19314" target="_blank" rel="noreferrer">Paper</a>
           <a href="https://github.com/livebench/livebench" target="_blank" rel="noreferrer">Code ↗</a>
+          <a href="../">LiveBench 2.0</a>
         </div>
       </div>
     </nav>

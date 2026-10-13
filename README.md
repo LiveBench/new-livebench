@@ -42,10 +42,13 @@ npm test               # unit (compute) + render tests
 npm run check-data     # model-key integrity across all releases
 npm run build          # production build
 npm run deploy         # publish livebench.ai (runs the LiveBench/livebench-agents deploy Action; needs `gh` logged in)
+npm run deploy-v1      # build + publish this board to https://livebench.ai/v1/ (the v1/ folder of gh-pages)
 ```
 
 **livebench.ai is the LiveBench 2.0 site** from [LiveBench/livebench-agents](https://github.com/LiveBench/livebench-agents). It shows the v1 releases on its timeline, copied from `main` here on every deploy. So the v1 data flow is unchanged: update the data here, merge to `main`, then run `npm run deploy` (or the livebench-agents Actions tab → *Deploy to livebench.ai* → **Run workflow**). Without that, its daily run picks up the new `main` within a day.
 
-Both sites are published to the `gh-pages` branch of this repo, which GitHub Pages serves as livebench.ai. LiveBench 2.0 goes to the root and to `v2/`.
+**This board itself is served at https://livebench.ai/v1/** (linked from the 2.0 nav as *LiveBench 1.0*; its nav links back to 2.0). `npm run deploy-v1` publishes it there (`gh-pages --dest v1`: touches `v1/` only, never the root). Run it after a data change here so /v1/ matches `main`; the 2.0 deploy does not rebuild it. `homepage` is `"."` (relative paths), so the build works under `/v1/`.
+
+Both sites are published to the `gh-pages` branch of this repo, which GitHub Pages serves as livebench.ai. LiveBench 2.0 goes to the root and to `v2/`; this board goes to `v1/`.
 
 **Rollback to the v1 app at the root:** `npm run deploy-v1-root` (the old deploy). It builds this repo, replaces every root file except `v2/` (`--remove '{!(v2)/**,*}'`), and keeps https://livebench.ai/v2/. The livebench-agents daily run would put 2.0 back at the root, so disable that workflow first if the rollback should stick.
