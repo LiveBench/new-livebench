@@ -325,6 +325,20 @@
           "PDF": 52.1,
           "Presentations (PPT)": 68.1
         }
+      },
+      "mimo-v2.6-pro": {
+        "scores": {
+          "Documents (DOCX)": 86.5,
+          "PDF": 80.0,
+          "Presentations (PPT)": 74.1
+        }
+      },
+      "gemma-4-31b": {
+        "scores": {
+          "Documents (DOCX)": 64.6,
+          "PDF": 54.9,
+          "Presentations (PPT)": 58.1
+        }
       }
     }
   },
@@ -752,6 +766,24 @@
           "Strategy": 48.7,
           "Science & Evidence": 0.0
         }
+      },
+      "mimo-v2.6-pro": {
+        "scores": {
+          "Regulatory & Compliance": 77.0,
+          "Legal": 77.4,
+          "Tax & Finance": 64.3,
+          "Strategy": 80.7,
+          "Science & Evidence": 91.6
+        }
+      },
+      "gemma-4-31b": {
+        "scores": {
+          "Regulatory & Compliance": 49.3,
+          "Legal": 40.8,
+          "Tax & Finance": 48.5,
+          "Strategy": 47.7,
+          "Science & Evidence": 27.2
+        }
       }
     }
   },
@@ -1156,6 +1188,24 @@
       "mistral-large-4": {
         "scores": {
           "Data Aggregation": 28.6,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "mimo-v2.6-pro": {
+        "scores": {
+          "Data Aggregation": 71.4,
+          "Sequential Planning": 75.0,
+          "Analysis-Driven Action": 100.0,
+          "Structural Integrity": 100.0,
+          "Constraint Adherence": 100.0
+        }
+      },
+      "gemma-4-31b": {
+        "scores": {
+          "Data Aggregation": 14.3,
           "Sequential Planning": 0.0,
           "Analysis-Driven Action": 0.0,
           "Structural Integrity": 0.0,
@@ -1617,6 +1667,26 @@
           "Product & UX": 55.6,
           "Memory & Tools": 96.4
         }
+      },
+      "mimo-v2.6-pro": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 90.0,
+          "Product & UX": 72.2,
+          "Memory & Tools": 72.5
+        }
+      },
+      "gemma-4-31b": {
+        "scores": {
+          "LLM API Integration": 54.2,
+          "Agent Loop": 50.0,
+          "Billing & Limits": 25.0,
+          "Cloud Infrastructure": 63.9,
+          "Product & UX": 33.3,
+          "Memory & Tools": 67.9
+        }
       }
     }
   },
@@ -2026,6 +2096,24 @@
           "Systems Engineering": 65.3,
           "Performance Optimisation": 46.2
         }
+      },
+      "mimo-v2.6-pro": {
+        "scores": {
+          "Finance & Compliance Apps": 29.2,
+          "Operations & Commerce Apps": 43.8,
+          "Long-Run Operations": 13.9,
+          "Systems Engineering": 81.5,
+          "Performance Optimisation": 69.3
+        }
+      },
+      "gemma-4-31b": {
+        "scores": {
+          "Finance & Compliance Apps": 4.2,
+          "Operations & Commerce Apps": 8.3,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 19.6,
+          "Performance Optimisation": 32.7
+        }
       }
     }
   },
@@ -2339,6 +2427,20 @@
         "scores": {
           "Consecutive events": 80.5,
           "Table join": 49.1,
+          "Table reformat": 100.0
+        }
+      },
+      "mimo-v2.6-pro": {
+        "scores": {
+          "Consecutive events": 70.5,
+          "Table join": 48.3,
+          "Table reformat": 98.0
+        }
+      },
+      "gemma-4-31b": {
+        "scores": {
+          "Consecutive events": 13.6,
+          "Table join": 46.3,
           "Table reformat": 100.0
         }
       }
@@ -2701,6 +2803,22 @@
           "Theory of mind": 80.8,
           "Zebra puzzles": 93.0,
           "Spatial": 94.0,
+          "Logic with navigation": 68.0
+        }
+      },
+      "mimo-v2.6-pro": {
+        "scores": {
+          "Theory of mind": 86.5,
+          "Zebra puzzles": 72.0,
+          "Spatial": 94.0,
+          "Logic with navigation": 66.0
+        }
+      },
+      "gemma-4-31b": {
+        "scores": {
+          "Theory of mind": 73.1,
+          "Zebra puzzles": 36.0,
+          "Spatial": 96.0,
           "Logic with navigation": 68.0
         }
       }
