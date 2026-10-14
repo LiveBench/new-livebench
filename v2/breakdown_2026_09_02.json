@@ -276,6 +276,55 @@
           "PDF": 70.6,
           "Presentations (PPT)": 78.3
         }
+      },
+      "inkling": {
+        "scores": {
+          "Documents (DOCX)": 72.5,
+          "PDF": 50.5,
+          "Presentations (PPT)": 57.5
+        }
+      },
+      "minimax-m3": {
+        "scores": {
+          "Documents (DOCX)": 73.5,
+          "PDF": 65.4,
+          "Presentations (PPT)": 63.8
+        }
+      },
+      "nemotron-ultra-3": {
+        "scores": {
+          "Documents (DOCX)": 65.6,
+          "PDF": 55.7,
+          "Presentations (PPT)": 57.7
+        }
+      },
+      "nemotron-lightning-3.5": {
+        "scores": {
+          "Documents (DOCX)": 42.8,
+          "PDF": 44.5,
+          "Presentations (PPT)": 44.0
+        }
+      },
+      "qwen3.8-27b": {
+        "scores": {
+          "Documents (DOCX)": 79.9,
+          "PDF": 82.3,
+          "Presentations (PPT)": 69.9
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Documents (DOCX)": 81.6,
+          "PDF": 70.8,
+          "Presentations (PPT)": 70.6
+        }
+      },
+      "mistral-large-4": {
+        "scores": {
+          "Documents (DOCX)": 81.1,
+          "PDF": 52.1,
+          "Presentations (PPT)": 68.1
+        }
       }
     }
   },
@@ -640,6 +689,69 @@
           "Strategy": 97.0,
           "Science & Evidence": 92.1
         }
+      },
+      "inkling": {
+        "scores": {
+          "Regulatory & Compliance": 57.8,
+          "Legal": 60.7,
+          "Tax & Finance": 60.0,
+          "Strategy": 64.9,
+          "Science & Evidence": 58.9
+        }
+      },
+      "minimax-m3": {
+        "scores": {
+          "Regulatory & Compliance": 73.7,
+          "Legal": 63.6,
+          "Tax & Finance": 62.7,
+          "Strategy": 76.9,
+          "Science & Evidence": 60.1
+        }
+      },
+      "nemotron-ultra-3": {
+        "scores": {
+          "Regulatory & Compliance": 44.5,
+          "Legal": 66.6,
+          "Tax & Finance": 25.3,
+          "Strategy": 55.5,
+          "Science & Evidence": 26.2
+        }
+      },
+      "nemotron-lightning-3.5": {
+        "scores": {
+          "Regulatory & Compliance": 42.4,
+          "Legal": 29.9,
+          "Tax & Finance": 38.7,
+          "Strategy": 36.1,
+          "Science & Evidence": 53.8
+        }
+      },
+      "qwen3.8-27b": {
+        "scores": {
+          "Regulatory & Compliance": 63.5,
+          "Legal": 76.5,
+          "Tax & Finance": 37.9,
+          "Strategy": 59.4,
+          "Science & Evidence": 62.8
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Regulatory & Compliance": 68.2,
+          "Legal": 92.6,
+          "Tax & Finance": 71.9,
+          "Strategy": 54.5,
+          "Science & Evidence": 90.3
+        }
+      },
+      "mistral-large-4": {
+        "scores": {
+          "Regulatory & Compliance": 33.5,
+          "Legal": 45.6,
+          "Tax & Finance": 11.0,
+          "Strategy": 48.7,
+          "Science & Evidence": 0.0
+        }
       }
     }
   },
@@ -981,6 +1093,69 @@
       "smaug-flash": {
         "scores": {
           "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "inkling": {
+        "scores": {
+          "Data Aggregation": 42.9,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 16.7,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "minimax-m3": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "nemotron-ultra-3": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "nemotron-lightning-3.5": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "qwen3.8-27b": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
+        }
+      },
+      "mistral-large-4": {
+        "scores": {
+          "Data Aggregation": 28.6,
           "Sequential Planning": 0.0,
           "Analysis-Driven Action": 0.0,
           "Structural Integrity": 0.0,
@@ -1372,6 +1547,76 @@
           "Product & UX": 94.4,
           "Memory & Tools": 75.0
         }
+      },
+      "inkling": {
+        "scores": {
+          "LLM API Integration": 75.0,
+          "Agent Loop": 60.0,
+          "Billing & Limits": 75.0,
+          "Cloud Infrastructure": 66.7,
+          "Product & UX": 47.2,
+          "Memory & Tools": 67.9
+        }
+      },
+      "minimax-m3": {
+        "scores": {
+          "LLM API Integration": 50.0,
+          "Agent Loop": 50.0,
+          "Billing & Limits": 50.0,
+          "Cloud Infrastructure": 88.9,
+          "Product & UX": 83.3,
+          "Memory & Tools": 92.9
+        }
+      },
+      "nemotron-ultra-3": {
+        "scores": {
+          "LLM API Integration": 45.8,
+          "Agent Loop": 40.0,
+          "Billing & Limits": 50.0,
+          "Cloud Infrastructure": 55.6,
+          "Product & UX": 0.0,
+          "Memory & Tools": 86.6
+        }
+      },
+      "nemotron-lightning-3.5": {
+        "scores": {
+          "LLM API Integration": 12.5,
+          "Agent Loop": 20.0,
+          "Billing & Limits": 25.0,
+          "Cloud Infrastructure": 8.3,
+          "Product & UX": 22.2,
+          "Memory & Tools": 55.4
+        }
+      },
+      "qwen3.8-27b": {
+        "scores": {
+          "LLM API Integration": 87.5,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 79.2,
+          "Cloud Infrastructure": 86.1,
+          "Product & UX": 72.2,
+          "Memory & Tools": 100.0
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 95.8,
+          "Cloud Infrastructure": 91.7,
+          "Product & UX": 66.7,
+          "Memory & Tools": 100.0
+        }
+      },
+      "mistral-large-4": {
+        "scores": {
+          "LLM API Integration": 68.3,
+          "Agent Loop": 56.0,
+          "Billing & Limits": 45.8,
+          "Cloud Infrastructure": 47.2,
+          "Product & UX": 55.6,
+          "Memory & Tools": 96.4
+        }
       }
     }
   },
@@ -1717,6 +1962,69 @@
           "Long-Run Operations": 20.8,
           "Systems Engineering": 88.8,
           "Performance Optimisation": 65.4
+        }
+      },
+      "inkling": {
+        "scores": {
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 0.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 38.0,
+          "Performance Optimisation": 34.9
+        }
+      },
+      "minimax-m3": {
+        "scores": {
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 0.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 29.4,
+          "Performance Optimisation": 34.0
+        }
+      },
+      "mistral-large-4": {
+        "scores": {
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 0.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 19.6,
+          "Performance Optimisation": 38.2
+        }
+      },
+      "nemotron-lightning-3.5": {
+        "scores": {
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 0.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 13.4,
+          "Performance Optimisation": 27.5
+        }
+      },
+      "nemotron-ultra-3": {
+        "scores": {
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 0.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 22.7,
+          "Performance Optimisation": 33.3
+        }
+      },
+      "qwen3.8-27b": {
+        "scores": {
+          "Finance & Compliance Apps": 8.3,
+          "Operations & Commerce Apps": 25.0,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 67.3,
+          "Performance Optimisation": 41.6
+        }
+      },
+      "qwen3.8-flash": {
+        "scores": {
+          "Finance & Compliance Apps": 12.5,
+          "Operations & Commerce Apps": 45.8,
+          "Long-Run Operations": 18.1,
+          "Systems Engineering": 65.3,
+          "Performance Optimisation": 46.2
         }
       }
     }
