@@ -123,13 +123,6 @@
           "Presentations (PPT)": 72.7
         }
       },
-      "qwen3.8-flash": {
-        "scores": {
-          "Documents (DOCX)": 32.2,
-          "PDF": 27.5,
-          "Presentations (PPT)": 44.4
-        }
-      },
       "glm-5.3": {
         "scores": {
           "Documents (DOCX)": 82.8,
@@ -448,15 +441,6 @@
           "Tax & Finance": 36.2,
           "Strategy": 67.0,
           "Science & Evidence": 81.7
-        }
-      },
-      "qwen3.8-flash": {
-        "scores": {
-          "Regulatory & Compliance": 40.3,
-          "Legal": 100.0,
-          "Tax & Finance": 13.6,
-          "Strategy": 25.3,
-          "Science & Evidence": 0.0
         }
       },
       "glm-5.3": {
@@ -841,15 +825,6 @@
           "Constraint Adherence": 33.0
         }
       },
-      "qwen3.8-flash": {
-        "scores": {
-          "Data Aggregation": 14.0,
-          "Sequential Planning": 0.0,
-          "Analysis-Driven Action": 0.0,
-          "Structural Integrity": 0.0,
-          "Constraint Adherence": 0.0
-        }
-      },
       "gemini-3.1-pro": {
         "scores": {
           "Data Aggregation": 14.0,
@@ -1206,16 +1181,6 @@
           "Cloud Infrastructure": 66.7,
           "Product & UX": 50.0,
           "Memory & Tools": 75.0
-        }
-      },
-      "qwen3.8-flash": {
-        "scores": {
-          "LLM API Integration": 50.0,
-          "Agent Loop": 40.0,
-          "Billing & Limits": 50.0,
-          "Cloud Infrastructure": 50.0,
-          "Product & UX": 33.3,
-          "Memory & Tools": 100.0
         }
       },
       "qwen3.8-max": {
@@ -1664,15 +1629,6 @@
           "Performance Optimisation": 67.3
         }
       },
-      "qwen3.8-flash": {
-        "scores": {
-          "Finance & Compliance Apps": 12.5,
-          "Operations & Commerce Apps": 29.2,
-          "Long-Run Operations": 6.9,
-          "Systems Engineering": 69.5,
-          "Performance Optimisation": 62.8
-        }
-      },
       "qwen3.8-max": {
         "scores": {
           "Finance & Compliance Apps": 29.1,
@@ -2035,6 +1991,48 @@
           "Table join": 69.9,
           "Table reformat": 94.1
         }
+      },
+      "inkling": {
+        "scores": {
+          "Consecutive events": 69.9,
+          "Table join": 48.5,
+          "Table reformat": 100.0
+        }
+      },
+      "minimax-m3": {
+        "scores": {
+          "Consecutive events": 84.6,
+          "Table join": 45.8,
+          "Table reformat": 98.0
+        }
+      },
+      "nemotron-ultra-3": {
+        "scores": {
+          "Consecutive events": 18.8,
+          "Table join": 46.6,
+          "Table reformat": 98.0
+        }
+      },
+      "nemotron-lightning-3.5": {
+        "scores": {
+          "Consecutive events": 2.5,
+          "Table join": 40.5,
+          "Table reformat": 86.3
+        }
+      },
+      "qwen3.8-27b": {
+        "scores": {
+          "Consecutive events": 84.9,
+          "Table join": 48.8,
+          "Table reformat": 96.1
+        }
+      },
+      "mistral-large-4": {
+        "scores": {
+          "Consecutive events": 80.5,
+          "Table join": 49.1,
+          "Table reformat": 100.0
+        }
       }
     }
   },
@@ -2348,6 +2346,54 @@
           "Zebra puzzles": 100.0,
           "Spatial": 100.0,
           "Logic with navigation": 88.0
+        }
+      },
+      "inkling": {
+        "scores": {
+          "Theory of mind": 65.4,
+          "Zebra puzzles": 88.0,
+          "Spatial": 94.0,
+          "Logic with navigation": 66.0
+        }
+      },
+      "minimax-m3": {
+        "scores": {
+          "Theory of mind": 76.9,
+          "Zebra puzzles": 61.0,
+          "Spatial": 94.0,
+          "Logic with navigation": 66.0
+        }
+      },
+      "nemotron-ultra-3": {
+        "scores": {
+          "Theory of mind": 61.5,
+          "Zebra puzzles": 71.2,
+          "Spatial": 98.0,
+          "Logic with navigation": 68.0
+        }
+      },
+      "nemotron-lightning-3.5": {
+        "scores": {
+          "Theory of mind": 44.2,
+          "Zebra puzzles": 17.2,
+          "Spatial": 92.0,
+          "Logic with navigation": 18.0
+        }
+      },
+      "qwen3.8-27b": {
+        "scores": {
+          "Theory of mind": 59.6,
+          "Zebra puzzles": 96.5,
+          "Spatial": 96.0,
+          "Logic with navigation": 68.0
+        }
+      },
+      "mistral-large-4": {
+        "scores": {
+          "Theory of mind": 80.8,
+          "Zebra puzzles": 93.0,
+          "Spatial": 94.0,
+          "Logic with navigation": 68.0
         }
       }
     }
