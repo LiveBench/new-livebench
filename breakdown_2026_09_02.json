@@ -2035,48 +2035,6 @@
           "Table join": 69.9,
           "Table reformat": 94.1
         }
-      },
-      "inkling": {
-        "scores": {
-          "Consecutive events": 69.9,
-          "Table join": 48.5,
-          "Table reformat": 100.0
-        }
-      },
-      "minimax-m3": {
-        "scores": {
-          "Consecutive events": 84.6,
-          "Table join": 45.8,
-          "Table reformat": 98.0
-        }
-      },
-      "nemotron-ultra-3": {
-        "scores": {
-          "Consecutive events": 18.8,
-          "Table join": 46.6,
-          "Table reformat": 98.0
-        }
-      },
-      "nemotron-lightning-3.5": {
-        "scores": {
-          "Consecutive events": 2.5,
-          "Table join": 40.5,
-          "Table reformat": 86.3
-        }
-      },
-      "qwen3.8-27b": {
-        "scores": {
-          "Consecutive events": 84.9,
-          "Table join": 48.8,
-          "Table reformat": 96.1
-        }
-      },
-      "mistral-large-4": {
-        "scores": {
-          "Consecutive events": 80.5,
-          "Table join": 49.1,
-          "Table reformat": 100.0
-        }
       }
     }
   },
@@ -2390,54 +2348,6 @@
           "Zebra puzzles": 100.0,
           "Spatial": 100.0,
           "Logic with navigation": 88.0
-        }
-      },
-      "inkling": {
-        "scores": {
-          "Theory of mind": 65.4,
-          "Zebra puzzles": 88.0,
-          "Spatial": 94.0,
-          "Logic with navigation": 66.0
-        }
-      },
-      "minimax-m3": {
-        "scores": {
-          "Theory of mind": 76.9,
-          "Zebra puzzles": 61.0,
-          "Spatial": 94.0,
-          "Logic with navigation": 66.0
-        }
-      },
-      "nemotron-ultra-3": {
-        "scores": {
-          "Theory of mind": 61.5,
-          "Zebra puzzles": 71.2,
-          "Spatial": 98.0,
-          "Logic with navigation": 68.0
-        }
-      },
-      "nemotron-lightning-3.5": {
-        "scores": {
-          "Theory of mind": 44.2,
-          "Zebra puzzles": 17.2,
-          "Spatial": 92.0,
-          "Logic with navigation": 18.0
-        }
-      },
-      "qwen3.8-27b": {
-        "scores": {
-          "Theory of mind": 59.6,
-          "Zebra puzzles": 96.5,
-          "Spatial": 96.0,
-          "Logic with navigation": 68.0
-        }
-      },
-      "mistral-large-4": {
-        "scores": {
-          "Theory of mind": 80.8,
-          "Zebra puzzles": 93.0,
-          "Spatial": 94.0,
-          "Logic with navigation": 68.0
         }
       }
     }
