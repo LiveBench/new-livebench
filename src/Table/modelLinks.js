@@ -735,6 +735,14 @@ export const modelLinks = {
         organization: "Meta",
         displayName: "Muse Wonder 1.0 Max Effort",
         reasoner: true
+    },
+    "nemotron-3.5-lightning-30b-a3b": {
+        url: "https://fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b",
+        organization: "NVIDIA",
+        displayName: "Nemotron 3.5 Lightning 30B A3B",
+        openweight: true,
+        reasoner: true,
+        huggingface: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
     }
 };
 
