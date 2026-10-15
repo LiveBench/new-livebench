@@ -339,6 +339,13 @@
           "PDF": 54.9,
           "Presentations (PPT)": 58.1
         }
+      },
+      "step-5-preview": {
+        "scores": {
+          "Documents (DOCX)": 82.7,
+          "PDF": 72.9,
+          "Presentations (PPT)": 77.1
+        }
       }
     }
   },
@@ -784,6 +791,15 @@
           "Strategy": 47.7,
           "Science & Evidence": 27.2
         }
+      },
+      "step-5-preview": {
+        "scores": {
+          "Regulatory & Compliance": 67.3,
+          "Legal": 69.6,
+          "Tax & Finance": 71.2,
+          "Strategy": 81.4,
+          "Science & Evidence": 84.3
+        }
       }
     }
   },
@@ -1210,6 +1226,15 @@
           "Analysis-Driven Action": 0.0,
           "Structural Integrity": 0.0,
           "Constraint Adherence": 0.0
+        }
+      },
+      "step-5-preview": {
+        "scores": {
+          "Data Aggregation": 28.6,
+          "Sequential Planning": 25.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 40.0,
+          "Constraint Adherence": 33.3
         }
       }
     }
@@ -1687,6 +1712,16 @@
           "Product & UX": 33.3,
           "Memory & Tools": 67.9
         }
+      },
+      "step-5-preview": {
+        "scores": {
+          "LLM API Integration": 100.0,
+          "Agent Loop": 100.0,
+          "Billing & Limits": 70.8,
+          "Cloud Infrastructure": 77.8,
+          "Product & UX": 72.2,
+          "Memory & Tools": 100.0
+        }
       }
     }
   },
@@ -2114,6 +2149,15 @@
           "Systems Engineering": 19.6,
           "Performance Optimisation": 32.7
         }
+      },
+      "step-5-preview": {
+        "scores": {
+          "Finance & Compliance Apps": 4.2,
+          "Operations & Commerce Apps": 16.7,
+          "Long-Run Operations": 5.6,
+          "Systems Engineering": 75.2,
+          "Performance Optimisation": 42.5
+        }
       }
     }
   },
@@ -2442,6 +2486,13 @@
           "Consecutive events": 13.6,
           "Table join": 46.3,
           "Table reformat": 100.0
+        }
+      },
+      "step-5-preview": {
+        "scores": {
+          "Consecutive events": 42.4,
+          "Table join": 50.1,
+          "Table reformat": 98.0
         }
       }
     }
@@ -2820,6 +2871,14 @@
           "Zebra puzzles": 36.0,
           "Spatial": 96.0,
           "Logic with navigation": 68.0
+        }
+      },
+      "step-5-preview": {
+        "scores": {
+          "Theory of mind": 75.0,
+          "Zebra puzzles": 90.0,
+          "Spatial": 98.0,
+          "Logic with navigation": 72.0
         }
       }
     }
