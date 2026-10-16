@@ -1217,10 +1217,10 @@
       },
       "qwen3.8-27b": {
         "scores": {
-          "Data Aggregation": 0.0,
+          "Data Aggregation": 57.1,
           "Sequential Planning": 0.0,
           "Analysis-Driven Action": 0.0,
-          "Structural Integrity": 0.0,
+          "Structural Integrity": 80.0,
           "Constraint Adherence": 0.0
         }
       },
