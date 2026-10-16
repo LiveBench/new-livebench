@@ -1190,7 +1190,7 @@
       },
       "minimax-m3": {
         "scores": {
-          "Data Aggregation": 0.0,
+          "Data Aggregation": 28.6,
           "Sequential Planning": 0.0,
           "Analysis-Driven Action": 0.0,
           "Structural Integrity": 0.0,
