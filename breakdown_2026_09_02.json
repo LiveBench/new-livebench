@@ -1226,11 +1226,11 @@
       },
       "qwen3.8-flash": {
         "scores": {
-          "Data Aggregation": 0.0,
-          "Sequential Planning": 0.0,
-          "Analysis-Driven Action": 0.0,
-          "Structural Integrity": 0.0,
-          "Constraint Adherence": 0.0
+          "Data Aggregation": 42.9,
+          "Sequential Planning": 25.0,
+          "Analysis-Driven Action": 50.0,
+          "Structural Integrity": 60.0,
+          "Constraint Adherence": 66.7
         }
       },
       "mistral-large-4": {
