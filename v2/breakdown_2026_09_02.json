@@ -1080,7 +1080,7 @@
       },
       "deepseek-v4.1-flash": {
         "scores": {
-          "Data Aggregation": 50.0,
+          "Data Aggregation": 42.9,
           "Sequential Planning": 100.0,
           "Analysis-Driven Action": 100.0,
           "Structural Integrity": 80.0,
