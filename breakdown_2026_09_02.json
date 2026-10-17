@@ -360,6 +360,13 @@
           "PDF": 67.1,
           "Presentations (PPT)": 55.3
         }
+      },
+      "beam-1.0": {
+        "scores": {
+          "Documents (DOCX)": 68.3,
+          "PDF": 62.5,
+          "Presentations (PPT)": 71.2
+        }
       }
     }
   },
@@ -832,6 +839,15 @@
           "Strategy": 82.6,
           "Science & Evidence": 85.7
         }
+      },
+      "beam-1.0": {
+        "scores": {
+          "Regulatory & Compliance": 71.8,
+          "Legal": 66.8,
+          "Tax & Finance": 66.1,
+          "Strategy": 78.8,
+          "Science & Evidence": 88.6
+        }
       }
     }
   },
@@ -1285,6 +1301,15 @@
           "Analysis-Driven Action": 16.7,
           "Structural Integrity": 20.0,
           "Constraint Adherence": 66.7
+        }
+      },
+      "beam-1.0": {
+        "scores": {
+          "Data Aggregation": 0.0,
+          "Sequential Planning": 0.0,
+          "Analysis-Driven Action": 0.0,
+          "Structural Integrity": 0.0,
+          "Constraint Adherence": 0.0
         }
       }
     }
@@ -1792,6 +1817,16 @@
           "Product & UX": 72.2,
           "Memory & Tools": 90.2
         }
+      },
+      "beam-1.0": {
+        "scores": {
+          "LLM API Integration": 87.5,
+          "Agent Loop": 80.0,
+          "Billing & Limits": 100.0,
+          "Cloud Infrastructure": 91.7,
+          "Product & UX": 55.6,
+          "Memory & Tools": 100.0
+        }
       }
     }
   },
@@ -2246,6 +2281,15 @@
           "Systems Engineering": 44.2,
           "Performance Optimisation": 35.3
         }
+      },
+      "beam-1.0": {
+        "scores": {
+          "Finance & Compliance Apps": 0.0,
+          "Operations & Commerce Apps": 4.2,
+          "Long-Run Operations": 0.0,
+          "Systems Engineering": 51.7,
+          "Performance Optimisation": 35.0
+        }
       }
     }
   },
@@ -2594,6 +2638,13 @@
         "scores": {
           "Consecutive events": 36.0,
           "Table join": 44.5,
+          "Table reformat": 100.0
+        }
+      },
+      "beam-1.0": {
+        "scores": {
+          "Consecutive events": 52.4,
+          "Table join": 46.8,
           "Table reformat": 100.0
         }
       }
@@ -2997,6 +3048,14 @@
           "Zebra puzzles": 40.0,
           "Spatial": 100.0,
           "Logic with navigation": 78.0
+        }
+      },
+      "beam-1.0": {
+        "scores": {
+          "Theory of mind": 76.9,
+          "Zebra puzzles": 82.0,
+          "Spatial": 94.0,
+          "Logic with navigation": 68.0
         }
       }
     }
